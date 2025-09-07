@@ -30,78 +30,310 @@
     </div>
 
     <!-- Header Section Begin -->
-    <header class="header-section">
-        <div class="container-fluid">
-            <div class="logo">
-             <a href="./index.html" class="brand">
-  <img class="img" src="img/logo.png" alt="Logo">
-  <span class="name">Ironnrootfitness</span>
-</a>
+<header class="header-modern">
+  <div class="container-fluid header-container">
+    
+    <!-- Logo -->
+    <a href="./index.html" class="brand">
+      <img class="brand-logo" src="img/logo.png" alt="Logo">
+      <span class="brand-name">Ironnrootfitness</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="mainmenu">
+      <ul>
+        <li class="active"><a href="./index.html">Home</a></li>
+        <li><a href="./about.html">Biography</a></li>
+        <li><a href="./plans.html">Training / Diet</a></li>
+        <li><a href="./contact.html">Contacts</a></li>
+      </ul>
+    </nav>
+
+    <!-- Login Button -->
+    <a href="./login.html" class="login-btn">Login</a>
+
+    <!-- Mobile Menu Toggle -->
+    <div class="mobile-toggle">
+      <i class="fa fa-bars"></i>
+    </div>
+  </div>
+</header>
+<!-- Header Section End -->
 
 <style>
-  .brand {
+/* Base Header */
+.header-modern {
+  background: #0d0d0d;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+/* Logo */
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 55px;
+  margin-right: 10px;
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Navigation */
+.mainmenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 25px;
+}
+
+.mainmenu ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.mainmenu ul li a:hover,
+.mainmenu ul li.active a {
+  color: #ff4d4d;
+}
+
+/* Login Button */
+.login-btn {
+  margin-left: 20px;
+  padding: 8px 18px;
+  background: #ff4d4d;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #e60000;
+}
+
+/* Mobile Toggle */
+.mobile-toggle {
+  display: none;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mainmenu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #111;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .mainmenu.active {
     display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: white;
-    margin-left: -50px;
+    animation: slideDown 0.3s ease;
   }
 
-  .brand img {
-    height: 60px;
-    margin-right: 10px;
+  .mainmenu ul {
+    flex-direction: column;
+    gap: 15px;
   }
 
-  .brand span {
-    font-size: 25px;
-    font-weight: bold;
-    color: white;
+  .mainmenu ul li a {
+    font-size: 18px;
+    display: block;
   }
 
-  /* On mobile, center it */
-  @media (max-width: 768px) {
-    .brand {
-      justify-content: center;
-
-    }
-    .name {
-        margin-left: 50px;
-    }
-    .img {
-        display: none;
-    }
+  .brand-logo {
+    display: none; /* hide logo on mobile */
   }
+
+  .brand-name {
+    font-size: 22px;
+    color: #fff;
+  }
+
+  .header-container {
+    justify-content: space-between;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .login-btn {
+    padding: 6px 14px;
+    font-size: 14px;
+  }
+}
+
+/* Animation for dropdown */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.querySelector(".mobile-toggle");
+    const menu = document.querySelector(".mainmenu");
 
-            </div>
-            
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("active");
+    });
+  });
+</script>
 
 
+<style>
+/* Base Header */
+.header-modern {
+  background: #0d0d0d;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-            <div class="container">
-                <div class="nav-menu">
-                    <nav class="mainmenu mobile-menu">
-                        <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
-                            <li><a href="./about.html">Biography</a></li>
-                            <!-- <li><a href="./gallery.html">Gallery</a></li>
-                            <li><a href="./blog.html">Blog</a>
-                                <ul class="dropdown">
-                                    <li><a href="./about-us.html">About Us</a></li>
-                                    <li><a href="./blog-single.html">Blog Details</a></li>
-                                </ul>
-                            </li> -->
-                            <li><a href="./contact.html">Contacts</a></li>
-                             <li><a href="./plans.html">Training / Diet</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div id="mobile-menu-wrap"></div>
-        </div>
-    </header>
-    <!-- Header End -->
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+/* Logo */
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 55px;
+  margin-right: 10px;
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Navigation */
+.mainmenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 25px;
+}
+
+.mainmenu ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.mainmenu ul li a:hover,
+.mainmenu ul li.active a {
+  color: #ff4d4d;
+}
+
+/* Login Button */
+.login-btn {
+  margin-left: 20px;
+  padding: 8px 18px;
+  background: #ff4d4d;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #e60000;
+}
+
+/* Mobile Toggle */
+.mobile-toggle {
+  display: none;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mainmenu {
+    display: none; /* hidden until toggled */
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .brand-logo {
+    display: none; /* hide logo on mobile */
+  }
+
+  .brand-name {
+    font-size: 22px;
+    color: #fff;
+  }
+
+  .header-container {
+    justify-content: space-between;
+  }
+
+  .login-btn {
+    padding: 6px 14px;
+    font-size: 14px;
+  }
+}
+</style>
+
 
     <!-- Hero Section Begin -->
     <section class="hero-section">
@@ -666,90 +898,139 @@ Plan</h4>
     </div>
     <!-- Map Section End -->
 
-    <!-- Footer Section Begin -->
-    <footer class="footer-section">
-        <div class="container">
-  <div class="row">
-    <!-- Column 1 -->
-    <div class="col-lg-6">
-      <div class="footer-logo-item">
-        <div class="f-logo">
-          <a href="#"><img src="img/logo.png" alt=""></a>
-          <span class="brand-name">Ironnrootfitness</span>
-        </div>
-        <p class="glow-text">Don’t just chase fitness goals.<br>
-Build a lifestyle that lasts forever.</p>
-<style>
-    .glow-text {
-  font-size: 28px;
-  font-weight: bold;
-  color: #fff;
-  text-align: left; /* default for desktop */
-  text-shadow: 0 0 10px #ff0000, 0 0 20px #ff3333, 0 0 30px #ff6666; /* glowing effect */
-}
+  
 
-/* On mobile, center the text */
-@media (max-width: 768px) {
-  .glow-text {
-    text-align: center;
-    font-size: 22px; /* slightly smaller for phone */
-  }
-}
+<!-- Footer Section Begin -->
+<footer class="footer-hero">
+  <div class="footer-inner">
 
-</style>
-        <div class="social-links">
-          <h6>Follow us</h6>
-          <a href="#"><i class="fa fa-facebook"></i></a>
-          <a href="#"><i class="fa fa-twitter"></i></a>
-          <a href="#"><i class="fa fa-google-plus"></i></a>
-          <a href="#"><i class="fa fa-linkedin"></i></a>
-          <a href="#"><i class="fa fa-instagram"></i></a>
-        </div>
-      </div>
+    <!-- Logo + Brand -->
+    <div class="footer-logo">
+      <img src="img/logo.png" alt="Ironnrootfitness Logo">
+      <h2>Ironnrootfitness</h2>
     </div>
 
-    <!-- Column 2 -->
-    <div class="col-lg-6">
-      <div class="footer-widget">
-        <h5>Get Info</h5>
-        <ul class="footer-info">
-          <li>
-            <i class="fa fa-envelope-o"></i>
-            <span>Email:</span>
-            Ironnrootfitness@gmail.com
-          </li>
-          <li>
-            <i class="fa fa-map-marker"></i>
-            <span>Address</span>
-            Bengaluru
-          </li>
-        </ul>
-      </div>
+    <!-- Quote -->
+    <p class="footer-quote">
+      “Don’t just chase fitness goals.
+      Build a lifestyle that lasts forever.”
+    </p>
+
+    <!-- Contact -->
+    <div class="footer-contact">
+      <p><i class="fa fa-envelope"></i> 
+        <a href="mailto:Ironnrootfitness@gmail.com">Ironnrootfitness@gmail.com</a>
+      </p>
+      <p><i class="fa fa-map-marker"></i> Bengaluru, India</p>
     </div>
+
+    <!-- Social -->
+    <div class="footer-social">
+      <a href="#"><i class="fa fa-facebook"></i></a>
+      <a href="#"><i class="fa fa-instagram"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-linkedin"></i></a>
+    </div>
+
   </div>
-</div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© <script>document.write(new Date().getFullYear());</script> Ironnrootfitness. All Rights Reserved.</p>
+  </div>
+</footer>
+<!-- Footer Section End -->
 
 <style>
-  .brand-name {
-    font-size: 30px;
-    font-weight: bold;
-    color: white;
+.footer-hero {
+  background: #0b0b0b;
+  color: #ccc;
+  text-align: center;
+  padding: 60px 20px 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Logo */
+.footer-logo img {
+  height: 100px;
+  margin-bottom: 10px;
+}
+.footer-logo h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Quote */
+.footer-quote {
+  margin: 20px auto;
+  font-size: 18px;
+  color: #ff4d4d;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+}
+
+/* Contact */
+.footer-contact p {
+  margin: 8px 0;
+  font-size: 15px;
+}
+.footer-contact i {
+  margin-right: 8px;
+  color: #ff4d4d;
+}
+.footer-contact a {
+  color: #ccc;
+  text-decoration: none;
+}
+.footer-contact a:hover {
+  color: #ff4d4d;
+}
+
+/* Social */
+.footer-social {
+  margin-top: 20px;
+}
+.footer-social a {
+  margin: 0 10px;
+  font-size: 20px;
+  color: #ccc;
+  transition: 0.3s;
+}
+.footer-social a:hover {
+  color: #ff4d4d;
+  text-shadow: 0 0 12px rgba(255, 77, 77, 0.9);
+}
+
+/* Bottom */
+.footer-bottom {
+  border-top: 1px solid #222;
+  margin-top: 30px;
+  padding-top: 15px;
+  font-size: 14px;
+  color: #777;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .footer-logo h2 {
+    font-size: 22px;
   }
+  .footer-quote {
+    font-size: 16px;
+  }
+}
 </style>
 
-        <div class="copyright-text">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="ct-inside"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | <a href="#" target="_blank">Ironnrootfitness</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
+
 
     <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<title>Ironnrootfitness | personal nutrition plan order now</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+  }
+
+  /* Back arrow */
+  .back-arrow {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #ff4d4d;
+    text-decoration: none;
+    margin: 20px 30px 0;
+    font-weight: 600;
+  }
+  .back-arrow i {
+    margin-right: 8px;
+  }
+  .back-arrow:hover {
+    color: #e63636;
+  }
+
+  /* Form Section */
+  .form-section {
+    padding: 40px 20px 80px;
+    max-width: 900px;
+    margin: auto;
+  }
+
+  .form-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #ff4d4d;
+    text-transform: uppercase;
+  }
+
+  form {
+    background: rgba(26,26,26,0.85);
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(255, 77, 77, 0.3);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background: #111;
+    color: #fff;
+    font-size: 15px;
+    display: block;
+    transition: all 0.3s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #ff4d4d;
+    box-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .note {
+    font-size: 13px;
+    color: #bbb;
+    margin-top: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .btn-submit {
+    display: block;
+    margin: 30px auto 0;
+    background: #ff4d4d;
+    color: #fff;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn-submit:hover {
+    background: #e63636;
+    box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
+  }
+
+  /* Popup */
+  .popup, .submit-popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .popup img {
+    max-width: 100%;
+    max-height: 80%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 77, 77, 0.9);
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .submit-popup p {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ff4d4d;
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .form-title { font-size: 28px; }
+    input, select, textarea { font-size: 14px; }
+    .btn-submit { font-size: 16px; padding: 12px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="./personal-nutrition-plan.html" class="back-arrow"><i class="fa fa-arrow-left"></i>Back</a>
+
+<section class="form-section">
+  <h2 class="form-title">Personal Nutrition Plan</h2>
+  <h2 class="form-title">Order Now</h2>
+  <form id="clientForm">
+    <!-- All form fields same as before -->
+    <div class="form-group">
+      <label>First Name *</label>
+      <input type="text" name="firstName" required>
+    </div>
+    <div class="form-group">
+      <label>Last Name *</label>
+      <input type="text" name="lastName" required>
+    </div>
+    <div class="form-group">
+      <label>Age *</label>
+      <input type="number" name="age" required min="10" max="100">
+    </div>
+    <div class="form-group">
+      <label>Country *</label>
+      <select name="country" required>
+        <option value="">-- Select Country --</option>
+        <option>India</option>
+        <option>United States</option>
+        <option>United Kingdom</option>
+        <option>Canada</option>
+        <option>Australia</option>
+        <option>Germany</option>
+        <option>France</option>
+        <option>Brazil</option>
+        <option>Japan</option>
+        <option>China</option>
+        <option>South Africa</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label>Gender *</label>
+      <select name="gender" required>
+        <option value="">-- Select --</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Height (cm) *</label>
+      <input type="number" name="height" required>
+    </div>
+    <div class="form-group">
+      <label>Weight (kg) *</label>
+      <input type="number" name="weight" required>
+    </div>
+    <div class="form-group">
+      <label>Desired Goal *</label>
+      <select name="goal" required>
+        <option value="">-- Select --</option>
+        <option>Fat Loss</option>
+        <option>Muscle Gain</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Desired Weight (kg)</label>
+      <input type="number" name="desiredWeight">
+    </div>
+    <div class="form-group">
+      <label>Choose Your Body Type *</label>
+      <select name="bodyType" required>
+        <option value="">-- Select --</option>
+        <option>Ectomorph</option>
+        <option>Mesomorph</option>
+        <option>Endomorph</option>
+      </select>
+      <span class="note" id="helpNote">If not sure – click here</span>
+    </div>
+    <div class="form-group">
+      <label>Have you ever been on a diet? *</label>
+      <textarea name="dietHistory" required></textarea>
+    </div>
+    <div class="form-group">
+      <label>How many times do you eat in a day? *</label>
+      <input type="number" name="mealsPerDay" required min="1">
+    </div>
+    <div class="form-group">
+      <label>Describe shortly what kind of food you eat *</label>
+      <textarea name="foodType" required></textarea>
+    </div>
+    <div class="form-group">
+      <label>Are you allergic to any food? If yes, what kind?</label>
+      <textarea name="allergies"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Do you work out? If yes, how many times a week?</label>
+      <input type="number" name="workoutsPerWeek">
+    </div>
+    <div class="form-group">
+      <label>Would you like supplements? *</label>
+      <select name="supplements" required>
+        <option value="">-- Select --</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Which types of food do you prefer?</label>
+      <textarea name="foodPreference"></textarea>
+    </div>
+    <div class="form-group">
+      <label>How did you come to know about Ironnrootfitness?</label>
+      <textarea name="referral"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Additional Comments</label>
+      <textarea name="comments"></textarea>
+    </div>
+    <button type="submit" class="btn-submit">Submit</button>
+  </form>
+</section>
+
+<!-- Body Type Popup -->
+<div class="popup" id="popup">
+  <span class="popup-close" id="popupClose">&times;</span>
+  <img src="img/body-type-ectomorph-mesomorph-endomorph.jpg" alt="Body Types">
+</div>
+
+<!-- Submission Popup -->
+<div class="submit-popup" id="submitPopup">
+  <p>Please wait, the page is redirecting to payment...</p>
+</div>
+
+<script>
+  // Body type popup
+  const helpNote = document.getElementById('helpNote');
+  const popup = document.getElementById('popup');
+  const popupClose = document.getElementById('popupClose');
+
+  helpNote.addEventListener('click', () => { popup.style.display = 'flex'; });
+  popupClose.addEventListener('click', () => { popup.style.display = 'none'; });
+  window.addEventListener('click', (e) => { if(e.target === popup) popup.style.display = 'none'; });
+
+  // Form submission with redirect popup
+  const form = document.getElementById('clientForm');
+  const submitPopup = document.getElementById('submitPopup');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      alert('Please fill all required fields correctly.');
+      return;
+    }
+    // Show submit popup
+    submitPopup.style.display = 'flex';
+    // Simulate redirect after 2 seconds (change URL to payment page)
+    setTimeout(() => {
+      window.location.href = 'payment.html'; // Replace with your payment URL
+    }, 2000);
+  });
+</script>
+</body>
+</html>

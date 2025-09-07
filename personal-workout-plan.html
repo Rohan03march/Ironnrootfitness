@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <title>Ironnrootfitness | Personal Workout Coaching</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+    }
+
+    /* Back Arrow */
+    .back-arrow {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 26px;
+      color: #ff4d4d;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 14px;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
+      transition: 0.3s;
+      z-index: 999;
+    }
+    .back-arrow:hover {
+      background: #ff4d4d;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(255, 77, 77, 0.9);
+    }
+
+    /* Section */
+    .reasons-section {
+      padding: 80px 20px;
+      text-align: center;
+    }
+    .reasons-title {
+      font-size: 38px;
+      color: #ff4d4d;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    .reasons-subtitle {
+      color: #bbb;
+      font-size: 18px;
+      margin-bottom: 50px;
+    }
+    .reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .reason-card {
+      background: rgba(26,26,26,0.7);
+      padding: 25px 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #222;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .reason-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 18px rgba(255, 77, 77, 0.5);
+    }
+    .reason-card i {
+      font-size: 40px;
+      color: #ff4d4d;
+      margin-bottom: 15px;
+    }
+    .reason-card h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .reason-card p {
+      font-size: 15px;
+      color: #bbb;
+      line-height: 1.6;
+    }
+
+    /* Motivation Banner */
+    .motivation-banner {
+      margin: 70px auto 40px;
+      max-width: 850px;
+      background: rgba(0,0,0,0.3);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.7);
+      text-align: center;
+      animation: pulse 2s infinite;
+    }
+    .motivation-banner p {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.6;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(255, 77, 77, 0.9); }
+      100% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+    }
+
+    /* Pricing */
+    .pricing {
+      text-align: center;
+      margin-top: 60px;
+    }
+    .pricing h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .pricing .price {
+      font-size: 40px;
+      color: #ff4d4d;
+      margin-bottom: 20px;
+    }
+    .pricing .btn {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pricing .btn:hover {
+      background: #e63636;
+      box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .reasons-title { font-size: 28px; }
+      .motivation-banner p { font-size: 18px; }
+      .pricing .price { font-size: 32px; }
+      .back-arrow { font-size: 22px; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Arrow -->
+  <a href="./plans.html" class="back-arrow"><i class="fa fa-arrow-left"></i></a>
+
+  <!-- Section -->
+  <section class="reasons-section">
+    <div class="container">
+      <h2 class="reasons-title">Personal Workout plan</h2>
+      <p class="reasons-subtitle">Why my training programs stand out:</p>
+
+      <div class="reasons-grid">
+        <div class="reason-card">
+          <i class="fa fa-dumbbell"></i>
+          <h4>Customized Training Plans</h4>
+          <p>Every workout is designed specifically for your goals, fitness level, and body type – no copy-paste routines.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-flask"></i>
+          <h4>Science-Backed Workouts</h4>
+          <p>Proven training methods that deliver results without wasting time on ineffective exercises.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-shield-alt"></i>
+          <h4>Proper Technique & Safety</h4>
+          <p>Master the right form to reduce injury risk and maximize progress in every workout.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-chart-line"></i>
+          <h4>Progressive Results</h4>
+          <p>Your program evolves as you get stronger, ensuring continuous improvement without plateaus.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-calendar-alt"></i>
+          <h4>Fits Your Lifestyle</h4>
+          <p>Whether at the gym, at home, or on the go, I’ll design workouts that match your routine.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-fire"></i>
+          <h4>Motivation & Accountability</h4>
+          <p>I’ll keep you consistent, motivated, and focused – skipping workouts won’t be an option.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-book-open"></i>
+          <h4>Education & Confidence</h4>
+          <p>I teach you the “why” behind every workout, building your knowledge and independence.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-heartbeat"></i>
+          <h4>Beyond the Gym</h4>
+          <p>Support goes beyond workouts – covering recovery, mindset, and lifestyle habits for true transformation.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-sync-alt"></i>
+          <h4>Regular Progress Tracking</h4>
+          <p>Your program will be reviewed and updated to make sure you’re always moving toward your goals.</p>
+        </div>
+      </div>
+
+      <!-- Motivation Banner -->
+      <div class="motivation-banner">
+        <p> With my <strong>Personal Workout Coaching</strong>, you’re not just getting exercises – you’re getting a <strong>system, a mentor, and a partner</strong> who’s fully committed to your transformation. <br>Are you ready to become the <strong>strongest version of yourself?</strong></p>
+      </div>
+
+      <!-- Pricing -->
+      <div class="pricing">
+        <h3>All This For Only</h3>
+        <div class="price">₹165/-</div>
+        <a href="./personal-workout-plan-order-now.html">
+          <button class="btn">Start Training</button>
+        </a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

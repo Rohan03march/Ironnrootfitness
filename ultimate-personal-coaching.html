@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <title>Ironnrootfitness | Personal Coaching</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+    }
+
+    /* Back Button */
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 77, 77, 0.1);
+      border: 2px solid #ff4d4d;
+      color: #ff4d4d;
+      font-size: 22px;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.3s;
+      z-index: 100;
+    }
+    .back-btn:hover {
+      background: #ff4d4d;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(255, 77, 77, 0.9);
+      transform: scale(1.1);
+    }
+
+    /* Reasons Section */
+    .reasons-section {
+      padding: 100px 20px 80px; /* extra top padding for back button */
+      background: #0d0d0d;
+      text-align: center;
+      position: relative;
+    }
+    .reasons-title {
+      font-size: 38px;
+      color: #ff4d4d;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    .reasons-subtitle {
+      color: #bbb;
+      font-size: 18px;
+      margin-bottom: 50px;
+    }
+    .reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .reason-card {
+      background: #1a1a1a;
+      padding: 25px 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #222;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .reason-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 18px rgba(255, 77, 77, 0.5);
+    }
+    .reason-card i {
+      font-size: 40px;
+      color: #ff4d4d;
+      margin-bottom: 15px;
+    }
+    .reason-card h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .reason-card p {
+      font-size: 15px;
+      color: #bbb;
+      line-height: 1.6;
+    }
+
+    /* Motivation Banner */
+    .motivation-banner {
+      margin: 70px auto 40px;
+      max-width: 800px;
+      background: rgba(0,0,0,0.3);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.7);
+      text-align: center;
+      animation: pulse 2s infinite;
+    }
+    .motivation-banner p {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.6;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(255, 77, 77, 0.9); }
+      100% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+    }
+
+    /* Pricing + CTA */
+    .pricing {
+      text-align: center;
+      margin-top: 60px;
+    }
+    .pricing h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .pricing .price {
+      font-size: 40px;
+      color: #ff4d4d;
+      margin-bottom: 20px;
+    }
+    .pricing .btn {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pricing .btn:hover {
+      background: #e63636;
+      box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .reasons-title { font-size: 28px; }
+      .motivation-banner p { font-size: 18px; }
+      .pricing .price { font-size: 32px; }
+      .back-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        top: 15px;
+        left: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <a href="./plans.html">
+    <button class="back-btn">
+    <i class="fa fa-arrow-left"></i>
+  </button>
+  </a>
+
+  <!-- Reasons Section -->
+  <section class="reasons-section">
+    <div class="container">
+      <h2 class="reasons-title">Ultimate personal coaching</h2>
+      <p class="reasons-subtitle">Here’s what makes Ironnrootfitness different:</p>
+
+      <div class="reasons-grid">
+        <div class="reason-card">
+          <i class="fa fa-dumbbell"></i>
+          <h4>Customized Training Plans</h4>
+          <p>I don’t believe in one-size-fits-all. Your program will be tailored to your body type, goals, and lifestyle.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-chart-line"></i>
+          <h4>Proven Results</h4>
+          <p>My clients have achieved fat loss, muscle gain, strength improvements, and complete lifestyle transformations.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-leaf"></i>
+          <h4>Holistic Approach</h4>
+          <p>I focus not just on workouts, but also on nutrition, recovery, and mindset – ensuring long-term success.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-hand-holding-heart"></i>
+          <h4>Accountability & Motivation</h4>
+          <p>I’ll be with you every step, pushing you when you need it, and keeping you consistent.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-shield-alt"></i>
+          <h4>Injury Prevention & Correct Form</h4>
+          <p>Safety comes first. I make sure you perform every exercise correctly to maximize results and prevent injuries.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-clock"></i>
+          <h4>Flexible & Adaptable Coaching</h4>
+          <p>Whether you train at the gym, at home, or while traveling, I’ll adapt your plan to fit your schedule.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-graduation-cap"></i>
+          <h4>Education & Empowerment</h4>
+          <p>I don’t just give workouts; I teach you the “why” so you become confident and independent in your journey.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-hands-helping"></i>
+          <h4>Support Beyond the Gym</h4>
+          <p>I’m available for guidance on diet, lifestyle habits, stress management, and staying consistent – not just during sessions.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-infinity"></i>
+          <h4>Long-Term Lifestyle Transformation</h4>
+          <p>I don’t just help you for a few weeks; my goal is to give you sustainable habits that last a lifetime.</p>
+        </div>
+      </div>
+
+      <!-- Motivation Banner -->
+      <div class="motivation-banner">
+        <p>With my <strong>Ultimate Personal Coaching</strong>, you don’t just get a trainer – you get a <strong>partner</strong>, a <strong>mentor</strong>, and a constant source of <strong>motivation</strong> who is 100% invested in your success.</p>
+      </div>
+
+      <!-- Pricing Section -->
+      <div class="pricing">
+        <h3>All This For Only</h3>
+        <div class="price">₹55/-</div>
+        <a href="./ultimate-personal-coaching-order-now.html">
+          <button class="btn">Start Now</button>
+        </a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

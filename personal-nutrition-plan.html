@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <title>Ironnrootfitness | Personal Nutrition Coaching</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+    }
+
+    /* Back Arrow */
+    .back-arrow {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 26px;
+      color: #ff4d4d;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 14px;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
+      transition: 0.3s;
+      z-index: 999;
+    }
+    .back-arrow:hover {
+      background: #ff4d4d;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(255, 77, 77, 0.9);
+    }
+
+    /* Reasons Section */
+    .reasons-section {
+      padding: 80px 20px;
+      text-align: center;
+    }
+    .reasons-title {
+      font-size: 38px;
+      color: #ff4d4d;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    .reasons-subtitle {
+      color: #bbb;
+      font-size: 18px;
+      margin-bottom: 50px;
+    }
+    .reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .reason-card {
+      background: rgba(26,26,26,0.7);
+      padding: 25px 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #222;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .reason-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 18px rgba(255, 77, 77, 0.5);
+    }
+    .reason-card i {
+      font-size: 40px;
+      color: #ff4d4d;
+      margin-bottom: 15px;
+    }
+    .reason-card h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .reason-card p {
+      font-size: 15px;
+      color: #bbb;
+      line-height: 1.6;
+    }
+
+    /* Motivation Banner */
+    .motivation-banner {
+      margin: 70px auto 40px;
+      max-width: 850px;
+      background: rgba(0,0,0,0.3);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.7);
+      text-align: center;
+      animation: pulse 2s infinite;
+    }
+    .motivation-banner p {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.6;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(255, 77, 77, 0.9); }
+      100% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+    }
+
+    /* Pricing + CTA */
+    .pricing {
+      text-align: center;
+      margin-top: 60px;
+    }
+    .pricing h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .pricing .price {
+      font-size: 40px;
+      color: #ff4d4d;
+      margin-bottom: 20px;
+    }
+    .pricing .btn {
+      background: #ff4d4d;
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pricing .btn:hover {
+      background: #e63636;
+      box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .reasons-title { font-size: 28px; }
+      .motivation-banner p { font-size: 18px; }
+      .pricing .price { font-size: 32px; }
+      .back-arrow { font-size: 22px; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Arrow -->
+  <a href="./plans.html" class="back-arrow"><i class="fa fa-arrow-left"></i></a>
+
+  <!-- Reasons Section -->
+  <section class="reasons-section">
+    <div class="container">
+      <h2 class="reasons-title">Personal Nutrition plan</h2>
+      <p class="reasons-subtitle">Why my nutrition plans stand out:</p>
+
+      <div class="reasons-grid">
+        <div class="reason-card">
+          <i class="fa fa-user-check"></i>
+          <h4>Fully Customized to Your Body & Goals</h4>
+          <p>Forget generic diet charts – your nutrition plan is tailored to your body type, lifestyle, preferences, and goals.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-flask"></i>
+          <h4>Self-Based & Proven Strategies</h4>
+          <p>Every recommendation is backed by science and proven nutritional principles – no fads, only sustainable results.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-utensils"></i>
+          <h4>Flexible & Enjoyable Eating</h4>
+          <p>Enjoy the foods you love while staying on track. Nutrition should be enjoyable, not restrictive.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-hourglass-half"></i>
+          <h4>Results That Last</h4>
+          <p>Build healthy, realistic eating habits that deliver lasting results – no more crash diets or short-term fixes.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-briefcase"></i>
+          <h4>Support for Your Lifestyle</h4>
+          <p>Whether you’re a student, athlete, or professional, your plan adapts to your routine – not the other way around.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-book-open"></i>
+          <h4>Education That Empowers You</h4>
+          <p>Learn how nutrition works. Understand labels, build balanced meals, and take control of your choices confidently.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-hands-helping"></i>
+          <h4>Accountability & Guidance</h4>
+          <p>I’ll track your progress, make adjustments, and guide you every step – so you always know what to do.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-heartbeat"></i>
+          <h4>Health Beyond Just Fitness</h4>
+          <p>My plans boost energy, digestion, immunity, and overall well-being – making you feel your absolute best.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa fa-sync-alt"></i>
+          <h4>Ongoing Adaptations for Progress</h4>
+          <p>Your body evolves. I’ll regularly update your nutrition plan to ensure continuous progress without plateaus.</p>
+        </div>
+      </div>
+
+      <!-- Motivation Banner -->
+      <div class="motivation-banner">
+        <p>With my <strong>Personal Nutrition Coaching</strong>, you don’t just get a “diet chart” – you get a <strong>lifestyle upgrade</strong> designed to transform your <strong>body, mind, and health</strong>.</p>
+      </div>
+
+      <!-- Pricing Section -->
+      <div class="pricing">
+        <h3>All This For Only</h3>
+        <div class="price">₹95/-</div>
+        <a href="./personal-nutrition-plan-order-now.html">
+  <button class="btn">Start Now</button>
+</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

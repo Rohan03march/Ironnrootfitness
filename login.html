@@ -227,6 +227,12 @@
       </div>
       <button type="submit" class="btn-submit">Sign Up</button>
     </form>
+
+    <br/>
+    <!-- Dynamic Switch Text -->
+    <div id="switchText" class="switch-text">
+      Don’t have an account? <span id="switchAction">Sign Up</span>
+    </div>
   </div>
 
   <!-- Popup -->
@@ -239,6 +245,7 @@
     const signUpForm = document.getElementById('signupForm');
     const popup = document.getElementById('popup');
     const forgotPassword = document.getElementById('forgotPassword');
+    const switchText = document.getElementById('switchText');
 
     // Tab switching
     signInTab.addEventListener('click', () => {
@@ -246,6 +253,7 @@
       signUpTab.classList.remove('active');
       signInForm.classList.add('active');
       signUpForm.classList.remove('active');
+      switchText.innerHTML = `Don’t have an account? <span id="switchAction">Sign Up</span>`;
     });
 
     signUpTab.addEventListener('click', () => {
@@ -253,6 +261,7 @@
       signInTab.classList.remove('active');
       signUpForm.classList.add('active');
       signInForm.classList.remove('active');
+      switchText.innerHTML = `Already have an account? <span id="switchAction">Sign In</span>`;
     });
 
     // Show popup
@@ -264,7 +273,9 @@
       }, 2500);
     }
   </script>
+
   <!-- ✅ Your Auth Logic -->
   <script type="module" src="./js/auth.js"></script>
 </body>
+
 </html>

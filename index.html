@@ -49,8 +49,200 @@
       </ul>
     </nav>
 
-    <!-- Login Button -->
-    <a href="./login.html" class="login-btn">Login</a>
+    <!-- User Profile Dropdown with Icon -->
+<div class="user-dropdown">
+  <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
+  <div class="dropdown-menu" id="dropdownMenu">
+    <div class="user-name" id="userName">Guest</div>
+    <hr>
+    <a href="./login.html" id="loginBtn">Login</a>
+    <a href="#" id="logoutBtn" style="display:none;">Logout</a>
+  </div>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+    authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+    projectId: "ironnrootfitness-5156e",
+    storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
+    messagingSenderId: "508351386284",
+    appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
+    measurementId: "G-S6235MZEPC"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Elements
+const avatar = document.getElementById("userAvatar");
+const dropdown = document.getElementById("dropdownMenu");
+const userName = document.getElementById("userName");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+// Toggle dropdown
+avatar.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+});
+
+// Close dropdown if clicked outside
+document.addEventListener("click", () => {
+  dropdown.style.display = "none";
+});
+
+// Firebase Auth state
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        userName.textContent = docSnap.data().fullName; // Use fullName from Firestore
+      } else {
+        userName.textContent = user.email; // fallback
+      }
+    } catch (err) {
+      console.error(err);
+      userName.textContent = user.email;
+    }
+
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "block";
+  } else {
+    userName.textContent = "Guest";
+    loginBtn.style.display = "block";
+    logoutBtn.style.display = "none";
+  }
+});
+
+// Logout
+logoutBtn.addEventListener("click", async () => {
+  await signOut(auth);
+  dropdown.style.display = "none";
+  alert("You have been logged out!");
+});
+</script>
+
+  <style>
+    /* ==========================
+   User Dropdown
+========================== */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Avatar Icon */
+.user-avatar {
+  font-size: 45px;
+  color: #ff4d4d;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.user-avatar:hover {
+  color: #e63636;
+}
+
+/* Dropdown Menu - Left of avatar */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 55px;
+  right: auto;
+  left: -210px; /* Adjust this depending on width of dropdown */
+  background: #111;
+  min-width: 200px;
+  max-width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+  z-index: 1000;
+  overflow: hidden;
+  word-wrap: break-word;
+  animation: dropdownFade 0.2s ease-in-out;
+}
+
+/* Dropdown Fade Animation */
+@keyframes dropdownFade {
+  0% {opacity: 0; transform: translateY(-10px);}
+  100% {opacity: 1; transform: translateY(0);}
+}
+
+/* User Name */
+.dropdown-menu .user-name {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #ff4d4d;
+  font-size: 16px;
+}
+
+/* Divider */
+.dropdown-menu hr {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #333;
+}
+
+/* Links inside dropdown */
+.dropdown-menu a {
+  display: block;
+  padding: 12px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background: #222;
+  color: #ff4d4d;
+}
+
+/* Show dropdown */
+.user-dropdown.show .dropdown-menu {
+  display: block;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .user-avatar {
+    font-size: 40px;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+    max-width: 220px;
+    top: 50px;
+    left: -190px;
+  }
+
+  .dropdown-menu .user-name {
+    font-size: 14px;
+  }
+
+  .dropdown-menu a {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown-menu {
+    left: -160px;
+    top: 50px;
+  }
+}
+
+  </style>
+</div>
+
+
 
     <!-- Mobile Menu Toggle -->
     <div class="mobile-toggle">
@@ -654,7 +846,7 @@ No monthly subscriptions, no hidden fees—just results. Choose the plan that fi
                         <h4>Personal Nutrition
 Plan</h4>
                         <div class="price-plan">
-                            <h2>95/-<span>₹</span></h2>
+                            <h2>1499<span>₹</span>/$17</h2>
                             <p>One time payment</p>
                         </div>
                         <ul>
@@ -671,7 +863,7 @@ Plan</h4>
                     <div class="single-price-plan">
                         <h4>Ultimate Personal Coaching</h4>
                         <div class="price-plan">
-                            <h2>55/-<span>₹</span></h2>
+                            <h2>4999<span>₹</span>/$56</h2>
                             <p>One Time Payment</p>
                         </div>
                         <ul>
@@ -691,7 +883,7 @@ Plan</h4>
                     <div class="single-price-plan">
                         <h4>Personal Workout Program</h4>
                         <div class="price-plan">
-                            <h2>165/- <span>₹</span></h2>
+                            <h2>2499<span>₹</span>/$28</h2>
                             <p>one time payment</p>
                         </div>
                         <ul>
@@ -720,50 +912,56 @@ Plan</h4>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="choose-item">
-                        <img src="img/icons/chose-icon-1.png" alt="">
-                        <h5>Title</h5>
-                        <p>description</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="choose-item">
-                        <img src="img/icons/chose-icon-2.png" alt="">
-                        <h5>Title</h5>
-                        <p>description</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="choose-item">
-                        <img src="img/icons/chose-icon-3.png" alt="">
-                        <h5>Title</h5>
-                        <p>description</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="choose-item">
-                        <img src="img/icons/chose-icon-4.png" alt="">
-                        <h5>Title</h5>
-                        <p>description</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="choose-item">
-                        <img src="img/icons/chose-icon-5.png" alt="">
-                        <h5>Title</h5>
-                        <p>description</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="choose-item">
-                        <img src="img/icons/chose-icon-6.png" alt="">
-                        <h5>Title</h5>
-                        <p>description</p>
-                    </div>
-                </div>
-            </div>
+           <div class="row">
+  <div class="col-lg-4 col-sm-6 col-6">
+    <div class="choose-item">
+      <img src="img/icons/chose-icon-1.png" alt="">
+      <h5>Expert Guidance</h5>
+      <p>Certified coaches design plans that are personalized just for you.</p>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-sm-6 col-6">
+    <div class="choose-item">
+      <img src="img/icons/chose-icon-2.png" alt="">
+      <h5>No Hidden Costs</h5>
+      <p>Simple, one-time payment plans—no monthly fees or surprises.</p>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-sm-6 col-6">
+    <div class="choose-item">
+      <img src="img/icons/chose-icon-3.png" alt="">
+      <h5>Holistic Approach</h5>
+      <p>We integrate fitness and nutrition to build sustainable, lifelong health.</p>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-sm-6 col-6">
+    <div class="choose-item">
+      <img src="img/icons/chose-icon-4.png" alt="">
+      <h5>Modern Equipment</h5>
+      <p>State-of-the-art gear and facilities help you train smarter.</p>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-sm-6 col-6">
+    <div class="choose-item">
+      <img src="img/icons/chose-icon-5.png" alt="">
+      <h5>Balanced Nutrition Guidance</h5>
+      <p>Simple, science-backed nutrition plans tailored to fuel your workouts and support sustainable results.</p>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-sm-6 col-6">
+    <div class="choose-item">
+      <img src="img/icons/chose-icon-6.png" alt="">
+      <h5>Proven Results</h5>
+      <p>Transformation stories from clients that highlight real outcomes.</p>
+    </div>
+  </div>
+</div>
+
         </div>
     </section>
     <!-- Choseus Section End -->
@@ -873,7 +1071,7 @@ Plan</h4>
     <!-- Cta Section End -->
 
     <!-- Map Section Begin -->
-    <div class="map">
+    <!-- <div class="map">
         <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d497699.69063807104!2d77.03995914996382!3d12.954001247601756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1757240975404!5m2!1sen!2sin" height="590" style="border: 0" allowfullscreen=""></iframe>
         <div class="map-contact-detalis">
@@ -895,7 +1093,7 @@ Plan</h4>
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Map Section End -->
 
   

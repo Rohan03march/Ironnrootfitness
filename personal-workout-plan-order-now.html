@@ -180,6 +180,11 @@
       <label>Age *</label>
       <input type="number" name="age" required min="10" max="100">
     </div>
+    <!-- 📱 Phone Number (New Field) -->
+    <div class="form-group">
+      <label>Phone Number *</label>
+      <input type="tel" name="phone">
+    </div>
     <div class="form-group">
       <label>Country *</label>
       <select name="country" required>
@@ -307,8 +312,73 @@
 
 <!-- Submission Popup -->
 <div class="submit-popup" id="submitPopup">
-  <p>Please wait, the page is redirecting to payment...</p>
+  <p>Please wait, submitting the form </p>
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+  authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+  projectId: "ironnrootfitness-5156e",
+  storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
+  messagingSenderId: "508351386284",
+  appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
+  measurementId: "G-S6235MZEPC"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Elements
+const form = document.getElementById('trainingForm');
+const submitPopup = document.getElementById('submitPopup');
+
+// Track current user
+let currentUser = null;
+onAuthStateChanged(auth, user => currentUser = user);
+
+// Form submission
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  if (!form.checkValidity()) {
+    alert('Please fill all required fields correctly.');
+    return;
+  }
+
+  // Show submit popup
+  submitPopup.style.display = 'flex';
+
+  // Collect form data
+  const formData = {};
+  Array.from(form.elements).forEach(el => {
+    if(el.name) formData[el.name] = el.value || null;
+  });
+
+  formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
+  formData.createdAt = new Date().toISOString();
+
+  try {
+    // Save to Firestore collection "personal_workout_plan"
+    await setDoc(doc(db, "personal_workout_plan", formData.userId + "_" + Date.now()), formData);
+
+    submitPopup.style.display = 'none';
+    alert("✅ Your workout plan request has been submitted successfully!");
+    form.reset();
+  } catch(err) {
+    console.error(err);
+    submitPopup.style.display = 'none';
+    alert("❌ Error submitting form. Please try again.");
+  }
+});
+</script>
 
 <script>
   // Body type popup
@@ -319,24 +389,7 @@
   helpNote.addEventListener('click', () => { popup.style.display = 'flex'; });
   popupClose.addEventListener('click', () => { popup.style.display = 'none'; });
   window.addEventListener('click', (e) => { if(e.target === popup) popup.style.display = 'none'; });
-
-  // Form submission with redirect popup
-  const form = document.getElementById('trainingForm');
-  const submitPopup = document.getElementById('submitPopup');
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (!form.checkValidity()) {
-      alert('Please fill all required fields correctly.');
-      return;
-    }
-    // Show submit popup
-    submitPopup.style.display = 'flex';
-    // Redirect after 2 seconds
-    setTimeout(() => {
-      window.location.href = 'payment.html'; // Replace with your payment page
-    }, 2000);
-  });
 </script>
+
 </body>
 </html>

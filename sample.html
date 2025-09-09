@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<title>Ironnrootfitness | Personal Nutrition Plan Order Now</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body { margin:0; font-family:'Poppins', sans-serif; background:#0d0d0d; color:#fff; }
+  .back-arrow { display:flex; align-items:center; font-size:18px; color:#ff4d4d; text-decoration:none; margin:20px 30px 0; font-weight:600; }
+  .back-arrow i { margin-right:8px; }
+  .back-arrow:hover { color:#e63636; }
+  .form-section { padding:40px 20px 80px; max-width:900px; margin:auto; }
+  .form-title { text-align:center; font-size:36px; margin-bottom:30px; color:#ff4d4d; text-transform:uppercase; }
+  form { background: rgba(26,26,26,0.85); padding:40px 30px; border-radius:15px; box-shadow:0 0 25px rgba(255,77,77,0.3); }
+  .form-group { margin-bottom:20px; }
+  label { display:block; margin-bottom:8px; font-weight:600; color:#fff; }
+  input, textarea { width:100%; max-width:100%; box-sizing:border-box; padding:12px 15px; border-radius:10px; border:1px solid #333; background:#111; color:#fff; font-size:15px; display:block; transition:all 0.3s; }
+  input:focus, textarea:focus { outline:none; border-color:#ff4d4d; box-shadow:0 0 8px rgba(255,77,77,0.6); }
+  textarea { min-height:80px; resize:vertical; }
+  .note { font-size:13px; color:#bbb; margin-top:5px; cursor:pointer; text-decoration:underline; }
+  .btn-submit { display:block; margin:30px auto 0; background:#ff4d4d; color:#fff; padding:14px 36px; border:none; border-radius:50px; font-size:18px; cursor:pointer; transition:0.3s; }
+  .btn-submit:hover { background:#e63636; box-shadow:0 0 12px rgba(255,77,77,0.7); }
+  .popup, .submit-popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:9999; padding:20px; text-align:center; color:#fff; }
+  .popup img { max-width:100%; max-height:80%; border-radius:12px; box-shadow:0 0 20px rgba(255,77,77,0.9); }
+  .popup-close { position:absolute; top:20px; right:30px; font-size:28px; color:#fff; cursor:pointer; }
+  .submit-popup p { font-size:22px; font-weight:600; color:#ff4d4d; }
+  #thankYouMessage { display:none; text-align:center; padding:20px; background:#1a1a1a; color:#ff4d4d; border-radius:12px; margin:20px auto; max-width:600px; font-size:18px; }
+  @media(max-width:768px){ .form-title{ font-size:28px; } input, textarea{ font-size:14px; } .btn-submit{ font-size:16px; padding:12px 28px; } }
+</style>
+</head>
+<body>
+
+<a href="./personal-nutrition-plan.html" class="back-arrow"><i class="fa fa-arrow-left"></i>Back</a>
+
+<section class="form-section">
+  <h2 class="form-title">Personal Nutrition Plan</h2>
+  <h2 class="form-title">Order Now</h2>
+  <form id="clientForm">
+    <!-- Form Fields -->
+    <div class="form-group"><label>First Name *</label><input type="text" name="firstName" required></div>
+    <div class="form-group"><label>Last Name *</label><input type="text" name="lastName" required></div>
+    <div class="form-group"><label>Age *</label><input type="number" name="age" required min="10" max="100"></div>
+    <div class="form-group"><label>Phone Number *</label><input type="tel" name="phone"></div>
+    <div class="form-group"><label>Country *</label>
+      <input type="text" name="country" value="India" readonly>
+    </div>
+    <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
+    <div class="form-group"><label>Gender *</label><input type="text" name="gender"></div>
+    <div class="form-group"><label>Height (cm) *</label><input type="number" name="height" required></div>
+    <div class="form-group"><label>Weight (kg) *</label><input type="number" name="weight" required></div>
+    <div class="form-group"><label>Desired Goal *</label><input type="text" name="goal"></div>
+    <div class="form-group"><label>Plan</label><input type="text" name="plan" value="Personal Nutrition Plan" readonly></div>
+    <button type="submit" class="btn-submit">Submit</button>
+  </form>
+
+  <!-- Thank You Message -->
+  <div id="thankYouMessage">✅ Your form is submitted. We will contact you within 24 hours.</div>
+</section>
+
+<!-- Body Type Popup -->
+<div class="popup" id="popup">
+  <span class="popup-close" id="popupClose">&times;</span>
+  <img src="img/body-type-ectomorph-mesomorph-endomorph.jpg" alt="Body Types">
+</div>
+
+<!-- Submission Popup -->
+<div class="submit-popup" id="submitPopup"><p>Please wait, submitting the form </p></div>
+
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+  authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+  projectId: "ironnrootfitness-5156e",
+  storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
+  messagingSenderId: "508351386284",
+  appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
+  measurementId: "G-S6235MZEPC"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const form = document.getElementById('clientForm');
+const submitPopup = document.getElementById('submitPopup');
+const thankYouMessage = document.getElementById('thankYouMessage');
+
+let currentUser = null;
+onAuthStateChanged(auth, user => currentUser = user);
+
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  if(!form.checkValidity()) return alert('Please fill all required fields correctly.');
+
+  submitPopup.style.display = 'flex';
+
+  const formData = {};
+  Array.from(form.elements).forEach(el => { if(el.name) formData[el.name] = el.value || null; });
+  formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
+  formData.createdAt = new Date().toISOString();
+  formData.status = "pending";
+
+  const docRef = doc(db, "personal_nutrition_plan", formData.userId + "_" + Date.now());
+  try { await setDoc(docRef, formData); } 
+  catch(err){ console.error(err); submitPopup.style.display='none'; return alert("❌ Error saving form. Try again."); }
+
+  // Fixed plan amount ₹1499
+  const amountINR = 1499;
+  const amountPaise = amountINR * 100;
+
+  const options = {
+    key: "rzp_test_RFU2NSOugfWUne", // Replace with your Razorpay key
+    amount: amountPaise,
+    currency: "INR",
+    name: "IronnRoot Fitness",
+    description: "Personal Nutrition Plan Payment",
+    prefill: {
+      name: formData.firstName + " " + formData.lastName,
+      email: formData.email || "",
+      contact: formData.phone || ""
+    },
+    notes: { userId: formData.userId },
+    theme: { color: "#ff4d4d" },
+    handler: async function(response){
+      await setDoc(docRef, { ...formData, status:"success", paymentId: response.razorpay_payment_id, amountPaid: amountINR });
+      submitPopup.style.display='none';
+      thankYouMessage.style.display='block';
+      form.reset();
+    },
+    modal: { ondismiss: async function(){
+      await setDoc(docRef, { ...formData, status:"failed" });
+      submitPopup.style.display='none';
+      alert("Payment canceled.");
+    }}
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+});
+</script>
+
+<script>
+  // Body type popup
+  const helpNote = document.getElementById('helpNote');
+  const popup = document.getElementById('popup');
+  const popupClose = document.getElementById('popupClose');
+
+  helpNote?.addEventListener('click', ()=> popup.style.display='flex');
+  popupClose?.addEventListener('click', ()=> popup.style.display='none');
+  window.addEventListener('click', (e)=> { if(e.target===popup) popup.style.display='none'; });
+</script>
+
+</body>
+</html>

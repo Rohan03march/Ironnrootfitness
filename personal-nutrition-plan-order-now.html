@@ -188,7 +188,7 @@
       <input type="tel" name="phone">
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label>Country *</label>
       <select name="country" required>
         <option value="">-- Select Country --</option>
@@ -288,7 +288,7 @@
     <div class="form-group">
       <label>Additional Comments</label>
       <textarea name="comments"></textarea>
-    </div>
+    </div> -->
     <button type="submit" class="btn-submit">Submit</button>
   </form>
 </section>
@@ -300,9 +300,10 @@
 </div>
 
 <!-- Submission Popup -->
-<div class="submit-popup" id="submitPopup">
-  <p>Please wait, submitting the form </p>
-</div>
+<div class="submit-popup" id="submitPopup"><p>Please wait, submitting the form </p></div>
+
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
@@ -328,46 +329,89 @@ const db = getFirestore(app);
 // Elements
 const form = document.getElementById('clientForm');
 const submitPopup = document.getElementById('submitPopup');
+const thankYouMessage = document.getElementById('thankYouMessage');
 
-// Track current user
 let currentUser = null;
 onAuthStateChanged(auth, user => currentUser = user);
 
 // Form submission
-form.addEventListener('submit', async function(e) {
+form.addEventListener('submit', async function(e){
   e.preventDefault();
+  if(!form.checkValidity()) return alert('Please fill all required fields correctly.');
 
-  if (!form.checkValidity()) {
-    alert('Please fill all required fields correctly.');
-    return;
-  }
-
-  // Show submit popup
   submitPopup.style.display = 'flex';
 
-  // Collect form data
   const formData = {};
-  Array.from(form.elements).forEach(el => {
-    if(el.name) formData[el.name] = el.value || null;
-  });
+  Array.from(form.elements).forEach(el => { if(el.name) formData[el.name] = el.value || null; });
 
+  // Add user info and amount
   formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
   formData.createdAt = new Date().toISOString();
+  formData.status = "pending";
+  formData.plan = "Personal Nutrition Plan";
+  formData.amount = 1499; // <-- store amount in INR
+
+  const docRef = doc(db, "personal_nutrition_plan", formData.userId + "_" + Date.now());
 
   try {
-    // Save to Firestore collection "personal_nutrition_plan"
-    await setDoc(doc(db, "personal_nutrition_plan", formData.userId + "_" + Date.now()), formData);
-
-    submitPopup.style.display = 'none';
-    alert("✅ Your form has been submitted successfully!");
-    form.reset(); // reset the form after success
-  } catch(err) {
+    await setDoc(docRef, formData); // Save initial pending record
+  } catch(err){
     console.error(err);
     submitPopup.style.display = 'none';
-    alert("❌ Error submitting form. Please try again.");
+    return alert("❌ Error saving form. Try again.");
   }
+
+  const options = {
+    key: "rzp_test_RFU2NSOugfWUne", // Your Razorpay key
+    amount: formData.amount * 100, // amount in paise
+    currency: "INR",
+    name: "IronnRoot Fitness",
+    description: "Personal Nutrition Plan Payment",
+    prefill: {
+      name: formData.firstName + " " + formData.lastName,
+      email: formData.email || "",
+      contact: formData.phone || ""
+    },
+    notes: { userId: formData.userId },
+    theme: { color: "#ff4d4d" },
+    handler: async function(response){
+      // Payment success
+      try {
+        await setDoc(docRef, {
+          ...formData,
+          status: "success",
+          paymentId: response.razorpay_payment_id,
+          amount: formData.amount
+        });
+        submitPopup.style.display = 'none';
+        alert('✅Your form is submitted. We will contact you within 24 hours.')
+        form.reset();
+      } catch(err) {
+        console.error(err);
+        submitPopup.style.display = 'none';
+        alert("❌ Payment succeeded but saving form failed!");
+      }
+    },
+    modal: {
+      ondismiss: async function(){
+        try {
+          await setDoc(docRef, {
+            ...formData,
+            status: "failed",
+            amount: formData.amount
+          });
+        } catch(err){ console.error(err); }
+        submitPopup.style.display = 'none';
+        alert("❌ Payment was cancelled.");
+      }
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
 });
 </script>
+
 
 <script>
   // Body type popup
@@ -375,9 +419,9 @@ form.addEventListener('submit', async function(e) {
   const popup = document.getElementById('popup');
   const popupClose = document.getElementById('popupClose');
 
-  helpNote.addEventListener('click', () => { popup.style.display = 'flex'; });
-  popupClose.addEventListener('click', () => { popup.style.display = 'none'; });
-  window.addEventListener('click', (e) => { if(e.target === popup) popup.style.display = 'none'; });
+  helpNote?.addEventListener('click', ()=> popup.style.display='flex');
+  popupClose?.addEventListener('click', ()=> popup.style.display='none');
+  window.addEventListener('click', (e)=> { if(e.target===popup) popup.style.display='none'; });
 </script>
 
 </body>

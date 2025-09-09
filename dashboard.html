@@ -292,7 +292,7 @@ async function loadData(colName, title, type) {
   } else if(type==="permissions"){
     tableHead.innerHTML = `<tr><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr>`;
   } else {
-    tableHead.innerHTML = `<tr><th>Name</th><th>Gender</th><th>Age</th><th>Phone</th><th>Email</th></tr>`;
+    tableHead.innerHTML = `<tr><th>Name</th><th>Gender</th><th>Age</th><th>Phone</th><th>Email</th><th>Amount Paid</th><th>Status</th></tr>`;
   }
 
   let snapshot;
@@ -343,7 +343,7 @@ async function loadData(colName, title, type) {
     } else if(type==="contact"){
       row.innerHTML = `<td>${data.name||""}</td><td>${data.phone||"N/A"}</td><td>${data.email||"N/A"}</td>`;
     } else {
-      row.innerHTML = `<td>${data.firstName||""} ${data.lastName||""}</td><td>${data.gender||"N/A"}</td><td>${data.age||"N/A"}</td><td>${data.phone||"N/A"}</td><td>${data.email||"N/A"}</td>`;
+      row.innerHTML = `<td>${data.firstName||""} ${data.lastName||""}</td><td>${data.gender||"N/A"}</td><td>${data.age||"N/A"}</td><td>${data.phone||"N/A"}</td><td>${data.email||"N/A"}</td><td>${data.amount}</td><td>${data.status}</td>`;
     }
 
     row.addEventListener("click",()=>{ if(type!=="permissions") openModal(data); });

@@ -293,7 +293,7 @@
       <textarea name="injuries"></textarea>
     </div>
     <div class="form-group">
-      <label>How did you find out about www.lazarangelov.com?</label>
+      <label>How did you find out about Ironnrootfitness</label>
       <textarea name="referral"></textarea>
     </div>
     <div class="form-group">
@@ -314,6 +314,9 @@
 <div class="submit-popup" id="submitPopup">
   <p>Please wait, submitting the form </p>
 </div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
@@ -364,20 +367,54 @@ form.addEventListener('submit', async function(e) {
 
   formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
   formData.createdAt = new Date().toISOString();
+  formData.amount = 2499; // Example price in INR
+  formData.status = "pending";
 
-  try {
-    // Save to Firestore collection "personal_workout_plan"
-    await setDoc(doc(db, "personal_workout_plan", formData.userId + "_" + Date.now()), formData);
+  // Firestore doc reference
+  const docRef = doc(db, "personal_workout_plan", formData.userId + "_" + Date.now());
 
-    submitPopup.style.display = 'none';
-    alert("✅ Your workout plan request has been submitted successfully!");
-    form.reset();
-  } catch(err) {
-    console.error(err);
-    submitPopup.style.display = 'none';
-    alert("❌ Error submitting form. Please try again.");
-  }
+  // Razorpay options
+  const options = {
+    key: "rzp_test_RFU2NSOugfWUne", // Replace with your Razorpay test/live key
+    amount: formData.amount * 100, // Amount in paise
+    currency: "INR",
+    name: "Ironnroot Fitness",
+    description: "Personal Workout Plan Payment",
+    prefill: {
+      name: formData.firstName + " " + formData.lastName,
+      email: formData.email,
+      contact: formData.phone
+    },
+    theme: { color: "#ff4d4d" },
+    handler: async function(response){
+      // Payment success
+      try {
+        await setDoc(docRef, {...formData, status: "success", paymentId: response.razorpay_payment_id});
+        submitPopup.style.display = 'none';
+        alert("✅ Your workout plan request has been submitted successfully. We will contact you within 24 hours !");
+        form.reset();
+      } catch(err) {
+        console.error(err);
+        submitPopup.style.display = 'none';
+        alert("❌ Payment succeeded but saving form failed!");
+      }
+    },
+    modal: {
+      ondismiss: async function(){
+        // Payment cancelled
+        try { await setDoc(docRef, {...formData, status: "failed"}); } 
+        catch(err){ console.error(err); }
+        submitPopup.style.display = 'none';
+        alert("❌ Payment was cancelled.");
+      }
+    }
+  };
+
+  // Open Razorpay payment popup
+  const rzp = new Razorpay(options);
+  rzp.open();
 });
+
 </script>
 
 <script>

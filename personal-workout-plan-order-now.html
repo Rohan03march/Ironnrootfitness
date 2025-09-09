@@ -319,6 +319,10 @@
 
 
 <script type="module">
+    // Fetch Razorpay key from Netlify function
+const keyResponse = await fetch("/.netlify/functions/razorpay-key");
+const { key } = await keyResponse.json();
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
@@ -375,7 +379,7 @@ form.addEventListener('submit', async function(e) {
 
   // Razorpay options
   const options = {
-    key: "rzp_test_RFU2NSOugfWUne", // Replace with your Razorpay test/live key
+    key: key, // Replace with your Razorpay test/live key
     amount: formData.amount * 100, // Amount in paise
     currency: "INR",
     name: "Ironnroot Fitness",

@@ -188,7 +188,7 @@
       <input type="tel" name="phone">
     </div>
 
-    <!-- <div class="form-group">
+    <div class="form-group">
       <label>Country *</label>
       <select name="country" required>
         <option value="">-- Select Country --</option>
@@ -288,7 +288,7 @@
     <div class="form-group">
       <label>Additional Comments</label>
       <textarea name="comments"></textarea>
-    </div> -->
+    </div>
     <button type="submit" class="btn-submit">Submit</button>
   </form>
 </section>
@@ -307,7 +307,7 @@
 
 <script type="module">
   // Fetch Razorpay key from Netlify function
-const keyResponse = await fetch("/.netlify/functions/razorpay-key.js");
+const keyResponse = await fetch("/.netlify/functions/razorpay-key");
 const { key } = await keyResponse.json();
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";

@@ -307,7 +307,7 @@
 
 <script type="module">
   // Fetch Razorpay key from Netlify function
-const keyResponse = await fetch("/.netlify/functions/rezorpay-key.js");
+const keyResponse = await fetch("/.netlify/functions/razorpay-key.js");
 const { key } = await keyResponse.json();
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";

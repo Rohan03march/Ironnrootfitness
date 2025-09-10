@@ -38,14 +38,21 @@ form.addEventListener('submit', async function(e){
   submitPopup.style.display = 'flex';
 
   const formData = {};
-  Array.from(form.elements).forEach(el => { if(el.name) formData[el.name] = el.value || null; });
+  Array.from(form.elements).forEach(el => {
+    if(el.name) formData[el.name] = el.value || null;
+  });
+
+  // Combine country code + phone
+  if(formData.countryCode && formData.phone){
+    formData.phone = formData.countryCode + formData.phone;
+  }
 
   // Add user info and amount
   formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
   formData.createdAt = new Date().toISOString();
   formData.status = "pending";
   formData.plan = "Personal Nutrition Plan";
-  formData.amount = 1499; // <-- store amount in INR
+  formData.amount = 1499; // amount in INR
 
   const docRef = doc(db, "personal_nutrition_plan", formData.userId + "_" + Date.now());
 
@@ -57,21 +64,21 @@ form.addEventListener('submit', async function(e){
     return alert("❌ Error saving form. Try again.");
   }
 
+  // Razorpay options...
   const options = {
-    key: key, // Your Razorpay key
-    amount: formData.amount * 100, // amount in paise
+    key: key,
+    amount: formData.amount * 100,
     currency: "INR",
     name: "IronnRoot Fitness",
     description: "Personal Nutrition Plan Payment",
     prefill: {
       name: formData.firstName + " " + formData.lastName,
       email: formData.email || "",
-      contact: formData.phone || ""
+      contact: formData.phone || ""  // now includes country code
     },
     notes: { userId: formData.userId },
     theme: { color: "#ff4d4d" },
     handler: async function(response){
-      // Payment success
       try {
         await setDoc(docRef, {
           ...formData,

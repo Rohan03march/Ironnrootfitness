@@ -184,23 +184,15 @@
 
     <!-- 📱 Phone Number (New Field) -->
     <div class="form-group">
-  <label>Phone Number *</label>
-  <div style="display: flex; gap: 5px;">
-    <select name="countryCode" required>
-      <option value="+91">🇮🇳 +91 (India)</option>
-      <option value="+1">🇺🇸 +1 (USA)</option>
-      <option value="+44">🇬🇧 +44 (UK)</option>
-      <option value="+61">🇦🇺 +61 (Australia)</option>
-      <option value="+81">🇯🇵 +81 (Japan)</option>
-      <option value="+49">🇩🇪 +49 (Germany)</option>
-      <option value="+33">🇫🇷 +33 (France)</option>
-      <option value="+86">🇨🇳 +86 (China)</option>
-      <option value="+7">🇷🇺 +7 (Russia)</option>
-      <option value="+55">🇧🇷 +55 (Brazil)</option>
-      <!-- Add more countries as needed -->
-    </select>
-    <input type="tel" name="phone" required>
-  </div>
+  <label>Phone Number (with country code) *</label>
+  <input 
+    type="tel" 
+    name="phone" 
+    placeholder="+91 9876543210" 
+    required 
+    pattern="^\+\d{1,4}\s?\d{6,15}$" 
+    title="Enter a valid phone number with country code, e.g., +91 9876543210"
+  >
 </div>
 
 

@@ -124,8 +124,16 @@ a[href^="mailto:"]:hover {
       <input type="email" id="contactEmail" placeholder="Email" required>
     </div>
     <div class="input-group">
-      <input type="tel" id="contactPhone" placeholder="Phone Number" required>
-    </div>
+  <input 
+    type="tel" 
+    id="contactPhone" 
+    placeholder="+91 9876543210" 
+    required 
+    pattern="^\+\d{1,4}\s?\d{6,15}$" 
+    title="Enter a valid phone number with country code, e.g., +91 9876543210"
+  >
+</div>
+
     <textarea id="contactMessage" placeholder="Your Message" required></textarea>
     <button type="submit">Send Message</button>
   </form>

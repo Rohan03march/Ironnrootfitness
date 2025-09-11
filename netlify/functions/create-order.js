@@ -1,6 +1,7 @@
-import Razorpay from "razorpay";
+// netlify/functions/create-order.js
+const Razorpay = require("razorpay");
 
-export const handler = async (event) => {
+exports.handler = async function(event, context) {
   try {
     const instance = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,

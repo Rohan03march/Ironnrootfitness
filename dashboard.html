@@ -234,6 +234,43 @@
       <div class="stat-card" id="contactsCount">📩 Messages: 0</div>
     </div>
 
+    <!-- Search Bar -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search by Email, Phone, or Payment ID...">
+  <style>
+    /* Search Bar Container */
+.search-bar {
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Search Input */
+#searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Placeholder Style */
+#searchInput::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+  </style>
+</div>
      
 
     <h3 id="collectionTitle">🥗 Personal Nutrition Plan</h3>

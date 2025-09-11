@@ -184,3 +184,28 @@ window.logout = () => {
   signOut(auth).then(()=> { window.location.href="admin.html"; })
   .catch(err=> { console.error(err); });
 };
+
+
+//filter 
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", () => {
+  const filter = searchInput.value.toLowerCase();
+  const rows = dataTable.querySelectorAll("tr");
+
+  rows.forEach(row => {
+    const cells = row.querySelectorAll("td");
+    if (cells.length === 0) return; // skip if row has no cells
+
+    const email = cells[4]?.textContent.toLowerCase() || "";
+    const phone = cells[3]?.textContent.toLowerCase() || "";
+    const paymentId = cells[7]?.textContent.toLowerCase() || "";
+
+    if (email.includes(filter) || phone.includes(filter) || paymentId.includes(filter)) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+});

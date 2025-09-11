@@ -43,7 +43,7 @@ form.addEventListener('submit', async function(e) {
   formData.createdAt = new Date().toISOString();
   formData.status = "pending";
   formData.plan = "Personal Nutrition Plan";
-  formData.amount = 1499; // amount in INR
+  formData.amount = 1; // amount in INR
 
   const docRef = doc(db, "personal_nutrition_plan", formData.userId + "_" + Date.now());
 

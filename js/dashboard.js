@@ -86,7 +86,7 @@ async function loadData(colName, title, type){
   } else if(type==="permissions"){
     tableHead.innerHTML = `<tr><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr>`;
   } else {
-    tableHead.innerHTML = `<tr><th>Name</th><th>Gender</th><th>Age</th><th>Phone</th><th>Email</th><th>Amount Paid</th><th>Status</th><th>Time</th></tr>`;
+    tableHead.innerHTML = `<tr><th>Name</th><th>Gender</th><th>Age</th><th>Phone</th><th>Email</th><th>Amount Paid</th><th>Status</th><th>Payment ID</th><th>Time</th></tr>`;
   }
 
   let snapshot;
@@ -145,6 +145,7 @@ async function loadData(colName, title, type){
         <td>${data.email||"N/A"}</td>
         <td>${data.amount||0}</td>
         <td>${data.status||"Pending"}</td>
+        <td>${data.paymentId || 'N/A'}</td>
         <td>${data.createdAt ? timeAgo(data.createdAt) : "N/A"}</td>
       `;
     }

@@ -1,0 +1,28 @@
+import Razorpay from "razorpay";
+
+export const handler = async (event) => {
+  try {
+    const instance = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET
+    });
+
+    const { amount, currency } = JSON.parse(event.body);
+
+    const order = await instance.orders.create({
+      amount,
+      currency,
+      payment_capture: 1
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(order),
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message }),
+    };
+  }
+};

@@ -1,6 +1,4 @@
-  // Fetch Razorpay key from Netlify function
-const keyResponse = await fetch("/.netlify/functions/razorpay-key");
-const { key } = await keyResponse.json();
+// pnp.js
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
@@ -31,7 +29,7 @@ let currentUser = null;
 onAuthStateChanged(auth, user => currentUser = user);
 
 // Form submission
-form.addEventListener('submit', async function(e){
+form.addEventListener('submit', async function(e) {
   e.preventDefault();
   if(!form.checkValidity()) return alert('Please fill all required fields correctly.');
 
@@ -45,64 +43,87 @@ form.addEventListener('submit', async function(e){
   formData.createdAt = new Date().toISOString();
   formData.status = "pending";
   formData.plan = "Personal Nutrition Plan";
-  formData.amount = 1499; // <-- store amount in INR
+  formData.amount = 1499; // amount in INR
 
   const docRef = doc(db, "personal_nutrition_plan", formData.userId + "_" + Date.now());
 
   try {
     await setDoc(docRef, formData); // Save initial pending record
-  } catch(err){
+  } catch(err) {
     console.error(err);
     submitPopup.style.display = 'none';
     return alert("❌ Error saving form. Try again.");
   }
 
-  const options = {
-    key: key, // Your Razorpay key
-    amount: formData.amount * 100, // amount in paise
-    currency: "INR",
-    name: "IronnRoot Fitness",
-    description: "Personal Nutrition Plan Payment",
-    prefill: {
-      name: formData.firstName + " " + formData.lastName,
-      email: formData.email || "",
-      contact: formData.phone || ""
-    },
-    notes: { userId: formData.userId },
-    theme: { color: "#ff4d4d" },
-    handler: async function(response){
-      // Payment success
-      try {
-        await setDoc(docRef, {
-          ...formData,
-          status: "success",
-          paymentId: response.razorpay_payment_id,
-          amount: formData.amount
-        });
-        submitPopup.style.display = 'none';
-        alert('✅Your form is submitted. We will contact you within 24 hours.')
-        form.reset();
-      } catch(err) {
-        console.error(err);
-        submitPopup.style.display = 'none';
-        alert("❌ Payment succeeded but saving form failed!");
-      }
-    },
-    modal: {
-      ondismiss: async function(){
+  try {
+    // 1️⃣ Fetch live Razorpay key
+    const keyResponse = await fetch("/.netlify/functions/razorpay-key");
+    const { key } = await keyResponse.json();
+
+    // 2️⃣ Create order from Netlify function
+    const orderResponse = await fetch("/.netlify/functions/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: formData.amount * 100, currency: "INR" })
+    });
+    const orderData = await orderResponse.json();
+
+    if(!orderData.id) throw new Error("Failed to create Razorpay order");
+
+    // 3️⃣ Razorpay Checkout
+    const options = {
+      key: key,
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: "IronnRoot Fitness",
+      order_id: orderData.id, // must include order_id for live payments
+      description: "Personal Nutrition Plan Payment",
+      prefill: {
+        name: formData.firstName + " " + formData.lastName,
+        email: formData.email || "",
+        contact: formData.phone || ""
+      },
+      notes: { userId: formData.userId },
+      theme: { color: "#ff4d4d" },
+      handler: async function(response) {
+        // Payment success
         try {
           await setDoc(docRef, {
             ...formData,
-            status: "failed",
+            status: "success",
+            paymentId: response.razorpay_payment_id,
             amount: formData.amount
           });
-        } catch(err){ console.error(err); }
-        submitPopup.style.display = 'none';
-        alert("❌ Payment was cancelled.");
+          submitPopup.style.display = 'none';
+          alert('✅ Your form is submitted. We will contact you within 24 hours.');
+          form.reset();
+        } catch(err) {
+          console.error(err);
+          submitPopup.style.display = 'none';
+          alert("❌ Payment succeeded but saving form failed!");
+        }
+      },
+      modal: {
+        ondismiss: async function() {
+          try {
+            await setDoc(docRef, {
+              ...formData,
+              status: "failed",
+              amount: formData.amount
+            });
+          } catch(err) { console.error(err); }
+          submitPopup.style.display = 'none';
+          alert("❌ Payment was cancelled.");
+        }
       }
-    }
-  };
+    };
 
-  const rzp = new Razorpay(options);
-  rzp.open();
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+  } catch(err) {
+    console.error(err);
+    submitPopup.style.display = 'none';
+    alert("❌ Payment initialization failed. Try again.");
+  }
 });

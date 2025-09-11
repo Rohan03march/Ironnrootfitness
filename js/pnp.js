@@ -86,23 +86,40 @@ form.addEventListener('submit', async function(e) {
       notes: { userId: formData.userId },
       theme: { color: "#ff4d4d" },
       handler: async function(response) {
-        // Payment success
-        try {
-          await setDoc(docRef, {
-            ...formData,
-            status: "success",
-            paymentId: response.razorpay_payment_id,
-            amount: formData.amount
-          });
-          submitPopup.style.display = 'none';
-          alert('✅ Your form is submitted. We will contact you within 24 hours.');
-          form.reset();
-        } catch(err) {
-          console.error(err);
-          submitPopup.style.display = 'none';
-          alert("❌ Payment succeeded but saving form failed!");
-        }
-      },
+  try {
+    // 1️⃣ Verify payment signature
+    const verifyRes = await fetch("/.netlify/functions/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature
+      })
+    });
+    const verifyData = await verifyRes.json();
+
+    if (!verifyData.verified) throw new Error("Payment verification failed");
+
+    // 2️⃣ Only after verification, update Firestore
+    await setDoc(docRef, {
+      ...formData,
+      status: "success",
+      paymentId: response.razorpay_payment_id,
+      amount: formData.amount
+    });
+
+    submitPopup.style.display = 'none';
+    alert('✅ Your form is submitted. We will contact you within 24 hours.');
+    form.reset();
+
+  } catch(err) {
+    console.error(err);
+    submitPopup.style.display = 'none';
+    alert("❌ Payment verification failed. Contact support.");
+  }
+},
+
       modal: {
         ondismiss: async function() {
           try {

@@ -196,13 +196,15 @@ searchInput.addEventListener("input", () => {
 
   rows.forEach(row => {
     const cells = row.querySelectorAll("td");
-    if (cells.length === 0) return; // skip if row has no cells
+    if (cells.length === 0) return;
 
-    const email = cells[4]?.textContent.toLowerCase() || "";
-    const phone = cells[3]?.textContent.toLowerCase() || "";
-    const paymentId = cells[7]?.textContent.toLowerCase() || "";
+    // Collect all text from the row
+    const rowText = Array.from(cells)
+      .map(cell => cell.textContent.toLowerCase())
+      .join(" ");
 
-    if (email.includes(filter) || phone.includes(filter) || paymentId.includes(filter)) {
+    // Check if filter is inside any cell
+    if (rowText.includes(filter)) {
       row.style.display = "";
     } else {
       row.style.display = "none";

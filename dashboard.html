@@ -3,57 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="img/favicon.png">
-  <title>Ironnrootfitness | Admin Dashboard </title>
+  <title>Ironnrootfitness | Admin Dashboard</title>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js"></script>
   <style>
+    /* Global */
     body {
       margin: 0;
       font-family: "Inter", "Segoe UI", sans-serif;
       display: flex;
       height: 100vh;
-      background: #f8fafc;
+      background: #f9fafb;
       color: #111827;
     }
 
     /* Sidebar */
     .sidebar {
-      width: 250px;
+      width: 220px;
       background: linear-gradient(180deg, #1e293b, #0f172a);
       color: white;
       display: flex;
       flex-direction: column;
       padding: 24px 16px;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
     }
     .sidebar h2 {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 28px;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 32px;
       text-align: center;
-      color: #f1f5f9;
+      color: #f8fafc;
+      letter-spacing: 0.5px;
     }
     .nav-btn {
-      padding: 12px 14px;
-      margin-bottom: 12px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
       background: transparent;
       border: none;
       color: #e2e8f0;
       text-align: left;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 15px;
-      font-weight: 500;
-      transition: background 0.3s, transform 0.15s;
+      font-size: 13px;
+      font-weight: 540;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       transform: translateX(4px);
     }
     .nav-btn.active {
       background: #2563eb;
-      color: white;
+      color: #fff;
     }
     .logout-btn {
       margin-top: auto;
@@ -64,12 +69,11 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      width: 100%;
+      transition: all 0.25s ease;
     }
     .logout-btn:hover {
       background: #dc2626;
-      transform: scale(1.02);
+      transform: translateY(-2px);
     }
 
     /* Main */
@@ -79,18 +83,18 @@
       overflow-y: auto;
     }
     h3 {
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: 600;
+      margin: 20px 0;
+      font-size: 22px;
+      font-weight: 700;
       color: #1e293b;
     }
 
     /* Stats Grid */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
     }
     .stat-card {
       border-radius: 16px;
@@ -100,15 +104,15 @@
       font-size: 15px;
       font-weight: 500;
       box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s ease;
     }
     .stat-card span {
       display: block;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 700;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .stat-card::after {
       content: "";
@@ -117,7 +121,7 @@
       right: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.25), transparent 70%);
+      background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
       transform: rotate(25deg);
     }
     #nutritionCount { background: linear-gradient(135deg, #34d399, #059669); }
@@ -125,8 +129,35 @@
     #coachingCount { background: linear-gradient(135deg, #f97316, #ea580c); }
     #contactsCount { background: linear-gradient(135deg, #f43f5e, #be123c); }
     .stat-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.15);
+    }
+
+    /* Search Bar */
+    .search-bar {
+      width: 100%;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    #searchInput {
+      width: 100%;
+      max-width: 420px;
+      padding: 12px 18px;
+      border: 1px solid #e2e8f0;
+      border-radius: 25px;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    #searchInput:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+    #searchInput::placeholder {
+      color: #94a3b8;
+      font-style: italic;
     }
 
     /* Table */
@@ -161,27 +192,38 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       display: none;
-      align-items: center; justify-content: center;
+      align-items: center; 
+      justify-content: center;
       background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
       z-index: 100;
     }
     .modal-content {
       background: white;
-      padding: 24px;
+      padding: 28px;
       border-radius: 14px;
-      width: 480px;
+      width: 500px;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
       animation: fadeUp 0.3s ease;
     }
     @keyframes fadeUp {
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-    .modal-content h3 { margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #1e293b; font-weight: 600; }
-    .modal-content p { font-size: 14px; padding: 6px 0; border-bottom: 1px solid #f1f5f9; color: #475569; }
+    .modal-content h3 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      color: #1e293b;
+      font-weight: 700;
+    }
+    .modal-content p {
+      font-size: 14px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f1f5f9;
+      color: #475569;
+    }
     .modal-content p:last-child { border-bottom: none; }
     .close-btn {
       background: #2563eb;
@@ -200,26 +242,29 @@
 
     /* Permissions Buttons */
     .approve-btn, .deny-btn {
-      padding: 4px 8px;
+      padding: 6px 10px;
       margin-right: 4px;
       font-size: 12px;
       font-weight: 500;
       border-radius: 6px;
       border: none;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
     .approve-btn { background: #34d399; color: white; }
+    .approve-btn:hover { background: #059669; }
     .deny-btn { background: #f43f5e; color: white; }
+    .deny-btn:hover { background: #be123c; }
   </style>
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>Dashboard</h2>
-    <button class="nav-btn active" data-col="personal_nutrition_plan" data-type="normal">🥗 Personal Nutrition Plan</button>
+    <button class="nav-btn active" data-col="contacts" data-type="contact">📩 Messages</button>
+    <button class="nav-btn" data-col="personal_nutrition_plan" data-type="normal">🥗 Personal Nutrition Plan</button>
     <button class="nav-btn" data-col="personal_workout_plan" data-type="normal">🏋️ Personal Workout Plan</button>
     <button class="nav-btn" data-col="ultimate_personal_coaching" data-type="normal">🔥 Ultimate Personal Coaching</button>
-    <button class="nav-btn" data-col="contacts" data-type="contact">📩 Messages</button>
     <button class="nav-btn" data-col="permissions" data-type="permissions">🛠️ Permissions</button>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
@@ -228,50 +273,16 @@
   <div class="main">
     <!-- Stats -->
     <div class="stats-grid">
-      <div class="stat-card" id="nutritionCount">🥗Nutrition Plan: 0</div>
-      <div class="stat-card" id="workoutCount">🏋️Personal Workouts: 0</div>
-      <div class="stat-card" id="coachingCount">🔥Ultimate Coaching: 0</div>
-      <div class="stat-card" id="contactsCount">📩 Messages: 0</div>
+      <div class="stat-card" id="nutritionCount">🥗 Nutrition Plan: <span>0</span></div>
+      <div class="stat-card" id="workoutCount">🏋️ Personal Workouts: <span>0</span></div>
+      <div class="stat-card" id="coachingCount">🔥 Ultimate Coaching: <span>0</span></div>
+      <div class="stat-card" id="contactsCount">📩 Messages: <span>0</span></div>
     </div>
 
     <!-- Search Bar -->
-<div class="search-bar">
-  <input type="text" id="searchInput" placeholder="Search by Email, Phone, or Payment ID...">
-  <style>
-    /* Search Bar Container */
-.search-bar {
-  width: 100%;
-  margin-bottom: 15px;
-  display: flex;
-  justify-content: center;
-}
-
-/* Search Input */
-#searchInput {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  font-size: 16px;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-#searchInput:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-}
-
-/* Placeholder Style */
-#searchInput::placeholder {
-  color: #aaa;
-  font-style: italic;
-}
-
-  </style>
-</div>
-     
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search by Email, Phone, or Payment ID...">
+    </div>
 
     <h3 id="collectionTitle">🥗 Personal Nutrition Plan</h3>
     <table>
@@ -291,8 +302,7 @@
     </div>
   </div>
 
- <!-- JS -->
-<script type="module" src="./js/dashboard.js"></script>
-
+  <!-- JS -->
+  <script type="module" src="./js/dashboard.js"></script>
 </body>
 </html>

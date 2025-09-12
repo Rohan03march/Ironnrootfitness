@@ -196,6 +196,10 @@ searchInput.addEventListener("input", () => {
 
   let visible = 0;
 
+  // Remove old "No match found" row if it exists
+  const noMatchRow = dataTable.querySelector(".no-match");
+  if (noMatchRow) noMatchRow.remove();
+
   rows.forEach(row => {
     const cells = row.querySelectorAll("td");
     if (cells.length === 0) return;
@@ -212,8 +216,11 @@ searchInput.addEventListener("input", () => {
     }
   });
 
-  // If no row is visible → show "No match found"
+  // If no row is visible → append a "No match found" row
   if (visible === 0) {
-    dataTable.innerHTML = `<tr><td colspan="10" style="text-align:center;">No match found</td></tr>`;
+    const tr = document.createElement("tr");
+    tr.classList.add("no-match");
+    tr.innerHTML = `<td colspan="10" style="text-align:center;">No match found</td>`;
+    dataTable.appendChild(tr);
   }
 });

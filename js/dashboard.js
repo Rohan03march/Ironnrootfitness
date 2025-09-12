@@ -194,20 +194,26 @@ searchInput.addEventListener("input", () => {
   const filter = searchInput.value.toLowerCase();
   const rows = dataTable.querySelectorAll("tr");
 
+  let visible = 0;
+
   rows.forEach(row => {
     const cells = row.querySelectorAll("td");
     if (cells.length === 0) return;
 
-    // Collect all text from the row
     const rowText = Array.from(cells)
-      .map(cell => cell.textContent.toLowerCase())
+      .map(cell => cell.textContent.toLowerCase().trim())
       .join(" ");
 
-    // Check if filter is inside any cell
     if (rowText.includes(filter)) {
       row.style.display = "";
+      visible++;
     } else {
       row.style.display = "none";
     }
   });
+
+  // If no row is visible → show "No match found"
+  if (visible === 0) {
+    dataTable.innerHTML = `<tr><td colspan="10" style="text-align:center;">No match found</td></tr>`;
+  }
 });

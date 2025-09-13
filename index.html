@@ -527,40 +527,44 @@ logoutBtn.addEventListener("click", async () => {
 </style>
 
 
-    <!-- Hero Section Begin -->
-    <section class="hero-section">
-        <div class="hero-items owl-carousel">
-            <div class="single-hero-item set-bg" data-setbg="img/hero-slider/image6.jpeg">
-                <style>
+   <!-- Hero Section Begin -->
+<section class="hero-section">
+    <div class="hero-items owl-carousel">
+        <div class="single-hero-item">
+            <style>
+                .single-hero-item {
+                    background-image: url("img/hero-slider/image6.jpeg");
+                    background-size: 105%;   /* ensures the entire image fits */
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    height: 100vh;             /* full viewport height */
+                }
+
+                /* Mobile: use a different image */
+                @media (max-width: 768px) {
                     .single-hero-item {
-    background-size: 105%;   /* ensures the entire image fits */
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;             /* full viewport height */
-}
-/* Mobile: keep original size */
-@media (max-width: 768px) {
-  .single-hero-item {
-    background-size: cover; /* fills container on mobile */
-    background-position: center;
-  }
-}
-                </style>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="hero-text">
-                                <h2>Join Us Now</h2>
-                                <h1>FITNESS & SPORT</h1>
-                                <a href="#about" class="primary-btn">Read More</a>
-                            </div>
+                        background-image: url("img/hero-slider/headerImagePhone.jpeg");
+                        background-size: cover; /* fills container on mobile */
+                        background-position: center;
+                    }
+                }
+            </style>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="hero-text">
+                            <h2>Join Us Now</h2>
+                            <h1>FITNESS & SPORT</h1>
+                            <a href="#about" class="primary-btn">Read More</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Hero End -->
+    </div>
+</section>
+<!-- Hero End -->
+
 
     <!-- Feature Section Begin -->
     <!-- <section class="feature-section">

@@ -27,7 +27,10 @@ onAuthStateChanged(auth, user => currentUser = user);
 
 form.addEventListener('submit', async function(e) {
   e.preventDefault();
-  if(!form.checkValidity()) return alert('Please fill all required fields correctly.');
+  if (!form.checkValidity()) {
+    alert('⚠️ Please fill all required fields correctly.');
+    return;
+  }
 
   submitPopup.style.display = 'flex';
 
@@ -35,24 +38,25 @@ form.addEventListener('submit', async function(e) {
     // 1️⃣ Collect form data
     const formData = {};
     Array.from(form.elements).forEach(el => { if(el.name) formData[el.name] = el.value || null; });
-    formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
+
+    // safer guest ID
+    formData.userId = currentUser ? currentUser.uid : "guest_" + crypto.randomUUID();
     formData.createdAt = new Date().toISOString();
-    formData.status = "pending";
     formData.plan = "Ultimate Personal Coaching";
 
     const docRef = doc(db, "ultimate_personal_coaching", formData.userId + "_" + Date.now());
 
-    // 2️⃣ Save initial pending record
-    await setDoc(docRef, formData);
+    // 2️⃣ Save initial record with "created"
+    await setDoc(docRef, { ...formData, status: "created" });
 
-    // 3️⃣ Fetch plan amount from Firestore
+    // 3️⃣ Fetch plan amount
     const planRef = doc(db, "plans", "ultimate_personal_coaching");
     const planSnap = await getDoc(planRef);
-    if (!planSnap.exists()) throw new Error("Plan not found");
+    if (!planSnap.exists()) throw new Error("Plan not found in Firestore");
     const planData = planSnap.data();
-    const amount = planData.amount; // Amount in INR
+    const amount = planData.amount;
 
-    // 4️⃣ Fetch live Razorpay key
+    // 4️⃣ Get Razorpay key
     const keyResponse = await fetch("/.netlify/functions/razorpay-key");
     const { key } = await keyResponse.json();
 
@@ -65,7 +69,10 @@ form.addEventListener('submit', async function(e) {
     const orderData = await orderResponse.json();
     if (!orderData.id) throw new Error("Failed to create Razorpay order");
 
-    // 6️⃣ Razorpay Checkout options
+    // 6️⃣ Mark as "pending"
+    await setDoc(docRef, { status: "pending", orderId: orderData.id }, { merge: true });
+
+    // 7️⃣ Razorpay Checkout
     const options = {
       key: key,
       amount: orderData.amount,
@@ -82,7 +89,7 @@ form.addEventListener('submit', async function(e) {
       theme: { color: "#ff4d4d" },
       handler: async function(response) {
         try {
-          // 7️⃣ Verify payment signature
+          // 8️⃣ Verify payment
           const verifyRes = await fetch("/.netlify/functions/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -95,32 +102,38 @@ form.addEventListener('submit', async function(e) {
           const verifyData = await verifyRes.json();
           if (!verifyData.verified) throw new Error("Payment verification failed");
 
-          // 8️⃣ Only after verification, update Firestore
+          // 9️⃣ Update success
           await setDoc(docRef, {
-            ...formData,
             status: "success",
             paymentId: response.razorpay_payment_id,
-            amount: amount
-          });
+            amount: amount,
+            successAt: new Date().toISOString()
+          }, { merge: true });
 
           submitPopup.style.display = 'none';
-          alert('✅ Your form is submitted. We will contact you within 24 hours.');
+          alert('✅ Your Ultimate Coaching request has been submitted successfully. We will contact you within 24 hours.');
           form.reset();
 
         } catch(err) {
           console.error(err);
+          await setDoc(docRef, {
+            status: "failed",
+            error: err.message,
+            failedAt: new Date().toISOString()
+          }, { merge: true });
+
           submitPopup.style.display = 'none';
-          alert("❌ Payment verification failed. Contact support.");
+          alert("❌ Payment verification failed. Please contact support.");
         }
       },
       modal: {
         ondismiss: async function() {
           try {
             await setDoc(docRef, {
-              ...formData,
               status: "failed",
-              amount: amount
-            });
+              error: "User dismissed checkout",
+              failedAt: new Date().toISOString()
+            }, { merge: true });
           } catch(err) { console.error(err); }
           submitPopup.style.display = 'none';
           alert("❌ Payment was cancelled.");
@@ -133,7 +146,13 @@ form.addEventListener('submit', async function(e) {
 
   } catch(err) {
     console.error(err);
+    await setDoc(doc(db, "errors", "coaching_" + Date.now()), {
+      error: err.message,
+      at: new Date().toISOString()
+    });
+
     submitPopup.style.display = 'none';
     alert("❌ Payment initialization failed: " + err.message);
   }
 });
+

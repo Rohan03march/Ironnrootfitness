@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Success</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f9f9f9;
+      padding: 50px;
+      color: #333;
+    }
+
+    /* Loader circle */
+    .loader {
+      border: 6px solid #eee;
+      border-top: 6px solid #4CAF50;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      animation: spin 1s linear infinite;
+      margin: 40px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Success tick */
+    .tick {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #4CAF50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px auto;
+      animation: pop 0.5s ease forwards;
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    .tick:after {
+      content: '✔';
+      font-size: 70px;
+      color: white;
+    }
+    @keyframes pop {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    h1 { margin-top: 10px; font-size: 24px; }
+    #status {
+      font-weight: bold;
+      font-size: 18px;
+      color: #555;
+      transition: color 0.5s ease, opacity 0.5s ease;
+    }
+    #status.success { color: #4CAF50; }
+    #status.failed { color: #f44336; }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <div id="tick" class="tick" style="display:none;"></div>
+
+  <h1 id="headline">Processing Payment…</h1>
+  <p>Thank you for purchasing <span id="planName"></span></p>
+  <p>Your Payment ID: <strong id="paymentId"></strong></p>
+  <p>Status: <span id="status">Verifying…</span></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+      authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+      projectId: "ironnrootfitness-5156e",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Get query params
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get("paymentId");
+    const plan = params.get("plan");
+
+    document.getElementById("paymentId").innerText = paymentId || "Unknown";
+    document.getElementById("planName").innerText = plan || "your plan";
+
+    // Live tracking from Firestore
+    const q = query(
+      collection(db, "personal_nutrition_plan"),
+      where("paymentId", "==", paymentId)
+    );
+
+    onSnapshot(q, (snapshot) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const statusEl = document.getElementById("status");
+        const headline = document.getElementById("headline");
+        const loader = document.getElementById("loader");
+        const tick = document.getElementById("tick");
+
+        if (data.status === "success") {
+          statusEl.innerText = "Payment Successful 🎉";
+          statusEl.className = "success";
+          headline.innerText = "Payment Successful!";
+          loader.style.display = "none";
+          tick.style.display = "flex";
+        } else if (data.status === "failed") {
+          statusEl.innerText = "Payment Failed ❌";
+          statusEl.className = "failed";
+          headline.innerText = "Payment Failed";
+          loader.style.display = "none";
+        } else {
+          statusEl.innerText = "Processing…";
+          statusEl.className = "";
+          headline.innerText = "Processing Payment…";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

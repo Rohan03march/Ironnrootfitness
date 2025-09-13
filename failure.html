@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Failed</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background: #fff0f0; padding: 50px; }
+    .cross {
+      width: 120px; height: 120px; border-radius: 50%; background: #f44336;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+    }
+    .cross:after { content: '✖'; font-size: 70px; color: white; }
+    h1 { color: #f44336; }
+  </style>
+</head>
+<body>
+  <div class="cross"></div>
+  <h1>Payment Failed ❌</h1>
+  <p>Unfortunately, your payment for <span id="planName"></span> did not go through.</p>
+  <p><a href="/">Try Again</a></p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById("planName").innerText = params.get("plan") || "your plan";
+  </script>
+</body>
+</html>

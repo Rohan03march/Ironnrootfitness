@@ -78,10 +78,13 @@
 /* Mobile background */
 @media (max-width: 768px) {
     .breadcrumb-section {
-        background-image: url("img/hero-slider/backImagephone.jpeg");
-        height: 700px;
-        padding: 80px 0; /* optional: adjust height for mobile */
-    }
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                      url("img/hero-slider/backImagephone.jpeg");
+    height: 700px;
+    padding: 80px 0; /* optional: adjust height for mobile */
+    background-size: cover;
+    background-position: center;
+}
     .breadcrumb-section h2 {
         font-size: 60px;
     }

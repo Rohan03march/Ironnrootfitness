@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Transaction History</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #f1f1f1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 8px 16px;
+      background: #ff4d4d;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.2s ease;
+    }
+    .back-btn:hover {
+      background: #ff1a1a;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #ff4d4d;
+    }
+    .transactions {
+      display: grid;
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .card {
+      background: #1f1f1f;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+    }
+    .plan {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #ff8080;
+    }
+    .info {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #ccc;
+    }
+    .status.success { color: #4CAF50; font-weight: bold; }
+    .status.failed { color: #f44336; font-weight: bold; }
+    .empty {
+      text-align: center;
+      color: #999;
+      font-size: 18px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back button -->
+  <a href="index.html" class="back-btn">&larr; Back</a>
+
+  <h1>Your Transactions</h1>
+  <div id="transactions" class="transactions">
+    <p class="empty">Loading transactions...</p>
+  </div>
+
+  <!-- load script at the end to avoid null errors -->
+  <script type="module" src="js/transaction-history.js"></script>
+</body>
+</html>

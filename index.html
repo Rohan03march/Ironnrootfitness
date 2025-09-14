@@ -53,7 +53,8 @@
 <div class="user-dropdown">
   <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
   <div class="dropdown-menu" id="dropdownMenu">
-    <div class="user-name" id="userName">Guest</div>
+    <div class="user-name" id="userName"></div>
+    <a id="transactionHistory" href="transactionHistory.html" style="display: none;">Transaction History</a>
     <hr>
     <a href="./login.html" id="loginBtn">Login</a>
     <a href="#" id="logoutBtn" style="display:none;">Logout</a>
@@ -83,6 +84,7 @@ const dropdown = document.getElementById("dropdownMenu");
 const userName = document.getElementById("userName");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const transactionHistory = document.getElementById("transactionHistory");
 
 // Toggle dropdown
 avatar.addEventListener("click", (e) => {
@@ -102,7 +104,7 @@ onAuthStateChanged(auth, async (user) => {
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        userName.textContent = docSnap.data().fullName; // Use fullName from Firestore
+        userName.textContent = docSnap.data().fullName; // from Firestore
       } else {
         userName.textContent = user.email; // fallback
       }
@@ -113,10 +115,12 @@ onAuthStateChanged(auth, async (user) => {
 
     loginBtn.style.display = "none";
     logoutBtn.style.display = "block";
+    transactionHistory.style.display = "block"; // show when logged in
   } else {
-    userName.textContent = "Guest";
+    userName.textContent = "";
     loginBtn.style.display = "block";
     logoutBtn.style.display = "none";
+    transactionHistory.style.display = "none"; // hide when logged out
   }
 });
 
@@ -127,6 +131,7 @@ logoutBtn.addEventListener("click", async () => {
   alert("You have been logged out!");
 });
 </script>
+
 
   <style>
     /* ==========================

@@ -3,30 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="img/favicon.png">
-  <title>Payment Success</title>
+  <title>Payment Status</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      background: #f9f9f9;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #e0e0e0;
       padding: 50px;
-      color: #333;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-top: 15px;
+      background: linear-gradient(90deg, #00ff99, #00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 8px #00ff99; }
+      to   { text-shadow: 0 0 16px #00ccff; }
+    }
+
+    p {
+      font-size: 18px;
+      margin: 8px 0;
     }
 
     .contact {
       font-size: 20px;
       font-weight: bold;
+      margin-top: 15px;
+      color: #bbb;
     }
 
     /* Loader circle */
     .loader {
-      border: 6px solid #eee;
-      border-top: 6px solid #4CAF50;
+      border: 6px solid rgba(255,255,255,0.1);
+      border-top: 6px solid #00ff99;
       border-radius: 50%;
       width: 100px;
       height: 100px;
       animation: spin 1s linear infinite;
       margin: 40px auto;
+      box-shadow: 0 0 20px rgba(0,255,153,0.4);
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -38,7 +65,7 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: #4CAF50;
+      background: #00ff99;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -46,25 +73,26 @@
       animation: pop 0.5s ease forwards;
       opacity: 0;
       transform: scale(0.5);
+      box-shadow: 0 0 25px rgba(0,255,153,0.5);
     }
     .tick:after {
       content: '✔';
       font-size: 70px;
-      color: white;
+      color: #0d0d0d;
+      font-weight: bold;
     }
     @keyframes pop {
       to { opacity: 1; transform: scale(1); }
     }
 
-    h1 { margin-top: 10px; font-size: 24px; }
     #status {
       font-weight: bold;
-      font-size: 18px;
-      color: #555;
+      font-size: 20px;
+      margin-top: 10px;
       transition: color 0.5s ease, opacity 0.5s ease;
     }
-    #status.success { color: #4CAF50; }
-    #status.failed { color: #f44336; }
+    #status.success { color: #00ff99; }
+    #status.failed { color: #ff4444; }
   </style>
 </head>
 <body>
@@ -74,8 +102,28 @@
   <h1 id="headline">Processing Payment…</h1>
   <p>Thank you for purchasing <span id="planName"></span></p>
   <p>Your Payment ID: <strong id="paymentId"></strong></p>
-  <p class="contact">We will contact you within 24Hours</p>
+  <p class="contact">We will contact you within 24 Hours</p>
   <p><span id="status">Verifying…</span></p>
+   <a href="transactionHistory.html" class="transaction-btn">View Transaction</a>
+
+<style>
+.transaction-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.transaction-btn:hover {
+  background-color: #ff1a1a;
+  transform: translateY(-2px);
+}
+</style>
+
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
@@ -93,42 +141,69 @@
     // Get query params
     const params = new URLSearchParams(window.location.search);
     const paymentId = params.get("paymentId");
-    const plan = params.get("plan");
-
     document.getElementById("paymentId").innerText = paymentId || "Unknown";
-    document.getElementById("planName").innerText = plan || "your plan";
 
-    // Live tracking from Firestore
-    const q = query(
-      collection(db, "personal_nutrition_plan"),
-      where("paymentId", "==", paymentId)
-    );
+    const planNames = {
+      personal_nutrition_plan: "Personal Nutrition Plan",
+      personal_workout_plan: "Personal Workout Plan",
+      ultimate_personal_coaching: "Ultimate Personal Coaching"
+    };
 
-    onSnapshot(q, (snapshot) => {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const statusEl = document.getElementById("status");
-        const headline = document.getElementById("headline");
-        const loader = document.getElementById("loader");
-        const tick = document.getElementById("tick");
+    const collectionsToCheck = [
+      "personal_nutrition_plan",
+      "personal_workout_plan",
+      "ultimate_personal_coaching"
+    ];
 
-        if (data.status === "success") {
-          statusEl.innerText = "Payment Successful 🎉";
-          statusEl.className = "success";
-          headline.innerText = "Payment Successful!";
-          loader.style.display = "none";
-          tick.style.display = "flex";
-        } else if (data.status === "failed") {
-          statusEl.innerText = "Payment Failed ❌";
-          statusEl.className = "failed";
-          headline.innerText = "Payment Failed";
-          loader.style.display = "none";
-        } else {
-          statusEl.innerText = "Processing…";
-          statusEl.className = "";
-          headline.innerText = "Processing Payment…";
-        }
+    let found = false;
+    let unsubscribeFns = [];
+
+    collectionsToCheck.forEach(col => {
+      const q = query(
+        collection(db, col),
+        where("paymentId", "==", paymentId)
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        if (found) return;
+
+        snapshot.forEach((doc) => {
+          if (found) return;
+          found = true;
+
+          const data = doc.data();
+          console.log("✅ Found payment in", col, data);
+
+          const statusEl = document.getElementById("status");
+          const headline = document.getElementById("headline");
+          const loader = document.getElementById("loader");
+          const tick = document.getElementById("tick");
+          const planNameEl = document.getElementById("planName");
+
+          planNameEl.innerText = planNames[col] || "Your Plan";
+
+          if (data.status === "success") {
+            statusEl.innerText = "Payment Successful";
+            statusEl.className = "success";
+            headline.innerText = "Payment Successful!";
+            loader.style.display = "none";
+            tick.style.display = "flex";
+          } else if (data.status === "failed") {
+            statusEl.innerText = "Payment Failed ❌";
+            statusEl.className = "failed";
+            headline.innerText = "Payment Failed";
+            loader.style.display = "none";
+          } else {
+            statusEl.innerText = "Processing…";
+            statusEl.className = "";
+            headline.innerText = "Processing Payment…";
+          }
+
+          unsubscribeFns.forEach(fn => fn());
+        });
       });
+
+      unsubscribeFns.push(unsubscribe);
     });
   </script>
 </body>

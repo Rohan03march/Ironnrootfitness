@@ -13,6 +13,11 @@
       color: #333;
     }
 
+    .contact {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
     /* Loader circle */
     .loader {
       border: 6px solid #eee;
@@ -69,7 +74,8 @@
   <h1 id="headline">Processing Payment…</h1>
   <p>Thank you for purchasing <span id="planName"></span></p>
   <p>Your Payment ID: <strong id="paymentId"></strong></p>
-  <p>Status: <span id="status">Verifying…</span></p>
+  <p class="contact">We will contact you within 24Hours</p>
+  <p><span id="status">Verifying…</span></p>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";

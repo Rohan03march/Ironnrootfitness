@@ -71,7 +71,9 @@
   <div class="cross"></div>
   <h1>Payment Failed ❌</h1>
   <p>Unfortunately, your payment for <span id="planName"></span> did not go through.</p>
-  <a href="/" class="button">🔄 Try Again</a>
+  <!-- Back to previous page -->
+<a href="javascript:void(0);" class="button" onclick="history.back()">🔄 Try Again</a>
+
 
   <script>
     const params = new URLSearchParams(window.location.search);

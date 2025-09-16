@@ -8,20 +8,18 @@ import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-// Import Firestore
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
-    authDomain: "ironnrootfitness-5156e.firebaseapp.com",
-    projectId: "ironnrootfitness-5156e",
-    storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
-    messagingSenderId: "508351386284",
-    appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
-    measurementId: "G-S6235MZEPC"
-  };
-
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+  authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+  projectId: "ironnrootfitness-5156e",
+  storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
+  messagingSenderId: "508351386284",
+  appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
+  measurementId: "G-S6235MZEPC"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -59,11 +57,12 @@ signUpForm.addEventListener("submit", async (e) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // 2️⃣ Add user to Firestore
+    // 2️⃣ Add user to Firestore with allowUser defaulting to true
     await setDoc(doc(db, "users", user.uid), {
       fullName: fullName,
       email: email,
       uid: user.uid,
+      allowUser: true,            // ✅ default true
       createdAt: new Date().toISOString()
     });
 
@@ -77,16 +76,23 @@ signUpForm.addEventListener("submit", async (e) => {
 // 🔹 Sign In
 signInForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = document.getElementById("signinEmail").value;  // ⚠ make sure the ID matches your HTML
+  const email = document.getElementById("signinEmail").value;
   const password = document.getElementById("signinPassword").value;
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    showPopup("Signed in successfully!");
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-    // Redirect after 1 second (so popup is visible briefly)
+    // ✅ Check allowUser in Firestore
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (!userDoc.exists()) throw new Error("User record not found!");
+
+    const userData = userDoc.data();
+    if (!userData.allowUser) throw new Error("Your account is not allowed to login.");
+
+    showPopup("Signed in successfully!");
     setTimeout(() => {
-      window.location.href = "index.html"; 
+      window.location.href = "index.html"; // Redirect after success
     }, 1000);
 
     signInForm.reset();
@@ -94,7 +100,6 @@ signInForm.addEventListener("submit", async (e) => {
     showPopup(error.message);
   }
 });
-
 
 // 🔹 Forgot Password
 forgotPassword.addEventListener("click", async () => {
@@ -109,5 +114,14 @@ forgotPassword.addEventListener("click", async () => {
     showPopup("Password reset email sent!");
   } catch (error) {
     showPopup(error.message);
+  }
+});
+
+// 🔹 Optional: Auto-track logged-in user (for dashboard protection)
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User logged in:", user.uid);
+  } else {
+    console.log("No user logged in");
   }
 });

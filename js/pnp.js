@@ -228,7 +228,6 @@ form.addEventListener('submit', async function(e) {
       currency: "INR",
       name: "IronnRoot Fitness",
       description: "Test Mode - Personal Nutrition Plan",
-      offer_id: "offer_RIC0zk7e73bDns",
       handler: async function (response) {
         await setDoc(docRef, {
           ...formData,

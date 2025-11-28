@@ -14,7 +14,7 @@ exports.handler = async function(event, context) {
       amount,
       currency,
       payment_capture: 1,
-      offer_id: "offer_Rl5QpKTOWrYBkH",
+      //offer_id: "",  on in live mode...
     });
 
     return {

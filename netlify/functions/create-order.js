@@ -14,7 +14,7 @@ exports.handler = async function(event, context) {
       amount,
       currency,
       payment_capture: 1,
-      offer_id: "offer_RIC0zk7e73bDns",
+      offer_id: "offer_Rl567Itn8G7vyT",
     });
 
     return {

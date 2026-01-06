@@ -471,6 +471,50 @@ a[href^="mailto:"]:hover {
 }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<!--Email.js-->
+<script>
+  // Initialize EmailJS
+  (function () {
+    emailjs.init("bQeh4P_XaN0fbDxXr"); // 🔴 replace
+  })();
+
+  const form = document.getElementById("contactForm");
+  const loader = document.getElementById("loader");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    loader.style.display = "block";
+
+    const params = {
+      name: document.getElementById("contactName").value,
+      email: document.getElementById("contactEmail").value,
+      phone: document.getElementById("contactPhone").value,
+      message: document.getElementById("contactMessage").value
+    };
+
+    emailjs
+      .send(
+        "service_zicpsm4",    // 🔴 replace
+        "template_xlkv5xc",   // 🔴 replace
+        params
+      )
+      .then(() => {
+        loader.style.display = "none";
+        alert("Message sent successfully ✅");
+        form.reset();
+      })
+      .catch((error) => {
+        loader.style.display = "none";
+        alert("Failed to send message ❌");
+        console.error("EmailJS Error:", error);
+      });
+  });
+</script>
+
+
     <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -481,7 +525,7 @@ a[href^="mailto:"]:hover {
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/masonry.pkgd.min.js"></script>
     <script src="js/main.js"></script>
-    <script type="module" src="./js/contact.js"></script>
+    <!-- <script type="module" src="./js/contact.js"></script> -->
 
     <!-- No Inspect -->
 
@@ -506,6 +550,8 @@ document.addEventListener("keydown", function (event) {
   }
 });
 </script>
+
+
 
 </body>
 

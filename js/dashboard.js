@@ -35,7 +35,7 @@ function initializeCounts() {
   nutritionCount.textContent = `🥗 Personal Nutrition: 0`;
   workoutCount.textContent = `🏋️ Personal Workouts: 0`;
   coachingCount.textContent = `🔥 Ultimate Coaching: 0`;
-  contactsCount.textContent = `📩 Messages: 0`;
+  // contactsCount.textContent = `📩 Messages: 0`;
 }
 initializeCounts();
 
@@ -48,7 +48,7 @@ onAuthStateChanged(auth, user => {
     loadData("personal_nutrition_plan","🥗 Personal Nutrition Plan","normal");
     loadData("personal_workout_plan","🏋️ Personal Workout Plan","normal");
     loadData("ultimate_personal_coaching","🔥 Ultimate Personal Coaching","normal");
-    loadData("contacts","📩 Messages","contact");
+    // loadData("contacts","📩 Messages","contact");
   }
 });
 
@@ -71,7 +71,7 @@ function updateCount(colName, count){
     case "personal_nutrition_plan": nutritionCount.textContent=`🥗 Personal Nutrition: ${count}`; break;
     case "personal_workout_plan": workoutCount.textContent=`🏋️ Personal Workouts: ${count}`; break;
     case "ultimate_personal_coaching": coachingCount.textContent=`🔥 Ultimate Coaching: ${count}`; break;
-    case "contacts": contactsCount.textContent=`📩 Messages: ${count}`; break;
+    // case "contacts": contactsCount.textContent=`📩 Messages: ${count}`; break;
   }
 }
 

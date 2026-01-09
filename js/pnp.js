@@ -223,7 +223,7 @@ form.addEventListener('submit', async function(e) {
 
     // Razorpay Checkout
     const options = {
-      key: "rzp_test_RFU2NSOugfWUne", // test key
+      key: "rzp_test_S1pV5yI8vZLNi9", // test key
       amount: amount * 100,
       currency: "INR",
       name: "IronnRoot Fitness",

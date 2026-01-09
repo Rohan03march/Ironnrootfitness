@@ -140,22 +140,35 @@ a[href^="mailto:"]:hover {
 
   <!-- Loader -->
   <div id="loader" class="loader" style="display:none;"></div>
+  <!-- Success message -->
+<p id="successMessage" class="success-message" style="display:none;">
+  Thank you for your enquiry, we will get back to you as soon as possible.
+</p>
+
 </div>
 
 <style>
 /* Loader Style */
 .loader {
-  border: 5px solid #f3f3f3; /* Light grey */
-  border-top: 5px solid #ff4d4d; /* Red */
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
   margin: 15px auto;
+  width: 36px;
+  height: 36px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #ff5722; /* match your theme */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Success message */
+.success-message {
+  margin-top: 15px;
+  text-align: center;
+  color: #2e7d32;
+  font-weight: 500;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
+ 0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 </style>
@@ -475,44 +488,42 @@ a[href^="mailto:"]:hover {
 
 <!--Email.js-->
 <script>
-  // Initialize EmailJS
   (function () {
-    emailjs.init("bQeh4P_XaN0fbDxXr"); // 🔴 replace
+    emailjs.init("bQeh4P_XaN0fbDxXr"); // your public key
   })();
 
   const form = document.getElementById("contactForm");
   const loader = document.getElementById("loader");
+  const successMessage = document.getElementById("successMessage");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
     loader.style.display = "block";
+    successMessage.style.display = "none";
 
     const params = {
       name: document.getElementById("contactName").value,
       email: document.getElementById("contactEmail").value,
       phone: document.getElementById("contactPhone").value,
-      message: document.getElementById("contactMessage").value
+      message: document.getElementById("contactMessage").value,
     };
 
     emailjs
-      .send(
-        "service_zicpsm4",    // 🔴 replace
-        "template_xlkv5xc",   // 🔴 replace
-        params
-      )
+      .send("service_zicpsm4", "template_xlkv5xc", params)
       .then(() => {
         loader.style.display = "none";
-        alert("Message sent successfully ✅");
+        successMessage.style.display = "block";
         form.reset();
       })
       .catch((error) => {
         loader.style.display = "none";
-        alert("Failed to send message ❌");
         console.error("EmailJS Error:", error);
+        alert("Something went wrong. Please try again.");
       });
   });
 </script>
+
 
 
     <!-- Js Plugins -->

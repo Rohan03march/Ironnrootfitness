@@ -83,13 +83,14 @@ onAuthStateChanged(auth, async (user) => {
       const baseAmount = tx.amount || 0;
 
       // Convenience charges 2%
-      const convenience = baseAmount * 0.02;
+      // const convenience = baseAmount * 0.02;
 
       // GST 18% on convenience
-      const gst = convenience * 0.18;
+      // const gst = convenience * 0.18;
 
       // Total amount
-      const total = baseAmount + convenience + gst;
+      const total = baseAmount;
+      // + convenience + gst
       return `
       <div class="card">
         <div class="plan">${tx.plan}</div>

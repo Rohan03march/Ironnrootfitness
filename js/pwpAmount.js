@@ -25,7 +25,7 @@ async function fetchPlanPrice() {
 
     if(planSnap.exists()) {
       const planData = planSnap.data();
-      priceDiv.textContent = `₹${planData.amount} ($${planData.amountUSD} USD)`;
+      priceDiv.textContent = `₹${planData.amount}`;
     } else {
       priceDiv.textContent = "Price not available";
     }

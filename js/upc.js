@@ -218,9 +218,9 @@ form.addEventListener("submit", async function (e) {
   try {
     /* ================= COLLECT FORM DATA ================= */
     const formData = {};
-    Array.from(form.elements).forEach(el => {
-      if (el.name) formData[el.name] = el.value || null;
-    });
+    // Array.from(form.elements).forEach(el => {
+    //   if (el.name) formData[el.name] = el.value || null;
+    // });
 
     formData.userId = currentUser.uid;
     formData.createdAt = new Date().toISOString();

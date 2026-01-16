@@ -1,4 +1,4 @@
-// Import Firebase SDK
+// ================= FIREBASE IMPORTS =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
   getAuth,
@@ -14,7 +14,7 @@ import {
   getDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-/* ================= FIREBASE CONFIG ================= */
+// ================= FIREBASE CONFIG =================
 const firebaseConfig = {
   apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
   authDomain: "ironnrootfitness-5156e.firebaseapp.com",
@@ -25,18 +25,18 @@ const firebaseConfig = {
   measurementId: "G-S6235MZEPC",
 };
 
-// Initialize Firebase
+// ================= INIT =================
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ================= ELEMENTS ================= */
+// ================= ELEMENTS =================
 const signUpForm = document.getElementById("signupForm");
 const signInForm = document.getElementById("signinForm");
 const forgotPassword = document.getElementById("forgotPassword");
 const popup = document.getElementById("popup");
 
-/* ================= HELPERS ================= */
+// ================= HELPERS =================
 function showPopup(message) {
   popup.textContent = message;
   popup.classList.add("show");
@@ -61,22 +61,44 @@ function redirectAfterAuth() {
   }
 }
 
-/* ================= SIGN UP ================= */
+// ================= SIGN UP =================
 signUpForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const fullName = document.getElementById("signupName").value.trim();
   const email = document.getElementById("signupEmail").value.trim();
+  const phone = document.getElementById("signupPhone").value.trim();
   const password = document.getElementById("signupPassword").value;
   const confirm = document.getElementById("signupConfirm").value;
 
+  // 🔒 VALIDATIONS
+  if (!fullName) {
+    showPopup("Enter your full name");
+    return;
+  }
+
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    showPopup("Enter a valid email address");
+    return;
+  }
+
+  if (!/^\+?\d{10,15}$/.test(phone)) {
+    showPopup("Enter a valid phone number");
+    return;
+  }
+
+  if (password.length < 6) {
+    showPopup("Password must be at least 6 characters");
+    return;
+  }
+
   if (password !== confirm) {
-    showPopup("Passwords do not match!");
+    showPopup("Passwords do not match");
     return;
   }
 
   try {
-    // Create Auth User
+    // 🔐 CREATE AUTH USER
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -86,39 +108,45 @@ signUpForm.addEventListener("submit", async (e) => {
 
     const selectedPlan = sessionStorage.getItem("selectedPlan");
 
-    // Create Firestore User
+    // 🧾 SAVE USER IN FIRESTORE
     await setDoc(doc(db, "users", user.uid), {
+      uid: user.uid,
       fullName,
       email,
-      uid: user.uid,
+      phone,
       allowUser: true,
       createdAt: new Date().toISOString(),
 
-      // 🔥 OFFER LOGIC
+      // 🎁 OFFER LOGIC
       signupSource: selectedPlan ? "plan" : "home",
       offerEligible: !!selectedPlan,
       offerPlan: selectedPlan || null,
       offerUsed: false,
     });
 
-    showPopup("Account created successfully!");
+    showPopup("Account created successfully 🎉");
     signUpForm.reset();
 
-    // Redirect AFTER popup completes
     setTimeout(() => {
       redirectAfterAuth();
     }, 2600);
+
   } catch (error) {
     showPopup(error.message);
   }
 });
 
-/* ================= SIGN IN ================= */
+// ================= SIGN IN =================
 signInForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("signinEmail").value.trim();
   const password = document.getElementById("signinPassword").value;
+
+  if (!email || !password) {
+    showPopup("Enter email and password");
+    return;
+  }
 
   try {
     const userCredential = await signInWithEmailAndPassword(
@@ -128,45 +156,46 @@ signInForm.addEventListener("submit", async (e) => {
     );
     const user = userCredential.user;
 
-    // Check allowUser
+    // 🔍 CHECK ACCESS
     const userDoc = await getDoc(doc(db, "users", user.uid));
-    if (!userDoc.exists()) throw new Error("User record not found!");
+    if (!userDoc.exists()) throw new Error("User record not found");
 
-    const userData = userDoc.data();
-    if (!userData.allowUser)
-      throw new Error("Your account is not allowed to login.");
+    if (!userDoc.data().allowUser)
+      throw new Error("Your account is blocked");
 
-    showPopup("Signed in successfully!");
+    showPopup("Signed in successfully ✅");
     signInForm.reset();
 
     setTimeout(() => {
       redirectAfterAuth();
     }, 2600);
+
   } catch (error) {
     showPopup(error.message);
   }
 });
 
-/* ================= FORGOT PASSWORD ================= */
+// ================= FORGOT PASSWORD =================
 forgotPassword.addEventListener("click", async () => {
   const email = document.getElementById("signinEmail").value.trim();
+
   if (!email) {
-    showPopup("Enter your email above first!");
+    showPopup("Enter your email first");
     return;
   }
 
   try {
     await sendPasswordResetEmail(auth, email);
-    showPopup("Password reset email sent!");
+    showPopup("Password reset email sent 📧");
   } catch (error) {
     showPopup(error.message);
   }
 });
 
-/* ================= AUTH STATE LOG ================= */
+// ================= AUTH STATE LOG =================
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log("User logged in:", user.uid);
+    console.log("Logged in:", user.uid);
   } else {
     console.log("No user logged in");
   }

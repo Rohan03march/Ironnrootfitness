@@ -220,82 +220,14 @@
       </div>
       <div class="form-group">
   <label>Phone Number *</label>
-
-  <div class="phone-input">
-    <select id="countryCode" required>
-      <option value="+91" data-len="10" selected>🇮🇳 +91</option>
-      <option value="+1" data-len="10">🇺🇸 +1</option>
-      <option value="+44" data-len="10">🇬🇧 +44</option>
-      <option value="+61" data-len="9">🇦🇺 +61</option>
-      <option value="+971" data-len="9">🇦🇪 +971</option>
-    </select>
-
-    <input
-      type="tel"
-      id="signupPhone"
-      placeholder="Enter phone number"
-      required
-    />
-  </div>
+  <input
+    type="tel"
+    id="signupPhone"
+    placeholder="+91 9876543210"
+    pattern="^\+?\d{10,15}$"
+    required
+  >
 </div>
-
-<style>
-  /* Phone input wrapper */
-.phone-input {
-  display: flex;
-  gap: 10px;
-}
-
-/* Country code dropdown */
-.phone-input select {
-  width: 95px;
-  padding: 14px 10px;
-  border-radius: 10px;
-  border: 1px solid #444;
-  background: #111;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.phone-input select:focus {
-  outline: none;
-  border-color: #ff4d4d;
-  box-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
-}
-
-/* Phone number input */
-.phone-input input {
-  flex: 1;
-  padding: 14px 16px;
-  border-radius: 10px;
-  border: 1px solid #444;
-  background: #111;
-  color: #fff;
-  font-size: 15px;
-  transition: 0.3s;
-}
-
-.phone-input input::placeholder {
-  color: #777;
-}
-
-.phone-input input:focus {
-  outline: none;
-  border-color: #ff4d4d;
-  box-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  .phone-input select {
-    width: 85px;
-    font-size: 13px;
-  }
-}
-
-</style>
       <div class="form-group">
         <label>Password *</label>
         <input type="password" id="signupPassword" required>

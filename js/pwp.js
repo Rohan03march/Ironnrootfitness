@@ -64,8 +64,25 @@
 //     const planRef = doc(db, "plans", "personal_workout_plan");
 //     const planSnap = await getDoc(planRef);
 //     if (!planSnap.exists()) throw new Error("Plan not found in Firestore");
+//     // const planData = planSnap.data();
+//     // const amount = planData.amount;
 //     const planData = planSnap.data();
-//     const amount = planData.amount;
+// let amount = planData.amount;
+
+// // 🔥 APPLY WELCOME OFFER (10% OFF)
+// const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+// if (userSnap.exists()) {
+//   const u = userSnap.data();
+
+//   if (
+//     u.offerEligible === true &&
+//     u.offerUsed === false &&
+//     u.offerPlan === "personal_workout_plan"
+//   ) {
+//     amount = Math.round(amount * 0.9); // 10% OFF
+//   }
+// }
+
 
 //     // 4️⃣ Get Razorpay key
 //     const keyResponse = await fetch("/.netlify/functions/razorpay-key");
@@ -114,12 +131,39 @@
 //           if (!verifyData.verified) throw new Error("Payment verification failed");
 
 //           // 9️⃣ Update success
+//           // await setDoc(docRef, {
+//           //   status: "success",
+//           //   paymentId: response.razorpay_payment_id,
+//           //   amount: amount,
+//           //   successAt: new Date().toISOString()
+//           // }, { merge: true });
 //           await setDoc(docRef, {
-//             status: "success",
-//             paymentId: response.razorpay_payment_id,
-//             amount: amount,
-//             successAt: new Date().toISOString()
-//           }, { merge: true });
+//   status: "success",
+//   paymentId: response.razorpay_payment_id,
+//   amount: amount,
+//   successAt: new Date().toISOString()
+// }, { merge: true });
+
+// // 🔒 MARK OFFER AS USED (ONE-TIME)
+// const userRef = doc(db, "users", currentUser.uid);
+// const userSnap = await getDoc(userRef);
+
+// if (userSnap.exists()) {
+//   const u = userSnap.data();
+
+//   if (
+//     u.offerEligible === true &&
+//     u.offerUsed === false &&
+//     u.offerPlan === "personal_workout_plan"
+//   ) {
+//     await setDoc(
+//       userRef,
+//       { offerUsed: true },
+//       { merge: true }
+//     );
+//   }
+// }
+
 
 //           submitPopup.style.display = 'none';
 //           window.location.href = `/success.html?paymentId=${response.razorpay_payment_id}&plan=${formData.plan}`;
@@ -191,13 +235,28 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const form = document.getElementById('trainingForm');
+const form = document.getElementById("trainingForm");
 let currentUser = null;
-onAuthStateChanged(auth, user => currentUser = user);
 
-form.addEventListener('submit', async function(e) {
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+});
+
+// 🚫 HARD BLOCK if not logged in
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
-  if (!form.checkValidity()) return alert('Please fill all required fields correctly.');
+
+  if (!currentUser) {
+    alert("Please sign up or login to continue.");
+    sessionStorage.setItem("selectedPlan", "personal_workout_plan");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (!form.checkValidity()) {
+    alert("Please fill all required fields correctly.");
+    return;
+  }
 
   try {
     // Collect form data
@@ -205,49 +264,74 @@ form.addEventListener('submit', async function(e) {
     Array.from(form.elements).forEach(el => {
       if (el.name) formData[el.name] = el.value || null;
     });
-    formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
-    formData.createdAt = new Date().toISOString();
-    formData.plan = "Personal workout plan";
 
-    // Save created status
-    const docId = formData.userId + "_" + Date.now();
+    formData.userId = currentUser.uid;
+    formData.createdAt = new Date().toISOString();
+    formData.plan = "Personal Workout Plan";
+
+    // Create doc
+    const docId = `${currentUser.uid}_${Date.now()}`;
     const docRef = doc(db, "personal_workout_plan", docId);
     await setDoc(docRef, { ...formData, status: "created" });
 
-    // Fetch plan price
+    // Fetch base price
     const planRef = doc(db, "plans", "personal_workout_plan");
     const planSnap = await getDoc(planRef);
     if (!planSnap.exists()) throw new Error("Plan not found");
-    const planData = planSnap.data();
-    const amount = planData.amount;
 
-    // Razorpay Test Mode Checkout
+    let amount = planSnap.data().amount;
+
+    // 🔥 OFFER CHECK
+    const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+    if (userSnap.exists()) {
+      const u = userSnap.data();
+      if (
+        u.offerEligible &&
+        !u.offerUsed &&
+        u.offerPlan === "personal_workout_plan"
+      ) {
+        amount = Math.round(amount * 0.95); // 5% OFF
+      }
+    }
+
+    // Razorpay
     const options = {
-      key: "rzp_test_S1pV5yI8vZLNi9", // 👈 test key
+      key: "rzp_test_S1pV5yI8vZLNi9",
       amount: amount * 100,
       currency: "INR",
       name: "IronnRoot Fitness",
-      description: "Personal workout plan",
+      description: "Personal Workout Plan",
       handler: async function (response) {
-        // Update Firestore
+        // Save success
         await setDoc(docRef, {
           ...formData,
           status: "success",
-          paymentId: response.razorpay_payment_id || "test_" + Date.now(),
+          paymentId: response.razorpay_payment_id,
           amount: amount
         });
 
-        // Redirect to success page
-        window.location.href = `/success.html?paymentId=${response.razorpay_payment_id}&plan=${formData.plan}`;
+        // 🔒 MARK OFFER USED
+        await setDoc(
+          doc(db, "users", currentUser.uid),
+          { offerUsed: true },
+          { merge: true }
+        );
+
+        window.location.href =
+          `/success.html?paymentId=${response.razorpay_payment_id}&plan=${formData.plan}`;
       },
       modal: {
         ondismiss: async function () {
-          await setDoc(docRef, { ...formData, status: "failed", amount: amount });
+          await setDoc(docRef, {
+            ...formData,
+            status: "failed",
+            amount: amount
+          });
           window.location.href = `/failure.html?plan=${formData.plan}`;
         }
       },
       prefill: {
-        name: formData.firstName + " " + formData.lastName,
+        name: `${formData.firstName || ""} ${formData.lastName || ""}`,
         email: formData.email || "",
         contact: formData.phone || ""
       },
@@ -262,6 +346,3 @@ form.addEventListener('submit', async function(e) {
     alert("❌ Payment initialization failed: " + err.message);
   }
 });
-
-
-

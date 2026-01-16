@@ -1,38 +1,69 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 // Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
   authDomain: "ironnrootfitness-5156e.firebaseapp.com",
   projectId: "ironnrootfitness-5156e",
-  storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
-  messagingSenderId: "508351386284",
-  appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
-  measurementId: "G-S6235MZEPC"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// ✅ Safe init
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const priceDiv = document.getElementById("planPrice");
+const PLAN_ID = "personal_workout_plan";
 
-async function fetchPlanPrice() {
-  try {
-    const planRef = doc(db, "plans", "personal_workout_plan");
-    const planSnap = await getDoc(planRef);
+async function loadPrice(user) {
+  const planRef = doc(db, "plans", PLAN_ID);
+  const planSnap = await getDoc(planRef);
 
-    if(planSnap.exists()) {
-      const planData = planSnap.data();
-      priceDiv.textContent = `₹${planData.amount}`;
-    } else {
-      priceDiv.textContent = "Price not available";
+  if (!planSnap.exists()) {
+    priceDiv.innerText = "Price not available";
+    return;
+  }
+
+  let baseAmount = planSnap.data().amount;
+  let finalAmount = baseAmount;
+  let hasOffer = false;
+
+  if (user) {
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    if (userSnap.exists()) {
+      const u = userSnap.data();
+
+      if (
+        u.offerEligible &&
+        !u.offerUsed &&
+        u.offerPlan === PLAN_ID
+      ) {
+        finalAmount = Math.round(baseAmount * 0.95);
+        hasOffer = true;
+      }
     }
-  } catch(err) {
-    console.error(err);
-    priceDiv.textContent = "Error fetching price";
+  }
+
+  // 🎨 UI rendering
+  if (hasOffer) {
+    priceDiv.innerHTML = `
+      <div style="font-size:18px;color:#bbb;text-decoration:line-through;">
+        ₹${baseAmount}
+      </div>
+      <div style="font-size:42px;color:#ff4d4d;">
+        ₹${finalAmount}
+      </div>
+      <div style="margin-top:8px;color:#00ff99;font-weight:600;">
+        🎉 Welcome Bonus – 5% OFF
+      </div>
+    `;
+  } else {
+    priceDiv.innerHTML = `<div style="font-size:42px;color:#ff4d4d;">₹${baseAmount}</div>`;
   }
 }
 
-fetchPlanPrice();
+onAuthStateChanged(auth, (user) => {
+  loadPrice(user);
+});

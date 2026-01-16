@@ -220,13 +220,25 @@
       </div>
       <div class="form-group">
   <label>Phone Number *</label>
-  <input
-    type="tel"
-    id="signupPhone"
-    placeholder="+91 9876543210"
-    pattern="^\+?\d{10,15}$"
-    required
-  >
+
+  <div style="display:flex; gap:8px;">
+    <!-- Country Code -->
+    <select id="countryCode" required>
+      <option value="+91" data-len="10" selected>🇮🇳 +91</option>
+      <option value="+1" data-len="10">🇺🇸 +1</option>
+      <option value="+44" data-len="10">🇬🇧 +44</option>
+      <option value="+61" data-len="9">🇦🇺 +61</option>
+      <option value="+971" data-len="9">🇦🇪 +971</option>
+    </select>
+
+    <!-- Phone -->
+    <input
+      type="tel"
+      id="signupPhone"
+      placeholder="Enter phone number"
+      required
+    />
+  </div>
 </div>
       <div class="form-group">
         <label>Password *</label>

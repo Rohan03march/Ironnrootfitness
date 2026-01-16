@@ -231,7 +231,6 @@ function openModal(data) {
 
   /* ========= USER DETAILS ========= */
   modalBody.innerHTML += `
-    <h3>👤 User Details</h3>
     <p><strong>Name:</strong> ${user.fullName || "N/A"}</p>
     <p><strong>Email:</strong> ${user.email || "N/A"}</p>
     <p><strong>Phone:</strong> ${user.phone || "N/A"}</p>

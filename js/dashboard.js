@@ -1,18 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  query,
-  where
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 /* ================= FIREBASE ================= */
 const firebaseConfig = {
@@ -27,9 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
-
-/* ================= CACHE ================= */
-const usersCache = {};
 
 /* ================= DOM ================= */
 const collectionTitle = document.getElementById("collectionTitle");
@@ -50,28 +35,25 @@ let currentPage = 1;
 let originalRows = [];
 let currentType = "normal";
 
-/* ================= LOAD USERS ================= */
-async function loadUsers() {
-  const snap = await getDocs(collection(db, "users"));
-  snap.forEach(docSnap => {
-    usersCache[docSnap.id] = docSnap.data();
-  });
-}
-
 /* ================= AUTH ================= */
-onAuthStateChanged(auth, async user => {
-  if (!user) {
-    window.location.href = "admin.html";
-  } else {
-    await loadUsers(); // 🔥 IMPORTANT
-    loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
-  }
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "admin.html";
+  else loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
 });
 
 /* ================= HELPERS ================= */
+// function timeAgo(dateString) {
+//   const diff = Math.floor((new Date() - new Date(dateString)) / 1000);
+//   if (diff < 60) return "Just now";
+//   if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
+//   if (diff < 86400) return `${Math.floor(diff / 3600)} hrs ago`;
+//   return `${Math.floor(diff / 86400)} days ago`;
+// }
+
 function timeAgo(createdAt) {
   let date;
 
+  // Firestore Timestamp support
   if (createdAt?.seconds) {
     date = new Date(createdAt.seconds * 1000);
   } else {
@@ -80,20 +62,27 @@ function timeAgo(createdAt) {
 
   if (isNaN(date.getTime())) return "N/A";
 
-  const diff = Math.floor((Date.now() - date.getTime()) / 1000);
-  if (diff < 60) return "Just now";
-  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)} hrs ago`;
-  return `${Math.floor(diff / 86400)} days ago`;
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+  const minute = 60;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  if (seconds < minute) return "Just now";
+  if (seconds < hour) return `${Math.floor(seconds / minute)} min ago`;
+  if (seconds < day) return `${Math.floor(seconds / hour)} hrs ago`;
+  if (seconds < month) return `${Math.floor(seconds / day)} days ago`;
+  if (seconds < year) return `${Math.floor(seconds / month)} months ago`;
+  return `${Math.floor(seconds / year)} years ago`;
 }
 
+
 function updateCount(col, count) {
-  if (col === "personal_nutrition_plan")
-    nutritionCount.textContent = `🥗 Personal Nutrition: ${count}`;
-  if (col === "personal_workout_plan")
-    workoutCount.textContent = `🏋️ Personal Workouts: ${count}`;
-  if (col === "ultimate_personal_coaching")
-    coachingCount.textContent = `🔥 Ultimate Coaching: ${count}`;
+  if (col === "personal_nutrition_plan") nutritionCount.textContent = `🥗 Personal Nutrition: ${count}`;
+  if (col === "personal_workout_plan") workoutCount.textContent = `🏋️ Personal Workouts: ${count}`;
+  if (col === "ultimate_personal_coaching") coachingCount.textContent = `🔥 Ultimate Coaching: ${count}`;
 }
 
 /* ================= LOAD DATA ================= */
@@ -105,29 +94,44 @@ async function loadData(colName, title, type) {
   currentPage = 1;
   originalRows = [];
 
-  tableHead.innerHTML = `
-    <tr>
-      <th>Name</th>
-      <th>Gender</th>
-      <th>Age</th>
-      <th>Phone</th>
-      <th>Email</th>
-      <th>Amount</th>
-      <th>Status</th>
-      <th>Payment ID</th>
-      <th>Time</th>
-    </tr>
-  `;
+  /* ---------- TABLE HEADERS ---------- */
+  if (type === "permissions") {
+    tableHead.innerHTML = `
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    `;
+  } else {
+    tableHead.innerHTML = `
+      <tr>
+        <th>Name</th><th>Gender</th><th>Age</th><th>Phone</th>
+        <th>Email</th><th>Amount</th><th>Status</th><th>Payment ID</th><th>Time</th>
+      </tr>
+    `;
+  }
 
-  const snapshot = await getDocs(collection(db, colName));
-  updateCount(colName, snapshot.size);
+  let snapshot;
+
+  if (type === "permissions") {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("isApproved", "==", false));
+    snapshot = await getDocs(q);
+  } else {
+    snapshot = await getDocs(collection(db, colName));
+    updateCount(colName, snapshot.size);
+  }
+
   dataTable.innerHTML = "";
 
   if (snapshot.empty) {
-    dataTable.innerHTML = `<tr><td colspan="9" style="text-align:center;">No data found</td></tr>`;
+    dataTable.innerHTML = `<tr><td colspan="10" style="text-align:center;">No data found</td></tr>`;
     return;
   }
 
+  /* ===== SORT: LATEST → EARLIEST ===== */
   const docs = snapshot.docs.sort((a, b) => {
     const aTime = a.data().createdAt ? new Date(a.data().createdAt).getTime() : 0;
     const bTime = b.data().createdAt ? new Date(b.data().createdAt).getTime() : 0;
@@ -136,30 +140,42 @@ async function loadData(colName, title, type) {
 
   docs.forEach(docSnap => {
     const data = docSnap.data();
-    const user = usersCache[data.userId] || {};
-
-    const fullName = user.fullName || "Unknown User";
-    const phone = user.phone || "N/A";
-    const email = user.email || "N/A";
-
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${fullName}</td>
-      <td>${data.gender || "N/A"}</td>
-      <td>${data.age || "N/A"}</td>
-      <td>${phone}</td>
-      <td>${email}</td>
-      <td>${data.amount || 0}</td>
-      <td>${data.status || "Pending"}</td>
-      <td>${data.paymentId || "N/A"}</td>
-      <td>${data.createdAt ? timeAgo(data.createdAt) : "N/A"}</td>
-    `;
 
-    tr.onclick = () =>
-      openModal({
-        ...data,
-        user: { fullName, phone, email },
-      });
+    if (type === "permissions") {
+      tr.innerHTML = `
+        <td>${data.fullName || ""}</td>
+        <td>${data.email || ""}</td>
+        <td>${data.isApproved ? "Approved" : "Pending"}</td>
+        <td>
+          <button class="approve-btn">Approve</button>
+          <button class="deny-btn">Deny</button>
+        </td>
+      `;
+
+      tr.querySelector(".approve-btn").onclick = async () => {
+        await setDoc(doc(db, "users", docSnap.id), { ...data, isApproved: true });
+        loadData("permissions", "🛠️ Permissions", "permissions");
+      };
+
+      tr.querySelector(".deny-btn").onclick = async () => {
+        await setDoc(doc(db, "users", docSnap.id), { ...data, isApproved: false });
+        loadData("permissions", "🛠️ Permissions", "permissions");
+      };
+    } else {
+      tr.innerHTML = `
+        <td>${data.firstName || ""} ${data.lastName || ""}</td>
+        <td>${data.gender || "N/A"}</td>
+        <td>${data.age || "N/A"}</td>
+        <td>${data.phone || "N/A"}</td>
+        <td>${data.email || "N/A"}</td>
+        <td>${data.amount || 0}</td>
+        <td>${data.status || "Pending"}</td>
+        <td>${data.paymentId || "N/A"}</td>
+        <td>${data.createdAt ? timeAgo(data.createdAt) : "N/A"}</td>
+      `;
+      tr.onclick = () => openModal(data);
+    }
 
     dataTable.appendChild(tr);
     originalRows.push(tr);
@@ -170,9 +186,19 @@ async function loadData(colName, title, type) {
 
 /* ================= PAGINATION ================= */
 function paginateTable() {
-  const rows = Array.from(dataTable.querySelectorAll("tr"));
+  if (!pagination) return;
+
+  const rows = Array.from(dataTable.querySelectorAll("tr"))
+    .filter(r => !r.classList.contains("no-match"));
+
   const totalPages = Math.ceil(rows.length / ROWS_PER_PAGE);
   pagination.innerHTML = "";
+  pagination.style.display = "flex";
+
+  if (rows.length === 0 || totalPages <= 1) {
+    rows.forEach(r => (r.style.display = ""));
+    return;
+  }
 
   rows.forEach((row, i) => {
     row.style.display =
@@ -182,39 +208,79 @@ function paginateTable() {
         : "none";
   });
 
-  if (totalPages <= 1) return;
-
-  const btn = (text, disabled, cb) => {
-    const b = document.createElement("button");
-    b.textContent = text;
-    b.disabled = disabled;
-    if (!disabled) b.onclick = cb;
-    return b;
-  };
-
-  pagination.appendChild(btn("Prev", currentPage === 1, () => {
+  pagination.appendChild(createBtn("Prev", currentPage === 1, () => {
     currentPage--;
     paginateTable();
   }));
 
-  pagination.appendChild(btn("Next", currentPage === totalPages, () => {
+  const range = 2;
+  let start = Math.max(1, currentPage - range);
+  let end = Math.min(totalPages, currentPage + range);
+
+  if (start > 1) {
+    pagination.appendChild(createPageBtn(1));
+    if (start > 2) pagination.appendChild(dots());
+  }
+
+  for (let i = start; i <= end; i++) {
+    pagination.appendChild(createPageBtn(i));
+  }
+
+  if (end < totalPages) {
+    if (end < totalPages - 1) pagination.appendChild(dots());
+    pagination.appendChild(createPageBtn(totalPages));
+  }
+
+  pagination.appendChild(createBtn("Next", currentPage === totalPages, () => {
     currentPage++;
     paginateTable();
   }));
 }
 
+function createBtn(text, disabled, onClick) {
+  const btn = document.createElement("button");
+  btn.textContent = text;
+  btn.disabled = disabled;
+  btn.className = disabled ? "disabled" : "";
+  if (!disabled) btn.onclick = onClick;
+  return btn;
+}
+
+function createPageBtn(page) {
+  const btn = document.createElement("button");
+  btn.textContent = page;
+  btn.classList.toggle("active", page === currentPage);
+  btn.onclick = () => {
+    currentPage = page;
+    paginateTable();
+  };
+  return btn;
+}
+
+function dots() {
+  const s = document.createElement("span");
+  s.textContent = "...";
+  s.className = "dots";
+  return s;
+}
+
 /* ================= SEARCH ================= */
 searchInput.addEventListener("input", () => {
-  const q = searchInput.value.toLowerCase();
+  const q = searchInput.value.toLowerCase().trim();
   dataTable.innerHTML = "";
 
-  const matched = originalRows.filter(tr =>
-    tr.innerText.toLowerCase().includes(q)
-  );
+  const matched = originalRows.filter(tr => {
+    const text = Array.from(tr.querySelectorAll("td"))
+      .map(td => td.textContent.toLowerCase())
+      .join(" ");
+    return text.includes(q);
+  });
 
-  if (!matched.length) {
-    dataTable.innerHTML =
-      `<tr><td colspan="9" style="text-align:center;">No match found</td></tr>`;
+  if (matched.length === 0) {
+    const tr = document.createElement("tr");
+    tr.className = "no-match";
+    tr.innerHTML = `<td colspan="10" style="text-align:center;">No match found</td>`;
+    dataTable.appendChild(tr);
   } else {
     matched.forEach(tr => dataTable.appendChild(tr));
   }
@@ -226,74 +292,21 @@ searchInput.addEventListener("input", () => {
 /* ================= MODAL ================= */
 function openModal(data) {
   modalBody.innerHTML = "";
-
-  const user = usersCache[data.userId] || {};
-
-  /* ========= USER DETAILS ========= */
-  modalBody.innerHTML += `
-    <p><strong>Name:</strong> ${user.fullName || "N/A"}</p>
-    <p><strong>Email:</strong> ${user.email || "N/A"}</p>
-    <p><strong>Phone:</strong> ${user.phone || "N/A"}</p>
-    <hr/>
-  `;
-
-  /* ========= BODY & GOALS ========= */
-  modalBody.innerHTML += `
-    <h3>🏋️ Body & Goals</h3>
-    <p><strong>Age:</strong> ${data.age || "N/A"}</p>
-    <p><strong>Gender:</strong> ${data.gender || "N/A"}</p>
-    <p><strong>Height:</strong> ${data.height || "N/A"}</p>
-    <p><strong>Weight:</strong> ${data.weight || "N/A"}</p>
-    <p><strong>Body Type:</strong> ${data.bodyType || "N/A"}</p>
-    <p><strong>Goal:</strong> ${data.goal || "N/A"}</p>
-    <p><strong>Desired Weight:</strong> ${data.desiredWeight || "N/A"}</p>
-    <hr/>
-  `;
-
-  /* ========= DIET & LIFESTYLE ========= */
-  modalBody.innerHTML += `
-    <h3>🥗 Diet & Lifestyle</h3>
-    <p><strong>Diet History:</strong> ${data.dietHistory || "N/A"}</p>
-    <p><strong>Meals Per Day:</strong> ${data.mealsPerDay || "N/A"}</p>
-    <p><strong>Food Type:</strong> ${data.foodType || "N/A"}</p>
-    <p><strong>Food Preference:</strong> ${data.foodPreference || "N/A"}</p>
-    <p><strong>Allergies:</strong> ${data.allergies || "N/A"}</p>
-    <p><strong>Workouts / Week:</strong> ${data.workoutsPerWeek || "N/A"}</p>
-    <p><strong>Supplements:</strong> ${data.supplements || "N/A"}</p>
-    <p><strong>Comments:</strong> ${data.comments || "N/A"}</p>
-    <hr/>
-  `;
-
-  /* ========= PAYMENT ========= */
-  modalBody.innerHTML += `
-    <h3>💳 Payment Details</h3>
-    <p><strong>Plan:</strong> ${data.plan || "N/A"}</p>
-    <p><strong>Amount:</strong> ₹${data.amount || 0}</p>
-    <p><strong>Status:</strong> ${data.status || "N/A"}</p>
-    <p><strong>Payment ID:</strong> ${data.paymentId || "N/A"}</p>
-    <p><strong>Created At:</strong> ${
-      data.createdAt
-        ? new Date(data.createdAt).toLocaleString()
-        : "N/A"
-    }</p>
-  `;
-
+  Object.entries(data).forEach(([k, v]) => {
+    modalBody.innerHTML += `<p><strong>${k}:</strong> ${v}</p>`;
+  });
   modal.style.display = "block";
 }
-
-window.closeModal = () => (modal.style.display = "none");
+window.closeModal = () => modal.style.display = "none";
 
 /* ================= NAV ================= */
 document.querySelectorAll(".nav-btn").forEach(btn => {
   btn.onclick = () => {
-    document.querySelectorAll(".nav-btn").forEach(b =>
-      b.classList.remove("active")
-    );
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     loadData(btn.dataset.col, btn.textContent, btn.dataset.type);
   };
 });
 
 /* ================= LOGOUT ================= */
-window.logout = () =>
-  signOut(auth).then(() => (window.location.href = "admin.html"));
+window.logout = () => signOut(auth).then(() => location.href = "admin.html");

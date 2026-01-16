@@ -169,10 +169,30 @@
   <h2 class="form-title">Book Now</h2>
   <form id="trainingForm">
     <div class="form-group">
+      <label>First Name *</label>
+      <input type="text" name="firstName" required>
+    </div>
+    <div class="form-group">
+      <label>Last Name *</label>
+      <input type="text" name="lastName" required>
+    </div>
+    <div class="form-group">
       <label>Age *</label>
       <input type="number" name="age" required min="10" max="100">
     </div>
-    <div class="form-group">
+    <!-- 📱 Phone Number (New Field) -->
+     <div class="form-group">
+  <label>Phone Number (with country code) *</label>
+  <input 
+    type="tel" 
+    name="phone" 
+    placeholder="+91 9876543210" 
+    required 
+    pattern="^\+\d{1,4}\s?\d{6,15}$" 
+    title="Enter a valid phone number with country code, e.g., +91 9876543210"
+  >
+</div>
+    <!-- <div class="form-group">
       <label>Country *</label>
       <select name="country" required>
         <option value="">-- Select Country --</option>
@@ -190,6 +210,10 @@
         <option>South Africa</option>
         <option>Other</option>
       </select>
+    </div>
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" name="email" required>
     </div>
     <div class="form-group">
       <label>Gender *</label>
@@ -303,7 +327,7 @@
     <div class="form-group">
       <label>Additional Comments (specific needs, returning client feedback, injuries, illnesses, etc.)</label>
       <textarea name="comments"></textarea>
-    </div>
+    </div> -->
     <button type="submit" class="btn-submit">Pay & Submit</button>
   </form>
 </section>

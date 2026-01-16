@@ -226,11 +226,62 @@ searchInput.addEventListener("input", () => {
 /* ================= MODAL ================= */
 function openModal(data) {
   modalBody.innerHTML = "";
-  Object.entries(data).forEach(([k, v]) => {
-    modalBody.innerHTML += `<p><strong>${k}:</strong> ${JSON.stringify(v)}</p>`;
-  });
+
+  const user = usersCache[data.userId] || {};
+
+  /* ========= USER DETAILS ========= */
+  modalBody.innerHTML += `
+    <h3>👤 User Details</h3>
+    <p><strong>Name:</strong> ${user.fullName || "N/A"}</p>
+    <p><strong>Email:</strong> ${user.email || "N/A"}</p>
+    <p><strong>Phone:</strong> ${user.phone || "N/A"}</p>
+    <hr/>
+  `;
+
+  /* ========= BODY & GOALS ========= */
+  modalBody.innerHTML += `
+    <h3>🏋️ Body & Goals</h3>
+    <p><strong>Age:</strong> ${data.age || "N/A"}</p>
+    <p><strong>Gender:</strong> ${data.gender || "N/A"}</p>
+    <p><strong>Height:</strong> ${data.height || "N/A"}</p>
+    <p><strong>Weight:</strong> ${data.weight || "N/A"}</p>
+    <p><strong>Body Type:</strong> ${data.bodyType || "N/A"}</p>
+    <p><strong>Goal:</strong> ${data.goal || "N/A"}</p>
+    <p><strong>Desired Weight:</strong> ${data.desiredWeight || "N/A"}</p>
+    <hr/>
+  `;
+
+  /* ========= DIET & LIFESTYLE ========= */
+  modalBody.innerHTML += `
+    <h3>🥗 Diet & Lifestyle</h3>
+    <p><strong>Diet History:</strong> ${data.dietHistory || "N/A"}</p>
+    <p><strong>Meals Per Day:</strong> ${data.mealsPerDay || "N/A"}</p>
+    <p><strong>Food Type:</strong> ${data.foodType || "N/A"}</p>
+    <p><strong>Food Preference:</strong> ${data.foodPreference || "N/A"}</p>
+    <p><strong>Allergies:</strong> ${data.allergies || "N/A"}</p>
+    <p><strong>Workouts / Week:</strong> ${data.workoutsPerWeek || "N/A"}</p>
+    <p><strong>Supplements:</strong> ${data.supplements || "N/A"}</p>
+    <p><strong>Comments:</strong> ${data.comments || "N/A"}</p>
+    <hr/>
+  `;
+
+  /* ========= PAYMENT ========= */
+  modalBody.innerHTML += `
+    <h3>💳 Payment Details</h3>
+    <p><strong>Plan:</strong> ${data.plan || "N/A"}</p>
+    <p><strong>Amount:</strong> ₹${data.amount || 0}</p>
+    <p><strong>Status:</strong> ${data.status || "N/A"}</p>
+    <p><strong>Payment ID:</strong> ${data.paymentId || "N/A"}</p>
+    <p><strong>Created At:</strong> ${
+      data.createdAt
+        ? new Date(data.createdAt).toLocaleString()
+        : "N/A"
+    }</p>
+  `;
+
   modal.style.display = "block";
 }
+
 window.closeModal = () => (modal.style.display = "none");
 
 /* ================= NAV ================= */

@@ -211,14 +211,49 @@
       </div>
 
       <!-- Pricing -->
-      <div class="pricing">
-        <h3>All This For Only</h3>
-        <div class="price" id="planPrice"></div>
-        <!-- <a href="./personal-workout-plan-order-now.html">
-          <button class="btn">Start Now</button>
-        </a> -->
-        <button class="btn" id="actionBtn">Loading...</button>
-      </div>
+       <div class="pricing">
+  <h3>All This For Only</h3>
+
+  <div class="price blurred" id="planPrice">
+  </div>
+
+  <p class="price-hint" id="priceHint">
+    Sign up to reveal your price & unlock up to 5% welcome discount.
+  </p>
+
+  <button class="btn" id="actionBtn">Loading...</button>
+  <style>
+  /* Blurred price */
+.price.blurred {
+  filter: blur(8px);
+  opacity: 0.7;
+  pointer-events: none;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+
+/* Reveal price */
+.price.revealed {
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* Hint text */
+.price-hint {
+  font-size: 14px;
+  color: #bbb;
+  margin-bottom: 15px;
+  transition: opacity 0.3s ease;
+}
+
+.price-hint.hide {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+</style>
+</div>
     </div>
   </section>
   <script type="module" src="./js/pwpAmount.js"></script>

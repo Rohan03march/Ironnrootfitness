@@ -191,66 +191,112 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const form = document.getElementById('trainingForm');
+const form = document.getElementById("clientForm");
 let currentUser = null;
-onAuthStateChanged(auth, user => currentUser = user);
 
-form.addEventListener('submit', async function(e) {
+// Track auth state
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+});
+
+// 🚫 HARD BLOCK if not logged in
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
-  if (!form.checkValidity()) return alert('Please fill all required fields correctly.');
+
+  if (!currentUser) {
+    alert("Please sign up or login to continue.");
+    sessionStorage.setItem("selectedPlan", "ultimate_personal_coaching");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (!form.checkValidity()) {
+    alert("Please fill all required fields correctly.");
+    return;
+  }
 
   try {
-    // Collect form data
+    /* ================= COLLECT FORM DATA ================= */
     const formData = {};
     Array.from(form.elements).forEach(el => {
       if (el.name) formData[el.name] = el.value || null;
     });
-    formData.userId = currentUser ? currentUser.uid : "guest_" + Date.now();
-    formData.createdAt = new Date().toISOString();
-    formData.plan = "Ultmate personal coaching";
 
-    // Save created status
-    const docId = formData.userId + "_" + Date.now();
+    formData.userId = currentUser.uid;
+    formData.createdAt = new Date().toISOString();
+    formData.plan = "Ultimate Personal Coaching";
+
+    /* ================= CREATE FIRESTORE DOC ================= */
+    const docId = `${currentUser.uid}_${Date.now()}`;
     const docRef = doc(db, "ultimate_personal_coaching", docId);
     await setDoc(docRef, { ...formData, status: "created" });
 
-    // Fetch plan price
+    /* ================= FETCH BASE PRICE ================= */
     const planRef = doc(db, "plans", "ultimate_personal_coaching");
     const planSnap = await getDoc(planRef);
     if (!planSnap.exists()) throw new Error("Plan not found");
-    const planData = planSnap.data();
-    const amount = planData.amount;
 
-    // Razorpay Test Mode Checkout
+    let amount = planSnap.data().amount;
+
+    /* ================= OFFER CHECK (5% OFF) ================= */
+    const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+    if (userSnap.exists()) {
+      const u = userSnap.data();
+
+      if (
+        u.offerEligible &&
+        !u.offerUsed &&
+        u.offerPlan === "ultimate_personal_coaching"
+      ) {
+        amount = Math.round(amount * 0.9); // ✅ 10% OFF
+      }
+    }
+
+    /* ================= RAZORPAY ================= */
     const options = {
-      key: "rzp_test_S1pV5yI8vZLNi9", // 👈 test key
+      key: "rzp_test_S1pV5yI8vZLNi9", // Test key
       amount: amount * 100,
       currency: "INR",
       name: "IronnRoot Fitness",
-      description: "Ultimate Personal coaching",
+      description: "Ultimate Personal Coaching",
+
       handler: async function (response) {
-        // Update Firestore
+        // Save success
         await setDoc(docRef, {
           ...formData,
           status: "success",
-          paymentId: response.razorpay_payment_id || "test_" + Date.now(),
+          paymentId: response.razorpay_payment_id,
           amount: amount
         });
 
-        // Redirect to success page
-        window.location.href = `/success.html?paymentId=${response.razorpay_payment_id}&plan=${formData.plan}`;
+        // 🔒 MARK OFFER AS USED
+        await setDoc(
+          doc(db, "users", currentUser.uid),
+          { offerUsed: true },
+          { merge: true }
+        );
+
+        window.location.href =
+          `/success.html?paymentId=${response.razorpay_payment_id}&plan=${formData.plan}`;
       },
+
       modal: {
         ondismiss: async function () {
-          await setDoc(docRef, { ...formData, status: "failed", amount: amount });
+          await setDoc(docRef, {
+            ...formData,
+            status: "failed",
+            amount: amount
+          });
           window.location.href = `/failure.html?plan=${formData.plan}`;
         }
       },
+
       prefill: {
-        name: formData.firstName + " " + formData.lastName,
+        name: `${formData.firstName || ""} ${formData.lastName || ""}`,
         email: formData.email || "",
         contact: formData.phone || ""
       },
+
       theme: { color: "#ff4d4d" }
     };
 
@@ -262,5 +308,3 @@ form.addEventListener('submit', async function(e) {
     alert("❌ Payment initialization failed: " + err.message);
   }
 });
-
-

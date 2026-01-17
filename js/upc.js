@@ -19,7 +19,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Elements
-const form = document.getElementById('trainingForm');
+const form = document.getElementById('clientForm');
 const submitPopup = document.getElementById('submitPopup');
 
 let currentUser = null;

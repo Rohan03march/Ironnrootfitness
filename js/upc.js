@@ -61,16 +61,17 @@ form.addEventListener("submit", async (e) => {
     );
 
     /* ================= FETCH PLAN ================= */
-    const planRef = doc(db, "plans", "ultimate_personal_coaching");
-    const planSnap = await getDoc(planRef);
+    const planSnap = await getDoc(
+      doc(db, "plans", "ultimate_personal_coaching")
+    );
     if (!planSnap.exists()) throw new Error("Plan not found");
 
-    const baseAmount = planSnap.data().amount;
-    let finalAmount = baseAmount;
-    let discountApplied = false;
+    let amount = planSnap.data().amount;
 
     /* ================= DISCOUNT LOGIC ================= */
-    const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+    const userRef = doc(db, "users", currentUser.uid);
+    const userSnap = await getDoc(userRef);
+
     if (userSnap.exists()) {
       const u = userSnap.data();
       if (
@@ -78,8 +79,7 @@ form.addEventListener("submit", async (e) => {
         u.offerUsed !== true &&
         u.offerPlan === "ultimate_personal_coaching"
       ) {
-        finalAmount = Math.round(baseAmount * 0.9); // 10% OFF
-        discountApplied = true;
+        amount = Math.round(amount * 0.9); // ✅ 10% OFF
       }
     }
 
@@ -87,9 +87,7 @@ form.addEventListener("submit", async (e) => {
     await setDoc(docRef, {
       ...formData,
       status: "created",
-      baseAmount,
-      finalAmount,
-      discountApplied
+      amount
     });
 
     /* ================= GET RAZORPAY KEY ================= */
@@ -101,7 +99,7 @@ form.addEventListener("submit", async (e) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        amount: finalAmount * 100,
+        amount: amount * 100,
         currency: "INR"
       })
     });
@@ -109,10 +107,11 @@ form.addEventListener("submit", async (e) => {
     const orderData = await orderRes.json();
     if (!orderData.id) throw new Error("Order creation failed");
 
-    await setDoc(docRef, {
-      status: "pending",
-      orderId: orderData.id
-    }, { merge: true });
+    await setDoc(
+      docRef,
+      { status: "pending", orderId: orderData.id },
+      { merge: true }
+    );
 
     /* ================= RAZORPAY ================= */
     const options = {
@@ -147,36 +146,37 @@ form.addEventListener("submit", async (e) => {
           if (!verifyData.verified) throw new Error("Verification failed");
 
           /* ================= SUCCESS ================= */
-          await setDoc(docRef, {
-            status: "success",
-            paymentId: response.razorpay_payment_id,
-            paidAmount: finalAmount,
-            successAt: new Date().toISOString()
-          }, { merge: true });
+          await setDoc(
+            docRef,
+            {
+              status: "success",
+              paymentId: response.razorpay_payment_id
+            },
+            { merge: true }
+          );
 
           /* 🔒 LOCK OFFER */
-          if (discountApplied) {
-            await setDoc(
-              doc(db, "users", currentUser.uid),
-              { offerUsed: true },
-              { merge: true }
-            );
+          if (
+            userSnap.exists() &&
+            userSnap.data().offerEligible === true &&
+            userSnap.data().offerUsed !== true &&
+            userSnap.data().offerPlan === "ultimate_personal_coaching"
+          ) {
+            await setDoc(userRef, { offerUsed: true }, { merge: true });
           }
 
           submitPopup.style.display = "none";
+          form.reset();
           window.location.href =
             `/success.html?paymentId=${response.razorpay_payment_id}&plan=${formData.plan}`;
 
-          form.reset();
-
         } catch (err) {
           console.error(err);
-          await setDoc(docRef, {
-            status: "failed",
-            error: err.message,
-            failedAt: new Date().toISOString()
-          }, { merge: true });
-
+          await setDoc(
+            docRef,
+            { status: "failed", error: err.message },
+            { merge: true }
+          );
           submitPopup.style.display = "none";
           window.location.href = "/failure.html";
         }
@@ -184,12 +184,11 @@ form.addEventListener("submit", async (e) => {
 
       modal: {
         ondismiss: async () => {
-          await setDoc(docRef, {
-            status: "failed",
-            error: "User dismissed checkout",
-            failedAt: new Date().toISOString()
-          }, { merge: true });
-
+          await setDoc(
+            docRef,
+            { status: "failed", error: "User dismissed checkout" },
+            { merge: true }
+          );
           submitPopup.style.display = "none";
           window.location.href = "/failure.html";
         }
@@ -200,15 +199,11 @@ form.addEventListener("submit", async (e) => {
 
   } catch (err) {
     console.error(err);
-    await setDoc(doc(db, "errors", `coaching_${Date.now()}`), {
-      error: err.message,
-      at: new Date().toISOString()
-    });
-
     submitPopup.style.display = "none";
     alert("❌ Payment initialization failed: " + err.message);
   }
 });
+
 
 
 

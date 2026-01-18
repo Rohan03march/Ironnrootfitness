@@ -95,7 +95,7 @@ onAuthStateChanged(auth, async (user) => {
 
   // 🚫 NOT APPROVED → BLOCK DASHBOARD ONLY
   if (!snap.exists() || snap.data().isApproved !== true) {
-    window.location.replace("index.html"); // or login.html if you want
+    window.location.replace("login.html"); // or login.html if you want
     return;
   }
 

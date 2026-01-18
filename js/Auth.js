@@ -114,6 +114,7 @@ signUpForm.addEventListener("submit", async (e) => {
       fullName,
       email,
       phone,
+      role: "user",
       allowUser: true,
       createdAt: new Date().toISOString(),
 

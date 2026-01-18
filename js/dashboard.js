@@ -103,7 +103,7 @@ onAuthStateChanged(auth, async (user) => {
   loader.style.display = "none";
   appRoot.style.display = "block";
 
-  loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
+  loadData("personal_nutrition_plan", "Personal Nutrition Plan", "normal");
 });
 
 

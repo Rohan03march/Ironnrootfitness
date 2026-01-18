@@ -125,9 +125,9 @@ function timeAgo(createdAt) {
 }
 
 function updateCount(col, count) {
-  if (col === "personal_nutrition_plan") nutritionCount.textContent = `🥗 Personal Nutrition: ${count}`;
-  if (col === "personal_workout_plan") workoutCount.textContent = `🏋️ Personal Workouts: ${count}`;
-  if (col === "ultimate_personal_coaching") coachingCount.textContent = `🔥 Ultimate Coaching: ${count}`;
+  if (col === "personal_nutrition_plan") nutritionCount.textContent = `${count}`;
+  if (col === "personal_workout_plan") workoutCount.textContent = `${count}`;
+  if (col === "ultimate_personal_coaching") coachingCount.textContent = `${count}`;
 }
 
 /* ================= LOAD DATA ================= */

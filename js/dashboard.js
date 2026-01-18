@@ -245,7 +245,7 @@ async function loadData(colName, title, type) {
         <td>${data.age || "N/A"}</td>
         <td>${data.phone || "N/A"}</td>
         <td>${data.email || "N/A"}</td>
-        <td>${data.finalAmount || 0}</td>
+        <td>${data.amount || 0}</td>
         <td>${data.status || "Pending"}</td>
         <td>${data.paymentId || "N/A"}</td>
         <td>${data.createdAt ? timeAgo(data.createdAt) : "N/A"}</td>

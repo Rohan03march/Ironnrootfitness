@@ -74,7 +74,7 @@ onAuthStateChanged(auth, async (user) => {
   // 🚫 BLOCK if NOT approved
   if (isApproved !== true) {
     await signOut(auth); // optional but recommended
-    window.location.href = "index.html";
+    window.location.href = "login.html";
     return;
   }
 

@@ -82,7 +82,7 @@ let currentType = "normal";
 //   loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
 // });
 
-const loader = document.getElementById("accessLoader");
+const loader = document.getElementById("accessloader");
 const appRoot = document.getElementById("app");
 
 onAuthStateChanged(auth, async (user) => {

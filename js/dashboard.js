@@ -54,33 +54,58 @@ let currentType = "normal";
 //   else loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
 // });
 
+// onAuthStateChanged(auth, async (user) => {
+//   if (!user) {
+//     window.location.href = "admin.html";
+//     return;
+//   }
+
+//   const userRef = doc(db, "users", user.uid);
+//   const snap = await getDoc(userRef);
+
+//   if (!snap.exists()) {
+//     await signOut(auth);
+//     window.location.href = "admin.html";
+//     return;
+//   }
+
+//   const { isApproved } = snap.data();
+
+//   // 🚫 BLOCK if NOT approved
+//   if (isApproved !== true) {
+//     await signOut(auth); // optional but recommended
+//     window.location.href = "login.html";
+//     return;
+//   }
+
+//   // ✅ APPROVED → allow dashboard
+//   loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
+// });
+
+const loader = document.getElementById("accessLoader");
+const appRoot = document.getElementById("app");
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.href = "admin.html";
+    window.location.replace("admin.html");
     return;
   }
 
-  const userRef = doc(db, "users", user.uid);
-  const snap = await getDoc(userRef);
+  const snap = await getDoc(doc(db, "users", user.uid));
 
-  if (!snap.exists()) {
+  if (!snap.exists() || snap.data().isApproved !== true) {
     await signOut(auth);
-    window.location.href = "admin.html";
+    window.location.replace("login.html");
     return;
   }
 
-  const { isApproved } = snap.data();
+  // ✅ APPROVED — SHOW DASHBOARD
+  loader.style.display = "none";
+  appRoot.style.display = "block";
 
-  // 🚫 BLOCK if NOT approved
-  if (isApproved !== true) {
-    await signOut(auth); // optional but recommended
-    window.location.href = "login.html";
-    return;
-  }
-
-  // ✅ APPROVED → allow dashboard
   loadData("personal_nutrition_plan", "🥗 Personal Nutrition Plan", "normal");
 });
+
 
 
 /* ================= HELPERS ================= */

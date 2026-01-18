@@ -287,7 +287,45 @@ tr:hover {
  </style>
 </head>
 <body>
-  <!-- Sidebar -->
+
+  <div id="accessloader" class="access-loader">
+    <div class="spinner"></div>
+    <p>Please wait !</p>
+  </div>
+
+  <style>
+    .access-loader {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-family: system-ui, sans-serif;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #111827;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+  
+  <div id="app" style="display: none;">
+    <!-- Sidebar -->
   <div class="sidebar">
     <h2>Dashboard</h2>
     <!-- <button class="nav-btn active" data-col="contacts" data-type="contact">📩 Messages</button> -->
@@ -409,6 +447,7 @@ document.addEventListener("keydown", function (event) {
   }
 });
 </script>
+  </div>
 
 </body>
 </html>

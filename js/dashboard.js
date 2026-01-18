@@ -93,13 +93,13 @@ onAuthStateChanged(auth, async (user) => {
 
   const snap = await getDoc(doc(db, "users", user.uid));
 
+  // 🚫 NOT APPROVED → BLOCK DASHBOARD ONLY
   if (!snap.exists() || snap.data().isApproved !== true) {
-    await signOut(auth);
-    window.location.replace("login.html");
+    window.location.replace("index.html"); // or login.html if you want
     return;
   }
 
-  // ✅ APPROVED — SHOW DASHBOARD
+  // ✅ APPROVED → SHOW DASHBOARD
   loader.style.display = "none";
   appRoot.style.display = "block";
 

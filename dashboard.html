@@ -337,7 +337,62 @@ td.payment {
           </table>
         </div>
 
-        <div id="pagination"></div>
+        <div id="pagination" class="pagination"></div>
+        <style>
+          /* Pagination wrapper */
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* Right aligned */
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Pagination buttons */
+.pagination button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d7e2;
+  background: #ffffff;
+  color: #2b2f38;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover state */
+.pagination button:hover {
+  background: #f2f5ff;
+  border-color: #4f6ef7;
+  color: #4f6ef7;
+}
+
+/* Active page */
+.pagination button.active {
+  background: #4f6ef7;
+  color: #ffffff;
+  border-color: #4f6ef7;
+  box-shadow: 0 4px 12px rgba(79, 110, 247, 0.25);
+}
+
+/* Disabled buttons */
+.pagination button:disabled {
+  background: #f5f7fb;
+  color: #9aa3b2;
+  border-color: #e2e6ef;
+  cursor: not-allowed;
+}
+
+/* Optional: Previous / Next icons style */
+.pagination .nav-btn {
+  font-weight: 600;
+}
+
+        </style>
       </div>
 
     </main>

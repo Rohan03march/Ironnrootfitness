@@ -132,10 +132,7 @@ Grateful for this transformation."</p>
 
     </div>
   </div>
-</section>
-<!-- Transformation Section End -->
-
-<style>
+  <style>
 /* ===== Transformation Cards ===== */
 
 /* Force 2 cards per row */
@@ -159,6 +156,7 @@ Grateful for this transformation."</p>
   box-shadow: 0 12px 30px rgba(0,0,0,0.6);
   transition: transform .3s ease, box-shadow .3s ease;
   margin-bottom: 30px;
+  
 }
 
 .transformation-card:hover {
@@ -214,20 +212,67 @@ Grateful for this transformation."</p>
   margin: 0;
 }
 
-/* Mobile */
+/* ================= MOBILE CAROUSEL ONLY ================= */
 @media (max-width: 768px) {
+
+  /* Allow owl to control layout */
+  .transformation-grid {
+    display: block !important;
+  }
+
+  .transformation-grid.owl-carousel {
+    width: 110%;
+  }
+
+  .transformation-grid .owl-stage {
+    display: flex;
+  }
+
+  .transformation-grid .owl-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Card sizing for mobile */
+  .transformation-card {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 20px;
+  }
+
+  /* IMPORTANT: keep Before + After in one frame */
   .image-box {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .image-box div {
-    width: 100%;
+    width: 50%;
   }
 
   .image-box img {
-    height: 240px;
+    height: 260px;
+  }
+
+  /* Carousel dots */
+  .owl-dots {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .owl-dot {
+    width: 10px;
+    height: 10px;
+    background: #444;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+  }
+
+  .owl-dot.active {
+    background: #ff4d4d;
   }
 }
+
 
 /* ===== IMAGE ZOOM OVERLAY (ADDED) ===== */
 #imgZoomOverlay {
@@ -283,6 +328,8 @@ document.getElementById('imgZoomOverlay').addEventListener('click', () => {
 </script>
 
 
+</section>
+<!-- Transformation Section End -->
 
 
     <!-- Footer Section Begin -->
@@ -426,7 +473,52 @@ document.getElementById('imgZoomOverlay').addEventListener('click', () => {
     <script src="js/main.js"></script>
     <!-- No Inspect -->
 
-<script>
+    <script>
+/* ================= MOBILE TRANSFORMATION CAROUSEL ================= */
+function initTransformationCarousel() {
+  if (window.innerWidth <= 768) {
+
+    if (!$('.transformation-grid').hasClass('owl-loaded')) {
+      $('.transformation-grid')
+        .addClass('owl-carousel')
+        .owlCarousel({
+          items: 1,
+          loop: true,
+          margin: 20,
+          nav: false,
+          dots: true,
+          autoplay: false,
+          touchDrag: true,
+          mouseDrag: true
+        });
+    }
+
+  } else {
+
+    /* Destroy carousel when back to desktop */
+    if ($('.transformation-grid').hasClass('owl-loaded')) {
+      $('.transformation-grid')
+        .trigger('destroy.owl.carousel')
+        .removeClass('owl-carousel owl-loaded');
+
+      $('.transformation-grid')
+        .find('.owl-stage-outer')
+        .children()
+        .unwrap();
+    }
+  }
+}
+
+$(document).ready(function () {
+  initTransformationCarousel();
+});
+
+$(window).on('resize', function () {
+  initTransformationCarousel();
+});
+</script>
+
+<!-- <script>
 // Disable right-click context menu
 document.addEventListener("contextmenu", function (event) {
   event.preventDefault();
@@ -446,7 +538,7 @@ document.addEventListener("keydown", function (event) {
     event.preventDefault();
   }
 });
-</script>
+</script> -->
 
 </body>
 

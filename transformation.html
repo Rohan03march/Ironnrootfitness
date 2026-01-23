@@ -482,14 +482,20 @@ function initTransformationCarousel() {
       $('.transformation-grid')
         .addClass('owl-carousel')
         .owlCarousel({
-          items: 1,
           loop: true,
-          margin: 20,
+          margin: 16,
           nav: false,
           dots: true,
           autoplay: false,
           touchDrag: true,
-          mouseDrag: true
+          mouseDrag: true,
+
+          /* 👇 THIS CREATES THE RIGHT-SIDE PREVIEW */
+          responsive: {
+            0: {
+              items: 1.15  // shows 15% of next card
+            }
+          }
         });
     }
 
@@ -508,6 +514,7 @@ function initTransformationCarousel() {
     }
   }
 }
+
 
 $(document).ready(function () {
   initTransformationCarousel();

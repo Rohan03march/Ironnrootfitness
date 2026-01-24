@@ -40,7 +40,7 @@ async function loadPrice(user) {
         !u.offerUsed &&
         u.offerPlan === PLAN_ID
       ) {
-        finalAmount = Math.round(baseAmount * 0.95);
+        finalAmount = Math.round(baseAmount * 0.9);
         hasOffer = true;
       }
     }
@@ -56,7 +56,7 @@ async function loadPrice(user) {
         ₹${finalAmount}
       </div>
       <div style="margin-top:8px;color:#00ff99;font-weight:600;">
-        🎉 Welcome Bonus – 5% OFF
+        🎉 Welcome Bonus – 10% OFF
       </div>
     `;
   } else {

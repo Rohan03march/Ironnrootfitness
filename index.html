@@ -43,10 +43,13 @@
     <div class="container-fluid header-container">
 
       <!-- Logo -->
-      <a href="./index.html" class="brand">
-        <img class="brand-logo" src="img/logo.png" alt="Logo">
-        <span class="brand-name">Ironnrootfitness</span>
-      </a>
+    <a href="./index.html" class="brand">
+      <img class="brand-logo" src="img/logo.png" alt="Logo">
+      <span class="brand-name">
+        <span class="brand-name-full">Ironnrootfitness</span>
+        <span class="brand-name-short">Ironnroot</span>
+      </span>
+    </a>
 
       <!-- Navigation -->
       <nav class="mainmenu">
@@ -63,7 +66,7 @@
       <div class="header-actions" style="display: flex; align-items: center; gap: 15px; margin-left: 20px;">
         <a href="#" class="btn-schedule-call header-cta-btn">
           <span class="cta-desktop">Free Strategy Call</span>
-          <span class="cta-mobile">Free Call</span>
+          <span class="cta-mobile">Free Strategy Call</span>
         </a>
 
         <!-- User Profile Dropdown with Icon -->
@@ -321,6 +324,10 @@
       letter-spacing: 1px;
     }
 
+    .brand-name-short {
+      display: none;
+    }
+
     /* Navigation */
     .mainmenu ul {
       list-style: none;
@@ -415,6 +422,14 @@
         letter-spacing: 0.5px;
       }
 
+      .brand-name-full {
+        display: none;
+      }
+
+      .brand-name-short {
+        display: inline;
+      }
+
       .header-actions {
         margin-left: auto !important;
         margin-right: 8px !important;
@@ -433,26 +448,31 @@
 
     /* Extra small mobile screen adjustments to prevent congestion */
     @media (max-width: 480px) {
-      .brand-name {
-        display: none; /* Hide brand text on tiny screens; let logo represent brand */
+      .brand-logo {
+        height: 32px;
+        margin-right: 4px;
       }
 
-      .brand-logo {
-        height: 40px;
-        margin-right: 0;
+      .brand-name {
+        font-size: 13px;
       }
 
       .header-actions {
         gap: 6px !important;
-        margin-right: 4px !important;
+        margin-right: 2px !important;
+      }
+
+      .header-cta-btn {
+        padding: 5px 8px !important;
+        font-size: 10px !important;
       }
 
       .user-avatar {
-        font-size: 32px !important; /* Make user avatar smaller */
+        font-size: 28px !important; /* Make user avatar smaller */
       }
 
       .mobile-toggle {
-        font-size: 20px !important; /* Make hamburger toggle smaller */
+        font-size: 18px !important; /* Make hamburger toggle smaller */
       }
     }
 

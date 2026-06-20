@@ -3,594 +3,650 @@
 
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17859029814"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17859029814"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'AW-17859029814');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/png" href="img/favicon.png">
-    <title>Ironnrootfitness | Fitness & Sport</title>
+    gtag('config', 'AW-17859029814');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <title>Ironnrootfitness | Fitness & Sport</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700,800,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
+  <!-- Page Preloder -->
+  <div id="preloder">
+    <div class="loader"></div>
+  </div>
 
-    <!-- Header Section Begin -->
-<header class="header-modern">
-  <div class="container-fluid header-container">
-    
-    <!-- Logo -->
-    <a href="./index.html" class="brand">
-      <img class="brand-logo" src="img/logo.png" alt="Logo">
-      <span class="brand-name">Ironnrootfitness</span>
-    </a>
+  <!-- Header Section Begin -->
+  <header class="header-modern">
+    <div class="container-fluid header-container">
 
-    <!-- Navigation -->
-    <nav class="mainmenu">
-      <ul>
-        <li class="active"><a href="./index.html">Home</a></li>
-        <li><a href="./about.html">Biography</a></li>
-        <li><a href="./plans.html">Training / Diet</a></li>
-        <li><a href="./transformation.html">Transformation</a></li>
-        <li><a href="./contact.html">Contact</a></li>
-      </ul>
-    </nav>
-
-    <!-- Header Actions (CTA + Profile Menu) -->
-    <div class="header-actions" style="display: flex; align-items: center; gap: 15px; margin-left: 20px;">
-      <a href="#" class="btn-schedule-call header-cta-btn">
-        <span class="cta-desktop">Schedule a free call</span>
-        <span class="cta-mobile">Free Call</span>
+      <!-- Logo -->
+      <a href="./index.html" class="brand">
+        <img class="brand-logo" src="img/logo.png" alt="Logo">
+        <span class="brand-name">Ironnrootfitness</span>
       </a>
-      
-      <!-- User Profile Dropdown with Icon -->
-      <div class="user-dropdown">
-        <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
-        <div class="dropdown-menu" id="dropdownMenu">
-          <div class="user-name" id="userName"></div>
-          <a id="transactionHistory" href="transactionHistory.html" style="display: none;">Transaction History</a>
-          <hr>
-          <a href="./login.html" id="loginBtn">Login</a>
-          <a href="#" id="logoutBtn" style="display:none;">Logout</a>
-        </div>
-        <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-      
-      const firebaseConfig = {
-          apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
-          authDomain: "ironnrootfitness-5156e.firebaseapp.com",
-          projectId: "ironnrootfitness-5156e",
-          storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
-          messagingSenderId: "508351386284",
-          appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
-          measurementId: "G-S6235MZEPC"
-      };
-      
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
-      
-      // Elements
-      const avatar = document.getElementById("userAvatar");
-      const dropdown = document.getElementById("dropdownMenu");
-      const userName = document.getElementById("userName");
-      const loginBtn = document.getElementById("loginBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const transactionHistory = document.getElementById("transactionHistory");
-      
-      // Toggle dropdown
-      avatar.addEventListener("click", (e) => {
-        e.stopPropagation();
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-      });
-      
-      // Close dropdown if clicked outside
-      document.addEventListener("click", () => {
-        dropdown.style.display = "none";
-      });
-      
-      // Firebase Auth state
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          try {
-            const docRef = doc(db, "users", user.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              userName.textContent = docSnap.data().fullName; // from Firestore
-            } else {
-              userName.textContent = user.email; // fallback
-            }
-          } catch (err) {
-            console.error(err);
-            userName.textContent = user.email;
-          }
-      
-          loginBtn.style.display = "none";
-          logoutBtn.style.display = "block";
-          transactionHistory.style.display = "block"; // show when logged in
-        } else {
-          userName.textContent = "";
-          loginBtn.style.display = "block";
-          logoutBtn.style.display = "none";
-          transactionHistory.style.display = "none"; // hide when logged out
-        }
-      });
-      
-      // Logout
-      logoutBtn.addEventListener("click", async () => {
-        await signOut(auth);
-        dropdown.style.display = "none";
-        alert("You have been logged out!");
-      });
-      </script>
-      
-      
-        <style>
-          /* ==========================
+
+      <!-- Navigation -->
+      <nav class="mainmenu">
+        <ul>
+          <li class="active"><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">Biography</a></li>
+          <li><a href="./plans.html">Training / Diet</a></li>
+          <li><a href="./transformation.html">Transformation</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header Actions (CTA + Profile Menu) -->
+      <div class="header-actions" style="display: flex; align-items: center; gap: 15px; margin-left: 20px;">
+        <a href="#" class="btn-schedule-call header-cta-btn">
+          <span class="cta-desktop">Free Strategy Call</span>
+          <span class="cta-mobile">Free Strategy Call</span>
+        </a>
+
+        <!-- User Profile Dropdown with Icon -->
+        <div class="user-dropdown">
+          <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="user-name" id="userName"></div>
+            <a id="transactionHistory" href="transactionHistory.html" style="display: none;">Transaction History</a>
+            <hr>
+            <a href="./login.html" id="loginBtn">Login</a>
+            <a href="#" id="logoutBtn" style="display:none;">Logout</a>
+          </div>
+          <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+            import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+            import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+            const firebaseConfig = {
+              apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+              authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+              projectId: "ironnrootfitness-5156e",
+              storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
+              messagingSenderId: "508351386284",
+              appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
+              measurementId: "G-S6235MZEPC"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            // Elements
+            const avatar = document.getElementById("userAvatar");
+            const dropdown = document.getElementById("dropdownMenu");
+            const userName = document.getElementById("userName");
+            const loginBtn = document.getElementById("loginBtn");
+            const logoutBtn = document.getElementById("logoutBtn");
+            const transactionHistory = document.getElementById("transactionHistory");
+
+            // Toggle dropdown
+            avatar.addEventListener("click", (e) => {
+              e.stopPropagation();
+              dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener("click", () => {
+              dropdown.style.display = "none";
+            });
+
+            // Firebase Auth state
+            onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                try {
+                  const docRef = doc(db, "users", user.uid);
+                  const docSnap = await getDoc(docRef);
+                  if (docSnap.exists()) {
+                    userName.textContent = docSnap.data().fullName; // from Firestore
+                  } else {
+                    userName.textContent = user.email; // fallback
+                  }
+                } catch (err) {
+                  console.error(err);
+                  userName.textContent = user.email;
+                }
+
+                loginBtn.style.display = "none";
+                logoutBtn.style.display = "block";
+                transactionHistory.style.display = "block"; // show when logged in
+              } else {
+                userName.textContent = "";
+                loginBtn.style.display = "block";
+                logoutBtn.style.display = "none";
+                transactionHistory.style.display = "none"; // hide when logged out
+              }
+            });
+
+            // Logout
+            logoutBtn.addEventListener("click", async () => {
+              await signOut(auth);
+              dropdown.style.display = "none";
+              alert("You have been logged out!");
+            });
+          </script>
+
+
+          <style>
+            /* ==========================
          User Dropdown
       ========================== */
-      .user-dropdown {
-        position: relative;
-        display: inline-block;
-        font-family: 'Poppins', sans-serif;
-      }
-      
-      /* Avatar Icon */
-      .user-avatar {
-        font-size: 45px;
-        color: #ff4d4d;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      
-      .user-avatar:hover {
-        color: #e63636;
-      }
-      
-      /* Dropdown Menu - Left of avatar */
-      .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 55px;
-        right: auto;
-        left: -210px; /* Adjust this depending on width of dropdown */
-        background: #111;
-        min-width: 200px;
-        max-width: 250px;
-        border-radius: 12px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-        z-index: 1000;
-        overflow: hidden;
-        word-wrap: break-word;
-        animation: dropdownFade 0.2s ease-in-out;
-      }
-      
-      /* Dropdown Fade Animation */
-      @keyframes dropdownFade {
-        0% {opacity: 0; transform: translateY(-10px);}
-        100% {opacity: 1; transform: translateY(0);}
-      }
-      
-      /* User Name */
-      .dropdown-menu .user-name {
-        padding: 12px 16px;
-        font-weight: 600;
-        color: #ff4d4d;
-        font-size: 16px;
-      }
-      
-      /* Divider */
-      .dropdown-menu hr {
-        margin: 0;
-        border: 0;
-        border-top: 1px solid #333;
-      }
-      
-      /* Links inside dropdown */
-      .dropdown-menu a {
-        display: block;
-        padding: 12px 16px;
-        color: #fff;
-        text-decoration: none;
-        font-size: 14px;
-        transition: all 0.3s;
-      }
-      
-      .dropdown-menu a:hover {
-        background: #222;
-        color: #ff4d4d;
-      }
-      
-      /* Show dropdown */
-      .user-dropdown.show .dropdown-menu {
-        display: block;
-      }
-      
-      /* Responsive Adjustments */
-      @media (max-width: 768px) {
-        .user-avatar {
-          font-size: 40px;
-        }
-      
-        .dropdown-menu {
-          min-width: 180px;
-          max-width: 220px;
-          top: 50px;
-          left: -190px;
-        }
-      
-        .dropdown-menu .user-name {
-          font-size: 14px;
-        }
-      
-        .dropdown-menu a {
-          font-size: 13px;
-          padding: 10px 14px;
-        }
-      }
-      
-      @media (max-width: 480px) {
-        .dropdown-menu {
-          left: -160px;
-          top: 50px;
-        }
-      }
-      
-        </style>
+            .user-dropdown {
+              position: relative;
+              display: inline-block;
+              font-family: 'Poppins', sans-serif;
+            }
+
+            /* Avatar Icon */
+            .user-avatar {
+              font-size: 45px;
+              color: #ff4d4d;
+              cursor: pointer;
+              transition: 0.3s;
+            }
+
+            .user-avatar:hover {
+              color: #e63636;
+            }
+
+            /* Dropdown Menu - Left of avatar */
+            .dropdown-menu {
+              display: none;
+              position: absolute;
+              top: 55px;
+              right: auto;
+              left: -210px;
+              /* Adjust this depending on width of dropdown */
+              background: #111;
+              min-width: 200px;
+              max-width: 250px;
+              border-radius: 12px;
+              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+              z-index: 1000;
+              overflow: hidden;
+              word-wrap: break-word;
+              animation: dropdownFade 0.2s ease-in-out;
+            }
+
+            /* Dropdown Fade Animation */
+            @keyframes dropdownFade {
+              0% {
+                opacity: 0;
+                transform: translateY(-10px);
+              }
+
+              100% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            /* User Name */
+            .dropdown-menu .user-name {
+              padding: 12px 16px;
+              font-weight: 600;
+              color: #ff4d4d;
+              font-size: 16px;
+            }
+
+            /* Divider */
+            .dropdown-menu hr {
+              margin: 0;
+              border: 0;
+              border-top: 1px solid #333;
+            }
+
+            /* Links inside dropdown */
+            .dropdown-menu a {
+              display: block;
+              padding: 12px 16px;
+              color: #fff;
+              text-decoration: none;
+              font-size: 14px;
+              transition: all 0.3s;
+            }
+
+            .dropdown-menu a:hover {
+              background: #222;
+              color: #ff4d4d;
+            }
+
+            /* Show dropdown */
+            .user-dropdown.show .dropdown-menu {
+              display: block;
+            }
+
+            /* Responsive Adjustments */
+            @media (max-width: 768px) {
+              .user-avatar {
+                font-size: 40px;
+              }
+
+              .dropdown-menu {
+                min-width: 180px;
+                max-width: 220px;
+                top: 50px;
+                left: -190px;
+              }
+
+              .dropdown-menu .user-name {
+                font-size: 14px;
+              }
+
+              .dropdown-menu a {
+                font-size: 13px;
+                padding: 10px 14px;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .dropdown-menu {
+                left: -160px;
+                top: 50px;
+              }
+            }
+          </style>
+        </div>
+      </div>
+
+
+
+      <!-- Mobile Menu Toggle -->
+      <div class="mobile-toggle">
+        <i class="fa fa-bars"></i>
       </div>
     </div>
+  </header>
+  <!-- Header Section End -->
 
+  <style>
+    /* Base Header */
+    .header-modern {
+      background: #0d0d0d;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
 
-    <!-- Mobile Menu Toggle -->
-    <div class="mobile-toggle">
-      <i class="fa fa-bars"></i>
-    </div>
-  </div>
-</header>
-<!-- Header Section End -->
+    /* Logo */
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
 
-<style>
-/* Base Header */
-.header-modern {
-  background: #0d0d0d;
-  padding: 15px 0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    .brand-logo {
+      height: 55px;
+      margin-right: 10px;
+    }
 
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-}
+    .brand-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-/* Logo */
-.brand {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
+    /* Navigation */
+    .mainmenu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 25px;
+    }
 
-.brand-logo {
-  height: 55px;
-  margin-right: 10px;
-}
+    .mainmenu ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
 
-.brand-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+    .mainmenu ul li a:hover,
+    .mainmenu ul li.active a {
+      color: #ff4d4d;
+    }
 
-/* Navigation */
-.mainmenu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 25px;
-}
+    /* Login Button */
+    .login-btn {
+      margin-left: 20px;
+      padding: 8px 18px;
+      background: #ff4d4d;
+      color: #fff;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
 
-.mainmenu ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  transition: 0.3s;
-}
+    .login-btn:hover {
+      background: #e60000;
+    }
 
-.mainmenu ul li a:hover,
-.mainmenu ul li.active a {
-  color: #ff4d4d;
-}
+    /* Mobile Toggle */
+    .mobile-toggle {
+      display: none;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+    }
 
-/* Login Button */
-.login-btn {
-  margin-left: 20px;
-  padding: 8px 18px;
-  background: #ff4d4d;
-  color: #fff;
-  border-radius: 30px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  transition: 0.3s;
-}
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mainmenu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: #111;
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+        text-align: center;
+      }
 
-.login-btn:hover {
-  background: #e60000;
-}
+      .mainmenu.active {
+        display: flex;
+        animation: slideDown 0.3s ease;
+      }
 
-/* Mobile Toggle */
-.mobile-toggle {
-  display: none;
-  font-size: 24px;
-  color: #fff;
-  cursor: pointer;
-}
+      .mainmenu ul {
+        flex-direction: column;
+        gap: 15px;
+      }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .mainmenu {
-    display: none;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: #111;
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-    text-align: center;
-  }
+      .mainmenu ul li a {
+        font-size: 18px;
+        display: block;
+      }
 
-  .mainmenu.active {
-    display: flex;
-    animation: slideDown 0.3s ease;
-  }
+      .brand-logo {
+        display: none;
+        /* hide logo on mobile */
+      }
 
-  .mainmenu ul {
-    flex-direction: column;
-    gap: 15px;
-  }
+      .brand-name {
+        font-size: 22px;
+        color: #fff;
+      }
 
-  .mainmenu ul li a {
-    font-size: 18px;
-    display: block;
-  }
+      .header-container {
+        justify-content: space-between;
+      }
 
-  .brand-logo {
-    display: none; /* hide logo on mobile */
-  }
+      .mobile-toggle {
+        display: block;
+      }
 
-  .brand-name {
-    font-size: 22px;
-    color: #fff;
-  }
+      .login-btn {
+        padding: 6px 14px;
+        font-size: 14px;
+      }
+    }
 
-  .header-container {
-    justify-content: space-between;
-  }
+    /* Animation for dropdown */
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
 
-  .mobile-toggle {
-    display: block;
-  }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 
-  .login-btn {
-    padding: 6px 14px;
-    font-size: 14px;
-  }
-}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.querySelector(".mobile-toggle");
+      const menu = document.querySelector(".mainmenu");
 
-/* Animation for dropdown */
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const toggle = document.querySelector(".mobile-toggle");
-    const menu = document.querySelector(".mainmenu");
-
-    toggle.addEventListener("click", () => {
-      menu.classList.toggle("active");
+      toggle.addEventListener("click", () => {
+        menu.classList.toggle("active");
+      });
     });
-  });
-</script>
+  </script>
 
 
-<style>
-/* Base Header */
-.header-modern {
-  background: #0d0d0d;
-  padding: 15px 0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+  <style>
+    /* Base Header */
+    .header-modern {
+      background: #0d0d0d;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-}
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
 
-/* Logo */
-.brand {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
+    /* Logo */
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
 
-.brand-logo {
-  height: 55px;
-  margin-right: 10px;
-}
+    .brand-logo {
+      height: 55px;
+      margin-right: 10px;
+    }
 
-.brand-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+    .brand-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-/* Navigation */
-.mainmenu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 25px;
-}
+    /* Navigation */
+    .mainmenu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 25px;
+    }
 
-.mainmenu ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  transition: 0.3s;
-}
+    .mainmenu ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
 
-.mainmenu ul li a:hover,
-.mainmenu ul li.active a {
-  color: #ff4d4d;
-}
+    .mainmenu ul li a:hover,
+    .mainmenu ul li.active a {
+      color: #ff4d4d;
+    }
 
-/* Login Button */
-.login-btn {
-  margin-left: 20px;
-  padding: 8px 18px;
-  background: #ff4d4d;
-  color: #fff;
-  border-radius: 30px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  transition: 0.3s;
-}
+    /* Login Button */
+    .login-btn {
+      margin-left: 20px;
+      padding: 8px 18px;
+      background: #ff4d4d;
+      color: #fff;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
 
-.login-btn:hover {
-  background: #e60000;
-}
+    .login-btn:hover {
+      background: #e60000;
+    }
 
-/* Mobile Toggle */
-.mobile-toggle {
-  display: none;
-  font-size: 24px;
-  color: #fff;
-  cursor: pointer;
-}
+    /* Mobile Toggle */
+    .mobile-toggle {
+      display: none;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+    }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .mainmenu {
-    display: none; /* hidden until toggled */
-  }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mainmenu {
+        display: none;
+        /* hidden until toggled */
+      }
 
-  .mobile-toggle {
-    display: block;
-  }
+      .mobile-toggle {
+        display: block;
+      }
 
-  .brand-logo {
-    display: none; /* hide logo on mobile */
-  }
+      .brand-logo {
+        display: none;
+        /* hide logo on mobile */
+      }
 
-  .brand-name {
-    font-size: 22px;
-    color: #fff;
-  }
+      .brand-name {
+        font-size: 22px;
+        color: #fff;
+      }
 
-  .header-container {
-    justify-content: space-between;
-  }
+      .header-container {
+        justify-content: space-between;
+      }
 
-  .login-btn {
-    padding: 6px 14px;
-    font-size: 14px;
-  }
-}
-</style>
+      .login-btn {
+        padding: 6px 14px;
+        font-size: 14px;
+      }
+    }
+  </style>
 
 
-   <!-- Hero Section Begin -->
-<section class="hero-section">
+  <!-- Hero Section Begin -->
+  <section class="hero-section">
     <div class="hero-items owl-carousel">
-        <div class="single-hero-item">
-            <style>
-                .single-hero-item {
-                    background-image: url("img/hero-slider/image6.jpeg");
-                    background-size: 1400px;   /* ensures the entire image fits */
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    height: 100vh;             /* full viewport height */
-                }
+      <div class="single-hero-item">
+        <style>
+          .single-hero-item {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("img/hero-slider/image6.jpeg");
+            background-size: 1400px;
+            /* ensures the entire image fits */
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            /* full viewport height */
+          }
 
-                /* Mobile: use a different image */
-                @media (max-width: 768px) {
-                    .single-hero-item {
-                        background-image: url("img/homeImagePhone.jpeg");
-                        background-size: cover; /* fills container on mobile */
-                        background-position: center;
-                    }
-                }
-            </style>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="hero-text">
-                            <h2>Join Us Now</h2>
-                            <h1>FITNESS & SPORT</h1>
-                            <a href="#about" class="primary-btn">Read More</a>
-                        </div>
-                    </div>
-                </div>
+          /* Mobile: use a different image */
+          @media (max-width: 768px) {
+            .single-hero-item {
+              background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("img/homeImagePhone.jpeg");
+              background-size: cover;
+              /* fills container on mobile */
+              background-position: center;
+            }
+          }
+
+          /* Custom styling for readability on white/light backgrounds */
+          .single-hero-item .hero-text h2 {
+            font-size: 52px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5);
+          }
+
+          .single-hero-item .hero-text h1 {
+            font-size: 26px;
+            text-transform: none;
+            /* Keep mixed-case sentence format */
+            font-weight: 500;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            font-family: "Nunito Sans", sans-serif;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.5);
+          }
+
+          @media (max-width: 768px) {
+            .single-hero-item .hero-text h2 {
+              font-size: 32px;
+            }
+
+            .single-hero-item .hero-text h1 {
+              font-size: 18px;
+              max-width: 100%;
+              margin-bottom: 30px;
+            }
+          }
+        </style>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="hero-text">
+                <h2>Lose Fat. Build Muscle. Transform Your Lifestyle.</h2>
+                <h1>Custom workout plans, nutrition coaching, and weekly accountability to help you achieve lasting
+                  results.</h1>
+                <a href="#about" class="primary-btn">Read More</a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</section>
-<!-- Hero End -->
+  </section>
+  <!-- Hero End -->
 
 
-    <!-- Feature Section Begin -->
-    <!-- <section class="feature-section">
+  <!-- Feature Section Begin -->
+  <!-- <section class="feature-section">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
@@ -617,47 +673,46 @@
             </div>
         </div>
     </section> -->
-    <!-- Feature Section End -->
+  <!-- Feature Section End -->
 
-    <!-- About Section Begin -->
-    <section id="about" class="home-about spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="about-text">
-                        <h2>WELCOME TO Ironnrootfitness</h2>
-                        <p class="short-details">We guide you step by step to achieve sustainable fitness and real results — more than workouts, we build true transformation in your body, mind, and lifestyle.</p>
-                        <div class="about-btns d-none d-lg-flex">
-                            <a href="about.html" class="primary-btn about-btn">Learn More</a>
-                            <a href="#" class="primary-btn btn-schedule-call welcome-cta-btn">Schedule a free call</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="about-img">
-                        <img src="img/hero-slider/image4.jpg" alt="">
-                        <style>
-                            .about-img img {
-    border-radius: 15px;  /* rounded corners */
-}
-
-                        </style>
-                    </div>
-                </div>
-                <!-- Mobile version buttons below the image -->
-                <div class="col-12 d-lg-none mt-4">
-                    <div class="about-btns">
-                        <a href="about.html" class="primary-btn about-btn">Learn More</a>
-                        <a href="#" class="primary-btn btn-schedule-call welcome-cta-btn">Schedule a free call</a>
-                    </div>
-                </div>
+  <!-- About Section Begin -->
+  <section id="about" class="home-about spad">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="about-text">
+            <h2>WELCOME TO Ironnrootfitness</h2>
+            <p class="short-details">We guide you step by step to achieve sustainable fitness and real results — more
+              than workouts, we build true transformation in your body, mind, and lifestyle.</p>
+            <div class="about-btns d-none d-lg-flex">
+              <a href="about.html" class="primary-btn about-btn">Learn More</a>
             </div>
+          </div>
         </div>
-    </section>
-    <!-- About Section End -->
+        <div class="col-lg-6">
+          <div class="about-img">
+            <img src="img/hero-slider/image4.jpg" alt="">
+            <style>
+              .about-img img {
+                border-radius: 15px;
+                /* rounded corners */
+              }
+            </style>
+          </div>
+        </div>
+        <!-- Mobile version buttons below the image -->
+        <div class="col-12 d-lg-none mt-4">
+          <div class="about-btns">
+            <a href="about.html" class="primary-btn about-btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- About Section End -->
 
-    <!-- Classes Section Begin -->
-    <!-- <section class="classes-section">
+  <!-- Classes Section Begin -->
+  <!-- <section class="classes-section">
         <div class="class-title set-bg" data-setbg="img/classes-title-bg.jpg">
             <div class="container">
                 <div class="row">
@@ -704,10 +759,10 @@
             </div>
         </div>
     </section> -->
-    <!-- Classes Section End -->
+  <!-- Classes Section End -->
 
-    <!-- Class Time Section Begin -->
-    <!-- <section class="classtime-section class-time-table spad">
+  <!-- Class Time Section Begin -->
+  <!-- <section class="classtime-section class-time-table spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -863,145 +918,147 @@
             </div>
         </div>
     </section> -->
-    <!-- Class Time Section End -->
+  <!-- Class Time Section End -->
 
-     <!-- Price Plan Section Begin -->
-    <section class="price-section spad set-bg" data-setbg="img/price-bg.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Training and Diet</h2>
-                        <p><b>"Transform Your Body with One-Time Payment Plans!"</b><br/>
-No monthly subscriptions, no hidden fees—just results. Choose the plan that fits your lifestyle and get personalized training and diet guidance in a single payment.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="single-price-plan">
-                        <h4>Personal Nutrition
-Plan</h4>
-                        <div class="price-plan">
-                            <p>Less then your monthly <br/> <b>snacks/coffee runs</b> </p>
-                        </div>
-                        <ul>
-                           <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                        <a href="./personal-nutrition-plan.html" class="primary-btn price-btn">Know More</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-price-plan">
-                        <h4>Ultimate Personal Coaching</h4>
-                        <div class="price-plan">
-                            <p>Less than a month of <br/> <b>smoking or drinking habits</b></p>
-                        </div>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                        <a href="./ultimate-personal-coaching.html" class="primary-btn price-btn">know More</a>
-                        <div class="tic-text">
-                            <i class="fa fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-price-plan">
-                        <h4>Personal Workout Program</h4>
-                        <div class="price-plan">
-                            <p>Less than regular <br/> <b>junk food and sugary drinks</b></p>
-                        </div>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                        <a href="./personal-workout-plan.html" class="primary-btn price-btn">Know More</a>
-                    </div>
-                </div>
-            </div>
+  <!-- Price Plan Section Begin -->
+  <section class="price-section spad set-bg" data-setbg="img/price-bg.jpg">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-title">
+            <h2>Training and Diet</h2>
+            <p><b>"Transform Your Body with One-Time Payment Plans!"</b><br />
+              No monthly subscriptions, no hidden fees—just results. Choose the plan that fits your lifestyle and get
+              personalized training and diet guidance in a single payment.</p>
+          </div>
         </div>
-    </section>
-    <!-- Price Plan Section End -->
-
-    <!-- Choseus Section Begin -->
-    <section class="chooseus-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Why People Choose Us</h2>
-                        <p>Our sport experts and latest sports equipment are the winning combination.</p>
-                    </div>
-                </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="single-price-plan">
+            <h4>Personal Nutrition
+              Plan</h4>
+            <div class="price-plan">
+              <p>Less then your monthly <br /> <b>snacks/coffee runs</b> </p>
             </div>
-           <div class="row">
-  <div class="col-lg-4 col-sm-6 col-6">
-    <div class="choose-item">
-      <img src="img/icons/chose-icon-1.png" alt="">
-      <h5>Expert Guidance</h5>
-      <p>Certified coaches design plans that are personalized just for you.</p>
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-sm-6 col-6">
-    <div class="choose-item">
-      <img src="img/icons/chose-icon-2.png" alt="">
-      <h5>No Hidden Costs</h5>
-      <p>Simple, one-time payment plans—no monthly fees or surprises.</p>
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-sm-6 col-6">
-    <div class="choose-item">
-      <img src="img/icons/chose-icon-3.png" alt="">
-      <h5>Holistic Approach</h5>
-      <p>We integrate fitness and nutrition to build sustainable, lifelong health.</p>
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-sm-6 col-6">
-    <div class="choose-item">
-      <img src="img/icons/chose-icon-4.png" alt="">
-      <h5>Modern Equipment</h5>
-      <p>State-of-the-art gear and facilities help you train smarter.</p>
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-sm-6 col-6">
-    <div class="choose-item">
-      <img src="img/icons/chose-icon-5.png" alt="">
-      <h5>Balanced Nutrition Guidance</h5>
-      <p>Simple, science-backed nutrition plans tailored to fuel your workouts and support sustainable results.</p>
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-sm-6 col-6">
-    <div class="choose-item">
-      <img src="img/icons/chose-icon-6.png" alt="">
-      <h5>Proven Results</h5>
-      <p>Transformation stories from clients that highlight real outcomes.</p>
-    </div>
-  </div>
-</div>
-
+            <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+            <a href="./personal-nutrition-plan.html" class="primary-btn price-btn">Know More</a>
+          </div>
         </div>
-    </section>
-    <!-- Choseus Section End -->
+        <div class="col-lg-4">
+          <div class="single-price-plan">
+            <h4>Ultimate Personal Coaching</h4>
+            <div class="price-plan">
+              <p>Less than a month of <br /> <b>smoking or drinking habits</b></p>
+            </div>
+            <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+            <a href="./ultimate-personal-coaching.html" class="primary-btn price-btn">know More</a>
+            <div class="tic-text">
+              <i class="fa fa-star"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="single-price-plan">
+            <h4>Personal Workout Program</h4>
+            <div class="price-plan">
+              <p>Less than regular <br /> <b>junk food and sugary drinks</b></p>
+            </div>
+            <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+            <a href="./personal-workout-plan.html" class="primary-btn price-btn">Know More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Price Plan Section End -->
 
-    <!-- Video Section Begin -->
-    <!-- <section class="video-section set-bg" data-setbg="img/video-bg.jpg">
+  <!-- Choseus Section Begin -->
+  <section class="chooseus-section spad">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-title">
+            <h2>Why People Choose Us</h2>
+            <p>Our sport experts and latest sports equipment are the winning combination.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-sm-6 col-6">
+          <div class="choose-item">
+            <img src="img/icons/chose-icon-1.png" alt="">
+            <h5>Expert Guidance</h5>
+            <p>Certified coaches design plans that are personalized just for you.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 col-6">
+          <div class="choose-item">
+            <img src="img/icons/chose-icon-2.png" alt="">
+            <h5>No Hidden Costs</h5>
+            <p>Simple, one-time payment plans—no monthly fees or surprises.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 col-6">
+          <div class="choose-item">
+            <img src="img/icons/chose-icon-3.png" alt="">
+            <h5>Holistic Approach</h5>
+            <p>We integrate fitness and nutrition to build sustainable, lifelong health.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 col-6">
+          <div class="choose-item">
+            <img src="img/icons/chose-icon-4.png" alt="">
+            <h5>Modern Equipment</h5>
+            <p>State-of-the-art gear and facilities help you train smarter.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 col-6">
+          <div class="choose-item">
+            <img src="img/icons/chose-icon-5.png" alt="">
+            <h5>Balanced Nutrition Guidance</h5>
+            <p>Simple, science-backed nutrition plans tailored to fuel your workouts and support sustainable results.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 col-6">
+          <div class="choose-item">
+            <img src="img/icons/chose-icon-6.png" alt="">
+            <h5>Proven Results</h5>
+            <p>Transformation stories from clients that highlight real outcomes.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- Choseus Section End -->
+
+  <!-- Video Section Begin -->
+  <!-- <section class="video-section set-bg" data-setbg="img/video-bg.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -1015,10 +1072,10 @@ Plan</h4>
             </div>
         </div>
     </section> -->
-    <!-- Video Section End -->
+  <!-- Video Section End -->
 
-    <!-- Blog Section Begin -->
-    <!-- <section class="blog-section spad">
+  <!-- Blog Section Begin -->
+  <!-- <section class="blog-section spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -1086,10 +1143,10 @@ Plan</h4>
             </div>
         </div>
     </section> -->
-    <!-- Blog Section End -->
+  <!-- Blog Section End -->
 
-    <!-- Cta Section Begin -->
-    <!-- <section class="cta-section">
+  <!-- Cta Section Begin -->
+  <!-- <section class="cta-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -1102,10 +1159,10 @@ Plan</h4>
             </div>
         </div>
     </section> -->
-    <!-- Cta Section End -->
+  <!-- Cta Section End -->
 
-    <!-- Map Section Begin -->
-    <!-- <div class="map">
+  <!-- Map Section Begin -->
+  <!-- <div class="map">
         <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d497699.69063807104!2d77.03995914996382!3d12.954001247601756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1757240975404!5m2!1sen!2sin" height="590" style="border: 0" allowfullscreen=""></iframe>
         <div class="map-contact-detalis">
@@ -1128,179 +1185,189 @@ Plan</h4>
             </div>
         </div>
     </div> -->
-    <!-- Map Section End -->
+  <!-- Map Section End -->
 
-  
 
-<!-- Footer Section Begin -->
-<footer class="footer-hero">
-  <div class="footer-inner">
 
-    <!-- Logo + Brand -->
-    <div class="footer-logo">
-      <img src="img/logo.png" alt="Ironnrootfitness Logo">
-      <h2>Ironnrootfitness</h2>
-    </div>
+  <!-- Footer Section Begin -->
+  <footer class="footer-hero">
+    <div class="footer-inner">
 
-    <!-- Quote -->
-    <p class="footer-quote">
-      “Don’t just chase fitness goals.
-      Build a lifestyle that lasts forever.”
-    </p>
+      <!-- Logo + Brand -->
+      <div class="footer-logo">
+        <img src="img/logo.png" alt="Ironnrootfitness Logo">
+        <h2>Ironnrootfitness</h2>
+      </div>
 
-    <!-- Contact -->
-    <div class="footer-contact">
-      <p><i class="fa fa-envelope"></i> 
-        <a href="mailto:Ironnrootfitness@gmail.com">Ironnrootfitness@gmail.com</a>
+      <!-- Quote -->
+      <p class="footer-quote">
+        “Don’t just chase fitness goals.
+        Build a lifestyle that lasts forever.”
       </p>
-      <p><i class="fa fa-map-marker"></i> Bengaluru, India</p>
+
+      <!-- Contact -->
+      <div class="footer-contact">
+        <p><i class="fa fa-envelope"></i>
+          <a href="mailto:Ironnrootfitness@gmail.com">Ironnrootfitness@gmail.com</a>
+        </p>
+        <p><i class="fa fa-map-marker"></i> Bengaluru, India</p>
+      </div>
+
+      <!-- Social -->
+      <div class="footer-social">
+        <a href="https://www.instagram.com/ironnrootfitness/"><i class="fa fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@ironnrootfitness"><i class="fa fa-youtube"></i></a>
+        <a href="https://www.threads.com/@ironnrootfitness"><i class="fa-brands fa-x">@</i></a>
+        <!-- Threads doesn't have an official FA icon, using X/Threads workaround -->
+      </div>
+
+
     </div>
 
-    <!-- Social -->
-    <div class="footer-social">
-  <a href="https://www.instagram.com/ironnrootfitness/"><i class="fa fa-instagram"></i></a>
-  <a href="https://www.youtube.com/@ironnrootfitness"><i class="fa fa-youtube"></i></a>
-  <a href="https://www.threads.com/@ironnrootfitness"><i class="fa-brands fa-x">@</i></a> <!-- Threads doesn't have an official FA icon, using X/Threads workaround -->
-</div>
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <p>©
+        <script>document.write(new Date().getFullYear());</script> Ironnrootfitness. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+  <!-- Footer Section End -->
+
+  <style>
+    .footer-hero {
+      background: #0b0b0b;
+      color: #ccc;
+      text-align: center;
+      padding: 60px 20px 30px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* Logo */
+    .footer-logo img {
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    .footer-logo h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Quote */
+    .footer-quote {
+      margin: 20px auto;
+      font-size: 18px;
+      color: #ff4d4d;
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+    }
+
+    /* Contact */
+    .footer-contact p {
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    .footer-contact i {
+      margin-right: 8px;
+      color: #ff4d4d;
+    }
+
+    .footer-contact a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    .footer-contact a:hover {
+      color: #ff4d4d;
+    }
+
+    /* Social */
+    .footer-social {
+      margin-top: 20px;
+    }
+
+    .footer-social a {
+      margin: 0 10px;
+      font-size: 20px;
+      color: #ccc;
+      transition: 0.3s;
+    }
+
+    .footer-social a:hover {
+      color: #ff4d4d;
+      text-shadow: 0 0 12px rgba(255, 77, 77, 0.9);
+    }
+
+    /* Bottom */
+    .footer-bottom {
+      border-top: 1px solid #222;
+      margin-top: 30px;
+      padding-top: 15px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .footer-logo h2 {
+        font-size: 22px;
+      }
+
+      .footer-quote {
+        font-size: 16px;
+      }
+    }
+  </style>
 
 
-  </div>
 
-  <!-- Bottom -->
-  <div class="footer-bottom">
-    <p>© <script>document.write(new Date().getFullYear());</script> Ironnrootfitness. All Rights Reserved.</p>
-  </div>
-</footer>
-<!-- Footer Section End -->
+  <!-- Js Plugins -->
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/mixitup.min.js"></script>
+  <script src="js/jquery.nice-select.min.js"></script>
+  <script src="js/jquery.slicknav.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/masonry.pkgd.min.js"></script>
+  <script src="js/main.js"></script>
 
-<style>
-.footer-hero {
-  background: #0b0b0b;
-  color: #ccc;
-  text-align: center;
-  padding: 60px 20px 30px;
-  font-family: 'Poppins', sans-serif;
-}
+  <!-- Schedule Call Plugin -->
+  <script type="module" src="js/schedule.js"></script>
 
-.footer-inner {
-  max-width: 900px;
-  margin: auto;
-}
+  <!-- No Inspect -->
 
-/* Logo */
-.footer-logo img {
-  height: 100px;
-  margin-bottom: 10px;
-}
-.footer-logo h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
+  <script>
+    // Disable right-click context menu
+    document.addEventListener("contextmenu", function (event) {
+      event.preventDefault();
+    });
 
-/* Quote */
-.footer-quote {
-  margin: 20px auto;
-  font-size: 18px;
-  color: #ff4d4d;
-  font-weight: 500;
-  text-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
-}
-
-/* Contact */
-.footer-contact p {
-  margin: 8px 0;
-  font-size: 15px;
-}
-.footer-contact i {
-  margin-right: 8px;
-  color: #ff4d4d;
-}
-.footer-contact a {
-  color: #ccc;
-  text-decoration: none;
-}
-.footer-contact a:hover {
-  color: #ff4d4d;
-}
-
-/* Social */
-.footer-social {
-  margin-top: 20px;
-}
-.footer-social a {
-  margin: 0 10px;
-  font-size: 20px;
-  color: #ccc;
-  transition: 0.3s;
-}
-.footer-social a:hover {
-  color: #ff4d4d;
-  text-shadow: 0 0 12px rgba(255, 77, 77, 0.9);
-}
-
-/* Bottom */
-.footer-bottom {
-  border-top: 1px solid #222;
-  margin-top: 30px;
-  padding-top: 15px;
-  font-size: 14px;
-  color: #777;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .footer-logo h2 {
-    font-size: 22px;
-  }
-  .footer-quote {
-    font-size: 16px;
-  }
-}
-</style>
-
-
-
-    <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/masonry.pkgd.min.js"></script>
-    <script src="js/main.js"></script>
-
-    <!-- Schedule Call Plugin -->
-    <script type="module" src="js/schedule.js"></script>
-
-    <!-- No Inspect -->
-
-<script>
-// Disable right-click context menu
-document.addEventListener("contextmenu", function (event) {
-  event.preventDefault();
-});
-
-// Disable common inspect shortcuts
-document.addEventListener("keydown", function (event) {
-  // F12
-  if (event.key === "F12") {
-    event.preventDefault();
-  }
-  // Ctrl+Shift+I or Ctrl+Shift+J or Ctrl+U or Ctrl+S
-  if (
-    (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) ||
-    (event.ctrlKey && (event.key === "U" || event.key === "S"))
-  ) {
-    event.preventDefault();
-  }
-});
-</script>
+    // Disable common inspect shortcuts
+    document.addEventListener("keydown", function (event) {
+      // F12
+      if (event.key === "F12") {
+        event.preventDefault();
+      }
+      // Ctrl+Shift+I or Ctrl+Shift+J or Ctrl+U or Ctrl+S
+      if (
+        (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) ||
+        (event.ctrlKey && (event.key === "U" || event.key === "S"))
+      ) {
+        event.preventDefault();
+      }
+    });
+  </script>
 
 </body>
 

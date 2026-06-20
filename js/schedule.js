@@ -666,6 +666,9 @@ onAuthStateChanged(auth, async (user) => {
 
 // Function to open Modal
 export function openModal() {
+  // Mark as seen in this session so they are not prompted again
+  sessionStorage.setItem("hasSeenScheduleModal", "true");
+
   // Reset states
   selectedDateString = "";
   selectedTime = "";
@@ -697,6 +700,8 @@ export function openModal() {
 export function closeModal() {
   modalOverlay.classList.remove("active");
   document.body.style.overflow = ""; // restore scroll
+  // Mark as seen in this session so they are not prompted again
+  sessionStorage.setItem("hasSeenScheduleModal", "true");
 }
 
 // Render Calendar Logic
@@ -876,8 +881,55 @@ async function handleBookingSubmit() {
   }
 }
 
-// Bind button clicks
-document.addEventListener("DOMContentLoaded", () => {
+// Auto-Trigger Logic (Exit Intent, Time Delay, & Scroll Depth)
+function initAutoTrigger() {
+  // Check if user has already seen the modal in this session
+  if (sessionStorage.getItem("hasSeenScheduleModal")) {
+    return;
+  }
+
+  // Helper to trigger the modal safely and clean up
+  const triggerModal = () => {
+    if (!sessionStorage.getItem("hasSeenScheduleModal")) {
+      openModal();
+      cleanup();
+    }
+  };
+
+  // Cleanup listeners and timers
+  const cleanup = () => {
+    clearTimeout(timeDelayTimeout);
+    document.removeEventListener("mouseleave", handleMouseLeave);
+    window.removeEventListener("scroll", handleScroll);
+  };
+
+  // 1. Time-on-page delay: Auto-trigger after 20 seconds
+  const timeDelayTimeout = setTimeout(triggerModal, 20000); // 20 seconds
+
+  // 2. Exit-intent trigger (Desktop): Trigger when mouse moves out of viewport top
+  const handleMouseLeave = (e) => {
+    if (e.clientY < 20) {
+      triggerModal();
+    }
+  };
+  document.addEventListener("mouseleave", handleMouseLeave);
+
+  // 3. Scroll-depth trigger (Mobile & Desktop): Trigger when scrolled 50% down
+  const handleScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (scrollHeight > 0) {
+      const scrollPercentage = (scrollTop / scrollHeight) * 100;
+      if (scrollPercentage >= 50) {
+        triggerModal();
+      }
+    }
+  };
+  window.addEventListener("scroll", handleScroll);
+}
+
+// Bind button clicks and auto-triggers
+function init() {
   // Find all elements with class .btn-schedule-call and bind openModal to them
   document.body.addEventListener("click", (e) => {
     const btn = e.target.closest(".btn-schedule-call");
@@ -886,4 +938,13 @@ document.addEventListener("DOMContentLoaded", () => {
       openModal();
     }
   });
-});
+
+  // Initialize auto-trigger logic
+  initAutoTrigger();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}

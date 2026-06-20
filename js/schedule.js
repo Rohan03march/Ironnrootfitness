@@ -40,6 +40,12 @@ const styles = `
   color: #fff;
   box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
 .cta-mobile {
   display: none;
 }
@@ -51,21 +57,22 @@ const styles = `
     display: inline;
   }
   .header-cta-btn {
-    display: inline-block;
-    padding: 6px 12px;
+    padding: 6px 13px;
     font-size: 12px;
     border-width: 1.5px;
     border-radius: 20px;
   }
   .header-actions {
-    margin-left: 10px !important;
-    gap: 8px !important;
+    gap: 10px;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 400px) {
   .header-cta-btn {
     padding: 5px 10px;
     font-size: 11px;
+  }
+  .header-actions {
+    gap: 6px;
   }
 }
 

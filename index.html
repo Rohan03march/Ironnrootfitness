@@ -45,10 +45,7 @@
       <!-- Logo -->
     <a href="./index.html" class="brand">
       <img class="brand-logo" src="img/logo.png" alt="Logo">
-      <span class="brand-name">
-        <span class="brand-name-full">Ironnrootfitness</span>
-        <span class="brand-name-short">Ironnroot</span>
-      </span>
+      <span class="brand-name">Ironnrootfitness</span>
     </a>
 
       <!-- Navigation -->
@@ -63,7 +60,7 @@
       </nav>
 
       <!-- Header Actions (CTA + Profile Menu) -->
-      <div class="header-actions" style="display: flex; align-items: center; gap: 15px; margin-left: 20px;">
+      <div class="header-actions">
         <a href="#" class="btn-schedule-call header-cta-btn">
           <span class="cta-desktop">Free Strategy Call</span>
           <span class="cta-mobile">Free Strategy Call</span>
@@ -324,10 +321,6 @@
       letter-spacing: 1px;
     }
 
-    .brand-name-short {
-      display: none;
-    }
-
     /* Navigation */
     .mainmenu ul {
       list-style: none;
@@ -378,7 +371,7 @@
     /* Responsive adjustments for mobile and tablets */
     @media (max-width: 768px) {
       .header-container {
-        padding: 0 10px;
+        padding: 0 12px;
         justify-content: space-between;
       }
 
@@ -411,68 +404,48 @@
       }
 
       .brand-logo {
-        display: block !important; /* Show logo on mobile */
-        height: 38px;
-        margin-right: 8px;
+        display: none; /* Hide logo on mobile */
       }
 
       .brand-name {
-        font-size: 16px;
+        font-size: 17px;
         color: #fff;
         letter-spacing: 0.5px;
       }
 
-      .brand-name-full {
-        display: none;
-      }
-
-      .brand-name-short {
-        display: inline;
-      }
-
       .header-actions {
-        margin-left: auto !important;
-        margin-right: 8px !important;
-        gap: 10px !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
       }
 
       .mobile-toggle {
         display: block;
       }
-
-      .login-btn {
-        padding: 6px 14px;
-        font-size: 14px;
-      }
     }
 
-    /* Extra small mobile screen adjustments to prevent congestion */
-    @media (max-width: 480px) {
-      .brand-logo {
-        height: 32px;
-        margin-right: 4px;
+    /* Extra small screens (< 400px) */
+    @media (max-width: 400px) {
+      .header-container {
+        padding: 0 8px;
       }
 
       .brand-name {
-        font-size: 13px;
+        font-size: 14px;
+        letter-spacing: 0;
       }
 
       .header-actions {
-        gap: 6px !important;
-        margin-right: 2px !important;
-      }
-
-      .header-cta-btn {
-        padding: 5px 8px !important;
-        font-size: 10px !important;
+        gap: 6px;
       }
 
       .user-avatar {
-        font-size: 28px !important; /* Make user avatar smaller */
+        font-size: 26px !important;
       }
 
       .mobile-toggle {
-        font-size: 18px !important; /* Make hamburger toggle smaller */
+        font-size: 18px !important;
       }
     }
 

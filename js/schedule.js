@@ -100,12 +100,12 @@ const styles = `
 @media (max-width: 768px) {
   .about-btns {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 12px;
   }
   .about-btns .primary-btn {
     width: 100% !important;
-    max-width: 280px;
+    max-width: 100% !important;
     box-sizing: border-box;
   }
 }

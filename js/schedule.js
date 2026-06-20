@@ -72,6 +72,44 @@ const styles = `
   }
 }
 
+/* ==================== WELCOME SECTION BUTTONS ==================== */
+.about-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 25px;
+}
+.about-btns .primary-btn {
+  margin: 0 !important;
+}
+.welcome-cta-btn {
+  background: #ff4d4d !important;
+  border-color: #ff4d4d !important;
+  width: auto !important;
+  padding: 0 24px !important;
+  transition: all 0.3s ease !important;
+}
+.welcome-cta-btn:hover {
+  background: #e60000 !important;
+  border-color: #e60000 !important;
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4) !important;
+}
+.welcome-cta-btn::after {
+  display: none !important;
+}
+@media (max-width: 768px) {
+  .about-btns {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .about-btns .primary-btn {
+    width: 100% !important;
+    max-width: 280px;
+    box-sizing: border-box;
+  }
+}
+
 .sched-modal-overlay {
   position: fixed;
   inset: 0;

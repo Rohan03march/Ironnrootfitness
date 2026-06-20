@@ -59,203 +59,211 @@
       </ul>
     </nav>
 
-    <!-- User Profile Dropdown with Icon -->
-<div class="user-dropdown">
-  <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
-  <div class="dropdown-menu" id="dropdownMenu">
-    <div class="user-name" id="userName"></div>
-    <a id="transactionHistory" href="transactionHistory.html" style="display: none;">Transaction History</a>
-    <hr>
-    <a href="./login.html" id="loginBtn">Login</a>
-    <a href="#" id="logoutBtn" style="display:none;">Logout</a>
-  </div>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
-    authDomain: "ironnrootfitness-5156e.firebaseapp.com",
-    projectId: "ironnrootfitness-5156e",
-    storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
-    messagingSenderId: "508351386284",
-    appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
-    measurementId: "G-S6235MZEPC"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Elements
-const avatar = document.getElementById("userAvatar");
-const dropdown = document.getElementById("dropdownMenu");
-const userName = document.getElementById("userName");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const transactionHistory = document.getElementById("transactionHistory");
-
-// Toggle dropdown
-avatar.addEventListener("click", (e) => {
-  e.stopPropagation();
-  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-});
-
-// Close dropdown if clicked outside
-document.addEventListener("click", () => {
-  dropdown.style.display = "none";
-});
-
-// Firebase Auth state
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    try {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        userName.textContent = docSnap.data().fullName; // from Firestore
-      } else {
-        userName.textContent = user.email; // fallback
+    <!-- Header Actions (CTA + Profile Menu) -->
+    <div class="header-actions" style="display: flex; align-items: center; gap: 15px; margin-left: 20px;">
+      <a href="#" class="btn-schedule-call header-cta-btn">
+        <span class="cta-desktop">Schedule a free call</span>
+        <span class="cta-mobile">Free Call</span>
+      </a>
+      
+      <!-- User Profile Dropdown with Icon -->
+      <div class="user-dropdown">
+        <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <div class="user-name" id="userName"></div>
+          <a id="transactionHistory" href="transactionHistory.html" style="display: none;">Transaction History</a>
+          <hr>
+          <a href="./login.html" id="loginBtn">Login</a>
+          <a href="#" id="logoutBtn" style="display:none;">Logout</a>
+        </div>
+        <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+      
+      const firebaseConfig = {
+          apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
+          authDomain: "ironnrootfitness-5156e.firebaseapp.com",
+          projectId: "ironnrootfitness-5156e",
+          storageBucket: "ironnrootfitness-5156e.firebasestorage.app",
+          messagingSenderId: "508351386284",
+          appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
+          measurementId: "G-S6235MZEPC"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      
+      // Elements
+      const avatar = document.getElementById("userAvatar");
+      const dropdown = document.getElementById("dropdownMenu");
+      const userName = document.getElementById("userName");
+      const loginBtn = document.getElementById("loginBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const transactionHistory = document.getElementById("transactionHistory");
+      
+      // Toggle dropdown
+      avatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      });
+      
+      // Close dropdown if clicked outside
+      document.addEventListener("click", () => {
+        dropdown.style.display = "none";
+      });
+      
+      // Firebase Auth state
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          try {
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              userName.textContent = docSnap.data().fullName; // from Firestore
+            } else {
+              userName.textContent = user.email; // fallback
+            }
+          } catch (err) {
+            console.error(err);
+            userName.textContent = user.email;
+          }
+      
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+          transactionHistory.style.display = "block"; // show when logged in
+        } else {
+          userName.textContent = "";
+          loginBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+          transactionHistory.style.display = "none"; // hide when logged out
+        }
+      });
+      
+      // Logout
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+        dropdown.style.display = "none";
+        alert("You have been logged out!");
+      });
+      </script>
+      
+      
+        <style>
+          /* ==========================
+         User Dropdown
+      ========================== */
+      .user-dropdown {
+        position: relative;
+        display: inline-block;
+        font-family: 'Poppins', sans-serif;
       }
-    } catch (err) {
-      console.error(err);
-      userName.textContent = user.email;
-    }
-
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "block";
-    transactionHistory.style.display = "block"; // show when logged in
-  } else {
-    userName.textContent = "";
-    loginBtn.style.display = "block";
-    logoutBtn.style.display = "none";
-    transactionHistory.style.display = "none"; // hide when logged out
-  }
-});
-
-// Logout
-logoutBtn.addEventListener("click", async () => {
-  await signOut(auth);
-  dropdown.style.display = "none";
-  alert("You have been logged out!");
-});
-</script>
-
-
-  <style>
-    /* ==========================
-   User Dropdown
-========================== */
-.user-dropdown {
-  position: relative;
-  display: inline-block;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* Avatar Icon */
-.user-avatar {
-  font-size: 45px;
-  color: #ff4d4d;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.user-avatar:hover {
-  color: #e63636;
-}
-
-/* Dropdown Menu - Left of avatar */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 55px;
-  right: auto;
-  left: -210px; /* Adjust this depending on width of dropdown */
-  background: #111;
-  min-width: 200px;
-  max-width: 250px;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-  z-index: 1000;
-  overflow: hidden;
-  word-wrap: break-word;
-  animation: dropdownFade 0.2s ease-in-out;
-}
-
-/* Dropdown Fade Animation */
-@keyframes dropdownFade {
-  0% {opacity: 0; transform: translateY(-10px);}
-  100% {opacity: 1; transform: translateY(0);}
-}
-
-/* User Name */
-.dropdown-menu .user-name {
-  padding: 12px 16px;
-  font-weight: 600;
-  color: #ff4d4d;
-  font-size: 16px;
-}
-
-/* Divider */
-.dropdown-menu hr {
-  margin: 0;
-  border: 0;
-  border-top: 1px solid #333;
-}
-
-/* Links inside dropdown */
-.dropdown-menu a {
-  display: block;
-  padding: 12px 16px;
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.3s;
-}
-
-.dropdown-menu a:hover {
-  background: #222;
-  color: #ff4d4d;
-}
-
-/* Show dropdown */
-.user-dropdown.show .dropdown-menu {
-  display: block;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .user-avatar {
-    font-size: 40px;
-  }
-
-  .dropdown-menu {
-    min-width: 180px;
-    max-width: 220px;
-    top: 50px;
-    left: -190px;
-  }
-
-  .dropdown-menu .user-name {
-    font-size: 14px;
-  }
-
-  .dropdown-menu a {
-    font-size: 13px;
-    padding: 10px 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .dropdown-menu {
-    left: -160px;
-    top: 50px;
-  }
-}
-
-  </style>
-</div>
+      
+      /* Avatar Icon */
+      .user-avatar {
+        font-size: 45px;
+        color: #ff4d4d;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      
+      .user-avatar:hover {
+        color: #e63636;
+      }
+      
+      /* Dropdown Menu - Left of avatar */
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 55px;
+        right: auto;
+        left: -210px; /* Adjust this depending on width of dropdown */
+        background: #111;
+        min-width: 200px;
+        max-width: 250px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+        z-index: 1000;
+        overflow: hidden;
+        word-wrap: break-word;
+        animation: dropdownFade 0.2s ease-in-out;
+      }
+      
+      /* Dropdown Fade Animation */
+      @keyframes dropdownFade {
+        0% {opacity: 0; transform: translateY(-10px);}
+        100% {opacity: 1; transform: translateY(0);}
+      }
+      
+      /* User Name */
+      .dropdown-menu .user-name {
+        padding: 12px 16px;
+        font-weight: 600;
+        color: #ff4d4d;
+        font-size: 16px;
+      }
+      
+      /* Divider */
+      .dropdown-menu hr {
+        margin: 0;
+        border: 0;
+        border-top: 1px solid #333;
+      }
+      
+      /* Links inside dropdown */
+      .dropdown-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+      
+      .dropdown-menu a:hover {
+        background: #222;
+        color: #ff4d4d;
+      }
+      
+      /* Show dropdown */
+      .user-dropdown.show .dropdown-menu {
+        display: block;
+      }
+      
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .user-avatar {
+          font-size: 40px;
+        }
+      
+        .dropdown-menu {
+          min-width: 180px;
+          max-width: 220px;
+          top: 50px;
+          left: -190px;
+        }
+      
+        .dropdown-menu .user-name {
+          font-size: 14px;
+        }
+      
+        .dropdown-menu a {
+          font-size: 13px;
+          padding: 10px 14px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .dropdown-menu {
+          left: -160px;
+          top: 50px;
+        }
+      }
+      
+        </style>
+      </div>
+    </div>
 
 
 
@@ -620,6 +628,7 @@ logoutBtn.addEventListener("click", async () => {
                         <h2>WELCOME TO Ironnrootfitness</h2>
                         <p class="short-details">We guide you step by step to achieve sustainable fitness and real results — more than workouts, we build true transformation in your body, mind, and lifestyle.</p>
                         <a href="about.html" class="primary-btn about-btn">Learn More</a>
+                        <a href="#" class="primary-btn btn-schedule-call" style="background: #ff4d4d; border-color: #ff4d4d; margin-left: 10px; width: auto; padding: 0 20px;">Schedule a free call</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -1256,6 +1265,9 @@ Plan</h4>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/masonry.pkgd.min.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Schedule Call Plugin -->
+    <script type="module" src="js/schedule.js"></script>
 
     <!-- No Inspect -->
 

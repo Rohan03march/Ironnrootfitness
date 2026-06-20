@@ -142,7 +142,7 @@ body {
 /* ================= KPI ================= */
 .kpis {
   display: grid;
-  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
 }
@@ -310,6 +310,7 @@ td.payment {
       <button class="nav-btn" data-col="personal_workout_plan" data-type="normal">Personal Workout Plan</button>
       <button class="nav-btn" data-col="ultimate_personal_coaching" data-type="normal">Ultimate Personal Coaching</button>
       <button class="nav-btn" data-col="users" data-type="visited">Visited Customer</button>
+      <button class="nav-btn" data-col="scheduled_calls" data-type="scheduled">Scheduled Calls</button>
       <button class="nav-btn" data-col="permissions" data-type="permissions">Permissions</button>
 
       <button class="logout-btn" onclick="logout()">Logout</button>
@@ -321,6 +322,7 @@ td.payment {
         <div class="kpi"><p>Personal Nutrition Plan</p><h2 id="nutritionCount">0</h2></div>
         <div class="kpi"><p>Personal Workout Plan</p><h2 id="workoutCount">0</h2></div>
         <div class="kpi"><p>Ultimate Personal Coaching</p><h2 id="coachingCount">0</h2></div>
+        <div class="kpi"><p>Scheduled Calls</p><h2 id="scheduledCount">0</h2></div>
       </div>
 
       <div class="section">

@@ -41,6 +41,7 @@ const pagination = document.getElementById("pagination");
 const nutritionCount = document.getElementById("nutritionCount");
 const workoutCount = document.getElementById("workoutCount");
 const coachingCount = document.getElementById("coachingCount");
+const scheduledCount = document.getElementById("scheduledCount");
 
 /* ================= STATE ================= */
 const ROWS_PER_PAGE = 10;
@@ -103,6 +104,12 @@ onAuthStateChanged(auth, async (user) => {
   loader.style.display = "none";
   appRoot.style.display = "block";
 
+  // Pre-load counts for all KPI cards
+  getDocs(collection(db, "personal_nutrition_plan")).then(snap => updateCount("personal_nutrition_plan", snap.size));
+  getDocs(collection(db, "personal_workout_plan")).then(snap => updateCount("personal_workout_plan", snap.size));
+  getDocs(collection(db, "ultimate_personal_coaching")).then(snap => updateCount("ultimate_personal_coaching", snap.size));
+  getDocs(collection(db, "scheduled_calls")).then(snap => updateCount("scheduled_calls", snap.size));
+
   loadData("personal_nutrition_plan", "Personal Nutrition Plan", "normal");
 });
 
@@ -128,6 +135,7 @@ function updateCount(col, count) {
   if (col === "personal_nutrition_plan") nutritionCount.textContent = `${count}`;
   if (col === "personal_workout_plan") workoutCount.textContent = `${count}`;
   if (col === "ultimate_personal_coaching") coachingCount.textContent = `${count}`;
+  if (col === "scheduled_calls") scheduledCount.textContent = `${count}`;
 }
 
 /* ================= LOAD DATA ================= */
@@ -157,6 +165,19 @@ async function loadData(colName, title, type) {
         <th>Email</th>
         <th>Phone</th>
         <th>Plan</th>
+      </tr>
+    `;
+  }
+  else if (type === "scheduled") {
+    tableHead.innerHTML = `
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Reason</th>
+        <th>Scheduled At</th>
       </tr>
     `;
   }
@@ -233,6 +254,20 @@ async function loadData(colName, title, type) {
         <td>${data.email || "N/A"}</td>
         <td>${data.phone || "N/A"}</td>
         <td>${data.offerPlan || "N/A"}</td>
+      `;
+      tr.onclick = () => openModal(data);
+    }
+
+    /* ===== SCHEDULED CALLS ===== */
+    else if (type === "scheduled") {
+      tr.innerHTML = `
+        <td>${data.name || "N/A"}</td>
+        <td>${data.email || "N/A"}</td>
+        <td>${data.phone || "N/A"}</td>
+        <td>${data.date || "N/A"}</td>
+        <td>${data.time || "N/A"}</td>
+        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${data.reason || "N/A"}</td>
+        <td>${data.createdAt ? timeAgo(data.createdAt) : "N/A"}</td>
       `;
       tr.onclick = () => openModal(data);
     }

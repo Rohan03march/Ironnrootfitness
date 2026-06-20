@@ -40,15 +40,15 @@
 
   <!-- Header Section Begin -->
   <header class="header-modern">
-    <div class="container-fluid header-container">
+    <div class="header-container">
 
-      <!-- Logo -->
-    <a href="./index.html" class="brand">
-      <img class="brand-logo" src="img/logo.png" alt="Logo">
-      <span class="brand-name">Ironnrootfitness</span>
-    </a>
+      <!-- Brand -->
+      <a href="./index.html" class="brand">
+        <img class="brand-logo" src="img/logo.png" alt="Ironnrootfitness Logo">
+        <span class="brand-name">Ironnrootfitness</span>
+      </a>
 
-      <!-- Navigation -->
+      <!-- Desktop Navigation -->
       <nav class="mainmenu">
         <ul>
           <li class="active"><a href="./index.html">Home</a></li>
@@ -59,14 +59,14 @@
         </ul>
       </nav>
 
-      <!-- Header Actions (CTA + Profile Menu) -->
+      <!-- Right Side Actions -->
       <div class="header-actions">
+        <!-- CTA Button (desktop only) -->
         <a href="#" class="btn-schedule-call header-cta-btn">
-          <span class="cta-desktop">Free Strategy Call</span>
-          <span class="cta-mobile">Free Strategy Call</span>
+          Free Strategy Call
         </a>
 
-        <!-- User Profile Dropdown with Icon -->
+        <!-- User Profile Dropdown -->
         <div class="user-dropdown">
           <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
           <div class="dropdown-menu" id="dropdownMenu">
@@ -80,7 +80,6 @@
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
             import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
             import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
             const firebaseConfig = {
               apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js",
               authDomain: "ironnrootfitness-5156e.firebaseapp.com",
@@ -90,235 +89,98 @@
               appId: "1:508351386284:web:289185a2ff7a08b8ef0509",
               measurementId: "G-S6235MZEPC"
             };
-
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
             const db = getFirestore(app);
-
-            // Elements
             const avatar = document.getElementById("userAvatar");
             const dropdown = document.getElementById("dropdownMenu");
             const userName = document.getElementById("userName");
             const loginBtn = document.getElementById("loginBtn");
             const logoutBtn = document.getElementById("logoutBtn");
             const transactionHistory = document.getElementById("transactionHistory");
-
-            // Toggle dropdown
             avatar.addEventListener("click", (e) => {
               e.stopPropagation();
               dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
             });
-
-            // Close dropdown if clicked outside
-            document.addEventListener("click", () => {
-              dropdown.style.display = "none";
-            });
-
-            // Firebase Auth state
+            document.addEventListener("click", () => { dropdown.style.display = "none"; });
             onAuthStateChanged(auth, async (user) => {
               if (user) {
                 try {
-                  const docRef = doc(db, "users", user.uid);
-                  const docSnap = await getDoc(docRef);
-                  if (docSnap.exists()) {
-                    userName.textContent = docSnap.data().fullName; // from Firestore
-                  } else {
-                    userName.textContent = user.email; // fallback
-                  }
-                } catch (err) {
-                  console.error(err);
-                  userName.textContent = user.email;
-                }
-
+                  const docSnap = await getDoc(doc(db, "users", user.uid));
+                  userName.textContent = docSnap.exists() ? docSnap.data().fullName : user.email;
+                } catch { userName.textContent = user.email; }
                 loginBtn.style.display = "none";
                 logoutBtn.style.display = "block";
-                transactionHistory.style.display = "block"; // show when logged in
+                transactionHistory.style.display = "block";
               } else {
                 userName.textContent = "";
                 loginBtn.style.display = "block";
                 logoutBtn.style.display = "none";
-                transactionHistory.style.display = "none"; // hide when logged out
+                transactionHistory.style.display = "none";
               }
             });
-
-            // Logout
             logoutBtn.addEventListener("click", async () => {
               await signOut(auth);
               dropdown.style.display = "none";
               alert("You have been logged out!");
             });
           </script>
-
-
-          <style>
-            /* ==========================
-         User Dropdown
-      ========================== */
-            .user-dropdown {
-              position: relative;
-              display: inline-block;
-              font-family: 'Poppins', sans-serif;
-            }
-
-            /* Avatar Icon */
-            .user-avatar {
-              font-size: 45px;
-              color: #ff4d4d;
-              cursor: pointer;
-              transition: 0.3s;
-            }
-
-            .user-avatar:hover {
-              color: #e63636;
-            }
-
-            /* Dropdown Menu - Left of avatar */
-            .dropdown-menu {
-              display: none;
-              position: absolute;
-              top: 55px;
-              right: auto;
-              left: -210px;
-              /* Adjust this depending on width of dropdown */
-              background: #111;
-              min-width: 200px;
-              max-width: 250px;
-              border-radius: 12px;
-              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
-              z-index: 1000;
-              overflow: hidden;
-              word-wrap: break-word;
-              animation: dropdownFade 0.2s ease-in-out;
-            }
-
-            /* Dropdown Fade Animation */
-            @keyframes dropdownFade {
-              0% {
-                opacity: 0;
-                transform: translateY(-10px);
-              }
-
-              100% {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-
-            /* User Name */
-            .dropdown-menu .user-name {
-              padding: 12px 16px;
-              font-weight: 600;
-              color: #ff4d4d;
-              font-size: 16px;
-            }
-
-            /* Divider */
-            .dropdown-menu hr {
-              margin: 0;
-              border: 0;
-              border-top: 1px solid #333;
-            }
-
-            /* Links inside dropdown */
-            .dropdown-menu a {
-              display: block;
-              padding: 12px 16px;
-              color: #fff;
-              text-decoration: none;
-              font-size: 14px;
-              transition: all 0.3s;
-            }
-
-            .dropdown-menu a:hover {
-              background: #222;
-              color: #ff4d4d;
-            }
-
-            /* Show dropdown */
-            .user-dropdown.show .dropdown-menu {
-              display: block;
-            }
-
-            /* Responsive Adjustments */
-            @media (max-width: 768px) {
-              .user-avatar {
-                font-size: 40px;
-              }
-
-              .dropdown-menu {
-                min-width: 180px;
-                max-width: 220px;
-                top: 50px;
-                left: -190px;
-              }
-
-              .dropdown-menu .user-name {
-                font-size: 14px;
-              }
-
-              .dropdown-menu a {
-                font-size: 13px;
-                padding: 10px 14px;
-              }
-            }
-
-            @media (max-width: 480px) {
-              .dropdown-menu {
-                left: -160px;
-                top: 50px;
-              }
-            }
-          </style>
         </div>
+
+        <!-- Mobile Hamburger -->
+        <button class="mobile-toggle" aria-label="Open menu">
+          <i class="fa fa-bars"></i>
+        </button>
       </div>
 
-
-
-      <!-- Mobile Menu Toggle -->
-      <div class="mobile-toggle">
-        <i class="fa fa-bars"></i>
-      </div>
     </div>
   </header>
   <!-- Header Section End -->
 
   <style>
-    /* Base Header */
+    /* ===================== HEADER ===================== */
     .header-modern {
       background: #0d0d0d;
-      padding: 15px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       position: sticky;
       top: 0;
       z-index: 1000;
+      height: 70px;
+      display: flex;
+      align-items: center;
     }
 
     .header-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 20px;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 30px;
     }
 
-    /* Logo */
+    /* Brand */
     .brand {
       display: flex;
       align-items: center;
+      gap: 10px;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
     .brand-logo {
-      height: 55px;
-      margin-right: 10px;
+      height: 44px;
+      width: auto;
     }
 
     .brand-name {
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 20px;
+      font-weight: 800;
       color: #fff;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      font-family: 'Oswald', sans-serif;
     }
 
     /* Navigation */
@@ -327,142 +189,209 @@
       margin: 0;
       padding: 0;
       display: flex;
-      gap: 25px;
+      align-items: center;
+      gap: 32px;
     }
 
     .mainmenu ul li a {
-      color: #fff;
+      color: #ccc;
       text-decoration: none;
-      font-size: 16px;
-      font-weight: 500;
-      transition: 0.3s;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .mainmenu ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ff4d4d;
+      transition: width 0.25s ease;
     }
 
     .mainmenu ul li a:hover,
     .mainmenu ul li.active a {
-      color: #ff4d4d;
-    }
-
-    /* Login Button */
-    .login-btn {
-      margin-left: 20px;
-      padding: 8px 18px;
-      background: #ff4d4d;
       color: #fff;
-      border-radius: 30px;
-      text-decoration: none;
+    }
+
+    .mainmenu ul li a:hover::after,
+    .mainmenu ul li.active a::after {
+      width: 100%;
+    }
+
+    /* Right Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    /* User Dropdown */
+    .user-dropdown {
+      position: relative;
+    }
+
+    .user-avatar {
+      font-size: 30px;
+      color: #ff4d4d;
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: block;
+      line-height: 1;
+    }
+
+    .user-avatar:hover {
+      color: #ff7070;
+      transform: scale(1.1);
+    }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      background: #181818;
+      min-width: 200px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      overflow: hidden;
+      animation: dropdownFade 0.2s ease;
+    }
+
+    @keyframes dropdownFade {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-menu .user-name {
+      padding: 14px 16px 10px;
+      font-weight: 700;
+      color: #ff4d4d;
       font-size: 15px;
-      font-weight: 600;
-      transition: 0.3s;
+      font-family: 'Nunito Sans', sans-serif;
     }
 
-    .login-btn:hover {
-      background: #e60000;
+    .dropdown-menu hr {
+      margin: 0;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
-    /* Mobile Toggle */
+    .dropdown-menu a {
+      display: block;
+      padding: 12px 16px;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s, color 0.2s;
+      font-family: 'Nunito Sans', sans-serif;
+    }
+
+    .dropdown-menu a:hover {
+      background: #222;
+      color: #fff;
+    }
+
+    /* Mobile Hamburger */
     .mobile-toggle {
       display: none;
-      font-size: 24px;
+      background: none;
+      border: none;
       color: #fff;
+      font-size: 22px;
       cursor: pointer;
+      padding: 4px 6px;
+      line-height: 1;
     }
 
-    /* Responsive adjustments for mobile and tablets */
-    @media (max-width: 768px) {
-      .header-container {
-        padding: 0 12px;
-        justify-content: space-between;
-      }
-
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 900px) {
       .mainmenu {
         display: none;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        background: #111;
-        flex-direction: column;
-        gap: 15px;
-        padding: 20px;
-        text-align: center;
       }
 
-      .mainmenu.active {
-        display: flex;
-        animation: slideDown 0.3s ease;
+      .header-cta-btn {
+        display: none !important;
       }
 
-      .mainmenu ul {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .mainmenu ul li a {
-        font-size: 18px;
+      .mobile-toggle {
         display: block;
       }
 
       .brand-logo {
-        display: none; /* Hide logo on mobile */
-      }
-
-      .header-cta-btn {
-        display: none; /* Hide CTA button on mobile */
+        display: none;
       }
 
       .brand-name {
         font-size: 17px;
-        color: #fff;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
       }
 
-      .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-left: auto;
-      }
-
-      .mobile-toggle {
-        display: block;
-      }
-    }
-
-    /* Extra small screens (< 400px) */
-    @media (max-width: 400px) {
       .header-container {
-        padding: 0 8px;
-      }
-
-      .brand-name {
-        font-size: 14px;
-        letter-spacing: 0;
+        padding: 0 16px;
       }
 
       .header-actions {
-        gap: 6px;
-      }
-
-      .user-avatar {
-        font-size: 26px !important;
-      }
-
-      .mobile-toggle {
-        font-size: 18px !important;
+        gap: 12px;
       }
     }
 
-    /* Animation for dropdown */
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
+    /* Mobile Nav Drawer */
+    .mainmenu.active {
+      display: flex !important;
+      flex-direction: column;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background: #111;
+      padding: 24px 20px;
+      z-index: 999;
+      animation: slideDown 0.25s ease;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
+    .mainmenu.active ul {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .mainmenu.active ul li a {
+      font-size: 16px;
+      padding: 14px 0;
+      display: block;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ccc;
+    }
+
+    .mainmenu.active ul li:last-child a {
+      border-bottom: none;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Dropdown position fix on mobile */
+    @media (max-width: 480px) {
+      .dropdown-menu {
+        right: 0;
+        left: auto;
+        min-width: 180px;
       }
     }
   </style>
@@ -471,7 +400,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       const toggle = document.querySelector(".mobile-toggle");
       const menu = document.querySelector(".mainmenu");
-
       toggle.addEventListener("click", () => {
         menu.classList.toggle("active");
       });
@@ -1281,105 +1209,109 @@
     });
   </script>
 
-<!-- Floating Action Button (Mobile Only) -->
-<a href="#" class="btn-schedule-call fab-cta" id="fabCta" aria-label="Free Strategy Call">
-  <span class="fab-icon">
-    <i class="fa fa-phone"></i>
-  </span>
-  <span class="fab-label">Free Call</span>
-</a>
+  <!-- Floating Action Button (Mobile Only) -->
+  <a href="#" class="btn-schedule-call fab-cta" id="fabCta" aria-label="Free Strategy Call">
+    <span class="fab-icon">
+      <i class="fa fa-phone"></i>
+    </span>
+    <span class="fab-label">Free Strategy Call</span>
+  </a>
 
-<style>
-  /* FAB - Mobile Only */
-  .fab-cta {
-    display: none; /* hidden by default, shown on mobile */
-  }
-
-  @media (max-width: 768px) {
+  <style>
+    /* FAB - Mobile Only */
     .fab-cta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      position: fixed;
-      bottom: 24px;
-      right: 20px;
-      z-index: 9999;
-      background: linear-gradient(135deg, #ff4d4d, #cc0000);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 50px;
-      padding: 13px 20px 13px 16px;
-      box-shadow: 0 6px 24px rgba(255, 77, 77, 0.55), 0 2px 8px rgba(0,0,0,0.3);
-      font-family: 'Nunito Sans', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.4px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      /* Pulse ring animation */
-      animation: fabEntrance 0.5s ease 1s both;
+      display: none;
+      /* hidden by default, shown on mobile */
     }
 
-    .fab-cta::before {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border-radius: 50px;
-      border: 2px solid rgba(255, 77, 77, 0.5);
-      animation: fabPulse 2s ease-out infinite;
-    }
-
-    .fab-cta:hover {
-      transform: scale(1.06) translateY(-2px);
-      box-shadow: 0 10px 32px rgba(255, 77, 77, 0.7), 0 4px 12px rgba(0,0,0,0.3);
-      color: #fff;
-    }
-
-    .fab-cta:active {
-      transform: scale(0.97);
-    }
-
-    .fab-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-
-    .fab-label {
-      white-space: nowrap;
-    }
-
-    @keyframes fabPulse {
-      0% {
-        transform: scale(1);
-        opacity: 0.7;
+    @media (max-width: 768px) {
+      .fab-cta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: fixed;
+        bottom: 24px;
+        right: 20px;
+        z-index: 9999;
+        background: linear-gradient(135deg, #ff4d4d, #cc0000);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 50px;
+        padding: 13px 20px 13px 16px;
+        box-shadow: 0 6px 24px rgba(255, 77, 77, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+        font-family: 'Nunito Sans', sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.4px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        /* Pulse ring animation */
+        animation: fabEntrance 0.5s ease 1s both;
       }
-      70% {
-        transform: scale(1.18);
-        opacity: 0;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
 
-    @keyframes fabEntrance {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.8);
+      .fab-cta::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50px;
+        border: 2px solid rgba(255, 77, 77, 0.5);
+        animation: fabPulse 2s ease-out infinite;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+
+      .fab-cta:hover {
+        transform: scale(1.06) translateY(-2px);
+        box-shadow: 0 10px 32px rgba(255, 77, 77, 0.7), 0 4px 12px rgba(0, 0, 0, 0.3);
+        color: #fff;
+      }
+
+      .fab-cta:active {
+        transform: scale(0.97);
+      }
+
+      .fab-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .fab-label {
+        white-space: nowrap;
+      }
+
+      @keyframes fabPulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+
+        70% {
+          transform: scale(1.18);
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fabEntrance {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.8);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
       }
     }
-  }
-</style>
+  </style>
 
 </body>
 

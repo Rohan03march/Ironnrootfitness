@@ -22,59 +22,41 @@ const db = getFirestore(app);
 const styles = `
 /* ==================== SCHEDULER MODAL STYLE ==================== */
 .header-cta-btn {
-  padding: 8px 18px;
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 20px;
   background: transparent;
   color: #ff4d4d;
   border: 2px solid #ff4d4d;
   border-radius: 30px;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
   white-space: nowrap;
   cursor: pointer;
-  display: inline-block;
+  font-family: 'Oswald', sans-serif;
 }
 .header-cta-btn:hover {
   background: #ff4d4d;
   color: #fff;
-  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+  transform: translateY(-1px);
 }
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-left: auto;
+  gap: 16px;
 }
-.cta-mobile {
-  display: none;
-}
-@media (max-width: 768px) {
-  .cta-desktop {
-    display: none;
-  }
-  .cta-mobile {
-    display: inline;
-  }
+/* Hide CTA on mobile — FAB is used instead */
+@media (max-width: 900px) {
   .header-cta-btn {
-    padding: 6px 13px;
-    font-size: 12px;
-    border-width: 1.5px;
-    border-radius: 20px;
-  }
-  .header-actions {
-    gap: 10px;
+    display: none !important;
   }
 }
-@media (max-width: 400px) {
-  .header-cta-btn {
-    padding: 5px 10px;
-    font-size: 11px;
-  }
-  .header-actions {
-    gap: 6px;
-  }
-}
+
 
 /* ==================== WELCOME SECTION BUTTONS ==================== */
 .about-btns {
@@ -511,8 +493,8 @@ const modalHtml = `
     <!-- Left Panel: Info & Contact Details -->
     <div class="sched-left-panel" id="schedLeftPanel">
       <div class="sched-header">
-        <h2>Schedule a free call</h2>
-        <p>Let's talk about your fitness goals! Book a free consultation call with us. Choose your slot, fill in your details, and we'll connect at your preferred time.</p>
+        <h2>Book a Free<br>Body Transformation<br>Strategy Call</h2>
+        <p>Get a personalized roadmap to achieve your fitness goals faster and smarter.</p>
       </div>
       
       <div class="sched-form">
@@ -564,7 +546,7 @@ const modalHtml = `
       </div>
       
       <!-- Submit Button -->
-      <button class="sched-submit-btn" id="schedSubmitBtn">Confirm Booking</button>
+      <button class="sched-submit-btn" id="schedSubmitBtn">🗓️ Book My Free Strategy Call</button>
     </div>
     
     <!-- Success Page (Hidden by default) -->
@@ -881,7 +863,7 @@ async function handleBookingSubmit() {
     alert("There was an error scheduling your call. Please try again.");
   } finally {
     submitBtn.disabled = false;
-    submitBtn.textContent = "Confirm Booking";
+    submitBtn.textContent = "🗓️ Book My Free Strategy Call";
   }
 }
 

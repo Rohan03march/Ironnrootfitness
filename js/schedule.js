@@ -880,7 +880,8 @@ async function handleBookingSubmit() {
 document.addEventListener("DOMContentLoaded", () => {
   // Find all elements with class .btn-schedule-call and bind openModal to them
   document.body.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btn-schedule-call")) {
+    const btn = e.target.closest(".btn-schedule-call");
+    if (btn) {
       e.preventDefault();
       openModal();
     }

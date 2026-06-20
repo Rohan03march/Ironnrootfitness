@@ -63,7 +63,7 @@
       <div class="header-actions" style="display: flex; align-items: center; gap: 15px; margin-left: 20px;">
         <a href="#" class="btn-schedule-call header-cta-btn">
           <span class="cta-desktop">Free Strategy Call</span>
-          <span class="cta-mobile">Free Strategy Call</span>
+          <span class="cta-mobile">Free Call</span>
         </a>
 
         <!-- User Profile Dropdown with Icon -->
@@ -368,8 +368,13 @@
       cursor: pointer;
     }
 
-    /* Responsive */
+    /* Responsive adjustments for mobile and tablets */
     @media (max-width: 768px) {
+      .header-container {
+        padding: 0 10px;
+        justify-content: space-between;
+      }
+
       .mainmenu {
         display: none;
         position: absolute;
@@ -399,17 +404,21 @@
       }
 
       .brand-logo {
-        display: none;
-        /* hide logo on mobile */
+        display: block !important; /* Show logo on mobile */
+        height: 38px;
+        margin-right: 8px;
       }
 
       .brand-name {
-        font-size: 22px;
+        font-size: 16px;
         color: #fff;
+        letter-spacing: 0.5px;
       }
 
-      .header-container {
-        justify-content: space-between;
+      .header-actions {
+        margin-left: auto !important;
+        margin-right: 8px !important;
+        gap: 10px !important;
       }
 
       .mobile-toggle {
@@ -419,6 +428,31 @@
       .login-btn {
         padding: 6px 14px;
         font-size: 14px;
+      }
+    }
+
+    /* Extra small mobile screen adjustments to prevent congestion */
+    @media (max-width: 480px) {
+      .brand-name {
+        display: none; /* Hide brand text on tiny screens; let logo represent brand */
+      }
+
+      .brand-logo {
+        height: 40px;
+        margin-right: 0;
+      }
+
+      .header-actions {
+        gap: 6px !important;
+        margin-right: 4px !important;
+      }
+
+      .user-avatar {
+        font-size: 32px !important; /* Make user avatar smaller */
+      }
+
+      .mobile-toggle {
+        font-size: 20px !important; /* Make hamburger toggle smaller */
       }
     }
 
@@ -446,125 +480,6 @@
       });
     });
   </script>
-
-
-  <style>
-    /* Base Header */
-    .header-modern {
-      background: #0d0d0d;
-      padding: 15px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 20px;
-    }
-
-    /* Logo */
-    .brand {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    .brand-logo {
-      height: 55px;
-      margin-right: 10px;
-    }
-
-    .brand-name {
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* Navigation */
-    .mainmenu ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 25px;
-    }
-
-    .mainmenu ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    .mainmenu ul li a:hover,
-    .mainmenu ul li.active a {
-      color: #ff4d4d;
-    }
-
-    /* Login Button */
-    .login-btn {
-      margin-left: 20px;
-      padding: 8px 18px;
-      background: #ff4d4d;
-      color: #fff;
-      border-radius: 30px;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-
-    .login-btn:hover {
-      background: #e60000;
-    }
-
-    /* Mobile Toggle */
-    .mobile-toggle {
-      display: none;
-      font-size: 24px;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .mainmenu {
-        display: none;
-        /* hidden until toggled */
-      }
-
-      .mobile-toggle {
-        display: block;
-      }
-
-      .brand-logo {
-        display: none;
-        /* hide logo on mobile */
-      }
-
-      .brand-name {
-        font-size: 22px;
-        color: #fff;
-      }
-
-      .header-container {
-        justify-content: space-between;
-      }
-
-      .login-btn {
-        padding: 6px 14px;
-        font-size: 14px;
-      }
-    }
-  </style>
 
 
   <!-- Hero Section Begin -->

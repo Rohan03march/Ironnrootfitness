@@ -67,9 +67,6 @@ const styles = `
     padding: 5px 10px;
     font-size: 11px;
   }
-  .brand-name {
-    font-size: 18px !important;
-  }
 }
 
 /* ==================== WELCOME SECTION BUTTONS ==================== */

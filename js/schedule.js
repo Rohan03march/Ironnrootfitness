@@ -974,25 +974,30 @@ function initAutoTrigger() {
     window.removeEventListener("scroll", handleScroll);
   };
 
-  // 1. Time-on-page delay: Auto-trigger after 20 seconds
-  const timeDelayTimeout = setTimeout(triggerModal, 20000); // 20 seconds
+  // 1. Time-on-page delay: Auto-trigger after 20 seconds (Mobile Only)
+  let timeDelayTimeout;
+  if (window.innerWidth <= 768) {
+    timeDelayTimeout = setTimeout(triggerModal, 20000); // 20 seconds
+  }
 
-  // 2. Exit-intent trigger (Desktop): Trigger when mouse moves out of viewport top
+  // 2. Exit-intent trigger (Desktop Only): Trigger when mouse moves out of viewport top
   const handleMouseLeave = (e) => {
-    if (e.clientY < 20) {
+    if (window.innerWidth > 768 && e.clientY < 20) {
       triggerModal();
     }
   };
   document.addEventListener("mouseleave", handleMouseLeave);
 
-  // 3. Scroll-depth trigger (Mobile & Desktop): Trigger when scrolled 50% down
+  // 3. Scroll-depth trigger (Mobile Only): Trigger when scrolled 50% down
   const handleScroll = () => {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    if (scrollHeight > 0) {
-      const scrollPercentage = (scrollTop / scrollHeight) * 100;
-      if (scrollPercentage >= 50) {
-        triggerModal();
+    if (window.innerWidth <= 768) {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (scrollHeight > 0) {
+        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+        if (scrollPercentage >= 50) {
+          triggerModal();
+        }
       }
     }
   };

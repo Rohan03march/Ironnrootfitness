@@ -50,10 +50,88 @@ const styles = `
   align-items: center;
   gap: 16px;
 }
-/* Hide CTA on mobile — FAB is used instead */
-@media (max-width: 900px) {
-  .header-cta-btn {
-    display: none !important;
+
+/* ==================== FLOATING ACTION BUTTON (FAB) ==================== */
+.fab-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #ff4d4d, #cc0000);
+  color: #fff;
+  text-decoration: none !important;
+  border-radius: 50px;
+  padding: 13px 20px 13px 16px;
+  box-shadow: 0 6px 24px rgba(255, 77, 77, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  animation: fabEntrance 0.5s ease 1s both;
+}
+
+.fab-cta::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50px;
+  border: 2px solid rgba(255, 77, 77, 0.5);
+  animation: fabPulse 2s ease-out infinite;
+  pointer-events: none;
+}
+
+.fab-cta:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 10px 32px rgba(255, 77, 77, 0.7), 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: #fff !important;
+}
+
+.fab-cta:active {
+  transform: scale(0.97);
+}
+
+.fab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.fab-label {
+  white-space: nowrap;
+}
+
+@keyframes fabPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fabEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -565,6 +643,13 @@ const modalContainerEl = document.createElement("div");
 modalContainerEl.innerHTML = modalHtml;
 document.body.appendChild(modalContainerEl);
 
+// Helper for page-specific session storage key to track modal views per page
+const getPageStorageKey = () => {
+  const path = window.location.pathname;
+  const page = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+  return `hasSeenScheduleModal_${page}`;
+};
+
 // State Variables
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth(); // 0-11
@@ -578,7 +663,8 @@ const MONTH_NAMES = [
 
 const TIME_SLOTS = [
   "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
+  "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
+  "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM"
 ];
 
 // Elements References
@@ -653,7 +739,7 @@ onAuthStateChanged(auth, async (user) => {
 // Function to open Modal
 export function openModal() {
   // Mark as seen in this session so they are not prompted again
-  sessionStorage.setItem("hasSeenScheduleModal", "true");
+  sessionStorage.setItem(getPageStorageKey(), "true");
 
   // Reset states
   selectedDateString = "";
@@ -687,7 +773,7 @@ export function closeModal() {
   modalOverlay.classList.remove("active");
   document.body.style.overflow = ""; // restore scroll
   // Mark as seen in this session so they are not prompted again
-  sessionStorage.setItem("hasSeenScheduleModal", "true");
+  sessionStorage.setItem(getPageStorageKey(), "true");
 }
 
 // Render Calendar Logic
@@ -729,11 +815,9 @@ function renderCalendar() {
     const cellDate = new Date(currentYear, currentMonth, day);
     const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     
-    // Disable past dates
-    const isPast = cellDate < today;
-    // Disable weekends (Saturday/Sunday) if desired - in fitness, calls are usually weekdays.
-    // Let's keep it open or just block past dates. Block past dates.
-    if (isPast) {
+    // Disable past dates and present date (today)
+    const isPastOrToday = cellDate <= today;
+    if (isPastOrToday) {
       dayEl.classList.add("disabled");
     } else {
       if (dateStr === selectedDateString) {
@@ -770,32 +854,33 @@ function renderTimeSlots() {
   }
   
   const today = new Date();
-  const selectedDate = new Date(selectedDateString);
-  const isToday = selectedDate.toDateString() === today.toDateString();
+  today.setHours(0, 0, 0, 0);
+  
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+  
+  // Format tomorrow in YYYY-MM-DD locally to compare with selectedDateString
+  const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+  const isTomorrow = selectedDateString === tomorrowStr;
   
   TIME_SLOTS.forEach(slot => {
     const slotEl = document.createElement("div");
     slotEl.className = "sched-time-slot";
     slotEl.textContent = slot;
     
-    // If it's today, disable slots that have already passed
-    if (isToday) {
+    // If it's tomorrow (the next date), only allow slots starting around 3:00 PM (15:00 onwards)
+    if (isTomorrow) {
       // Parse slot hour (e.g. "09:00 AM" -> hour: 9, min: 0)
       const parts = slot.split(" ");
       const timeParts = parts[0].split(":");
       let hour = parseInt(timeParts[0]);
-      const minute = parseInt(timeParts[1]);
       const isPm = parts[1] === "PM";
       
       if (isPm && hour !== 12) hour += 12;
       if (!isPm && hour === 12) hour = 0;
       
-      const slotTime = new Date();
-      slotTime.setHours(hour, minute, 0, 0);
-      
-      if (slotTime < today) {
-        slotEl.classList.add("disabled");
-        timeSlotsGrid.appendChild(slotEl);
+      if (hour < 15) { // 15 represents 3:00 PM
         return;
       }
     }
@@ -869,14 +954,14 @@ async function handleBookingSubmit() {
 
 // Auto-Trigger Logic (Exit Intent, Time Delay, & Scroll Depth)
 function initAutoTrigger() {
-  // Check if user has already seen the modal in this session
-  if (sessionStorage.getItem("hasSeenScheduleModal")) {
+  // Check if user has already seen the modal on this page
+  if (sessionStorage.getItem(getPageStorageKey())) {
     return;
   }
 
   // Helper to trigger the modal safely and clean up
   const triggerModal = () => {
-    if (!sessionStorage.getItem("hasSeenScheduleModal")) {
+    if (!sessionStorage.getItem(getPageStorageKey())) {
       openModal();
       cleanup();
     }

@@ -32,25 +32,92 @@
     </div>
 
     <!-- Header Section Begin -->
-    <header class="header-section header-normal">
-        <div class="container-fluid">
-            <div class="container">
-                <div class="nav-menu">
-                    <nav class="mainmenu mobile-menu">
-                        <ul>
-                            <li><a href="./index.html">Home</a></li>
-                            <li><a href="./about.html">Biography</a></li>
-                            <li><a href="./plans.html">Training/Diet</a></li>
-                            <li><a href="./transformation.html">Transformation</a></li>
-                            <li class="active"><a href="./contact.html">Contact</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div id="mobile-menu-wrap"></div>
+  <header class="header-modern">
+    <div class="header-container">
+      <a href="./index.html" class="brand">
+        <img class="brand-logo" src="img/logo.png" alt="Ironnrootfitness Logo">
+        <span class="brand-name">Ironnrootfitness</span>
+      </a>
+      <nav class="mainmenu">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">Biography</a></li>
+          <li><a href="./plans.html">Training / Diet</a></li>
+          <li><a href="./transformation.html">Transformation</a></li>
+          <li class="active"><a href="./contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <div class="user-dropdown">
+          <i class="fa fa-user-circle user-avatar" id="userAvatar"></i>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="user-name" id="userName"></div>
+            <a id="transactionHistory" href="transactionHistory.html" style="display: none;">Transaction History</a>
+            <hr>
+            <a href="./login.html" id="loginBtn">Login</a>
+            <a href="#" id="logoutBtn" style="display:none;">Logout</a>
+          </div>
+          <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+            import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+            import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+            const firebaseConfig = { apiKey: "AIzaSyC1705Xy74qwXt8aOgvZGBIYs8uMU6u3js", authDomain: "ironnrootfitness-5156e.firebaseapp.com", projectId: "ironnrootfitness-5156e", storageBucket: "ironnrootfitness-5156e.firebasestorage.app", messagingSenderId: "508351386284", appId: "1:508351386284:web:289185a2ff7a08b8ef0509", measurementId: "G-S6235MZEPC" };
+            const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
+            const avatar = document.getElementById("userAvatar"), dropdown = document.getElementById("dropdownMenu"), userName = document.getElementById("userName"), loginBtn = document.getElementById("loginBtn"), logoutBtn = document.getElementById("logoutBtn"), transactionHistory = document.getElementById("transactionHistory");
+            avatar.addEventListener("click", (e) => { e.stopPropagation(); dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; });
+            document.addEventListener("click", () => { dropdown.style.display = "none"; });
+            onAuthStateChanged(auth, async (user) => {
+              if (user) { try { const docSnap = await getDoc(doc(db, "users", user.uid)); userName.textContent = docSnap.exists() ? docSnap.data().fullName : user.email; } catch { userName.textContent = user.email; } loginBtn.style.display = "none"; logoutBtn.style.display = "block"; transactionHistory.style.display = "block"; }
+              else { userName.textContent = ""; loginBtn.style.display = "block"; logoutBtn.style.display = "none"; transactionHistory.style.display = "none"; }
+            });
+            logoutBtn.addEventListener("click", async () => { await signOut(auth); dropdown.style.display = "none"; alert("You have been logged out!"); });
+          </script>
         </div>
-    </header>
-    <!-- Header End -->
+        <button class="mobile-toggle" aria-label="Open menu"><i class="fa fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+  <!-- Header Section End -->
+
+  <style>
+    .header-modern { background: #0d0d0d; border-bottom: 1px solid rgba(255,255,255,0.07); position: sticky; top: 0; z-index: 1000; height: 70px; display: flex; align-items: center; }
+    .header-container { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 30px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+    .brand-logo { height: 44px; width: auto; }
+    .brand-name { font-size: 20px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Oswald', sans-serif; }
+    .mainmenu ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 32px; }
+    .mainmenu ul li a { color: #ccc; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s ease; position: relative; padding-bottom: 4px; }
+    .mainmenu ul li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #ff4d4d; transition: width 0.25s ease; }
+    .mainmenu ul li a:hover, .mainmenu ul li.active a { color: #fff; }
+    .mainmenu ul li a:hover::after, .mainmenu ul li.active a::after { width: 100%; }
+    .header-actions { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .user-dropdown { position: relative; }
+    .user-avatar { font-size: 30px; color: #ff4d4d; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; display: block; line-height: 1; }
+    .user-avatar:hover { color: #ff7070; transform: scale(1.1); }
+    .dropdown-menu { display: none; position: absolute; top: calc(100% + 14px); right: 0; background: #181818; min-width: 200px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 12px 40px rgba(0,0,0,0.6); z-index: 2000; overflow: hidden; animation: dropdownFade 0.2s ease; }
+    @keyframes dropdownFade { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .dropdown-menu .user-name { padding: 14px 16px 10px; font-weight: 700; color: #ff4d4d; font-size: 15px; font-family: 'Nunito Sans', sans-serif; }
+    .dropdown-menu hr { margin: 0; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .dropdown-menu a { display: block; padding: 12px 16px; color: #ccc; text-decoration: none; font-size: 14px; transition: background 0.2s, color 0.2s; font-family: 'Nunito Sans', sans-serif; }
+    .dropdown-menu a:hover { background: #222; color: #fff; }
+    .mobile-toggle { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 4px 6px; line-height: 1; }
+    @media (max-width: 900px) { .mainmenu { display: none; } .header-cta-btn { display: none !important; } .mobile-toggle { display: block; } .brand-logo { display: none; } .brand-name { font-size: 17px; letter-spacing: 1px; } .header-container { padding: 0 16px; } .header-actions { gap: 12px; } }
+    .mainmenu.active { display: flex !important; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #111; padding: 24px 20px; z-index: 999; animation: slideDown 0.25s ease; border-top: 1px solid rgba(255,255,255,0.06); }
+    .mainmenu.active ul { flex-direction: column; gap: 0; }
+    .mainmenu.active ul li a { font-size: 16px; padding: 14px 0; display: block; border-bottom: 1px solid rgba(255,255,255,0.06); text-transform: uppercase; letter-spacing: 0.5px; color: #ccc; }
+    .mainmenu.active ul li:last-child a { border-bottom: none; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 480px) { .dropdown-menu { right: 0; left: auto; min-width: 180px; } }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.querySelector(".mobile-toggle");
+      const menu = document.querySelector(".mainmenu");
+      toggle.addEventListener("click", () => { menu.classList.toggle("active"); });
+    });
+  </script>
+
+
 
     <!-- Map Section Begin -->
     <div class="contact-map">
@@ -532,27 +599,21 @@ a[href^="mailto:"]:hover {
     <script src="js/main.js"></script>
     <!-- <script type="module" src="./js/contact.js"></script> -->
 
+    <!-- Schedule Call Modal -->
+    <script type="module" src="js/schedule.js"></script>
+
+    <!-- Floating Action Button (Mobile Only) -->
+    <a href="#" class="btn-schedule-call fab-cta" id="fabCta" aria-label="Free Strategy Call">
+      <span class="fab-icon"><i class="fa fa-phone"></i></span>
+      <span class="fab-label">Free Strategy Call</span>
+    </a>
+
     <!-- No Inspect -->
-
 <script>
-// Disable right-click context menu
-document.addEventListener("contextmenu", function (event) {
-  event.preventDefault();
-});
-
-// Disable common inspect shortcuts
+document.addEventListener("contextmenu", function (event) { event.preventDefault(); });
 document.addEventListener("keydown", function (event) {
-  // F12
-  if (event.key === "F12") {
-    event.preventDefault();
-  }
-  // Ctrl+Shift+I or Ctrl+Shift+J or Ctrl+U or Ctrl+S
-  if (
-    (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) ||
-    (event.ctrlKey && (event.key === "U" || event.key === "S"))
-  ) {
-    event.preventDefault();
-  }
+  if (event.key === "F12") { event.preventDefault(); }
+  if ((event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) || (event.ctrlKey && (event.key === "U" || event.key === "S"))) { event.preventDefault(); }
 });
 </script>
 

@@ -50,17 +50,21 @@ async function loadPrice(user) {
   if (hasOffer) {
     priceDiv.innerHTML = `
       <div style="font-size:18px;color:#bbb;text-decoration:line-through;">
-        ₹${baseAmount}
+        ₹${baseAmount} / monthly
       </div>
-      <div style="font-size:42px;color:#ff4d4d;">
-        ₹${finalAmount}
+      <div style="font-size:42px;color:#ff4d4d;font-weight:700;">
+        ₹${finalAmount}<span style="font-size:22px;color:#bbb;font-weight:normal;"> / monthly</span>
       </div>
       <div style="margin-top:8px;color:#00ff99;font-weight:600;">
         🎉 Welcome Bonus – 10% OFF
       </div>
     `;
   } else {
-    priceDiv.innerHTML = `<div style="font-size:42px;color:#ff4d4d;">₹${baseAmount}</div>`;
+    priceDiv.innerHTML = `
+      <div style="font-size:42px;color:#ff4d4d;font-weight:700;">
+        ₹${baseAmount}<span style="font-size:22px;color:#bbb;font-weight:normal;"> / monthly</span>
+      </div>
+    `;
   }
 }
 

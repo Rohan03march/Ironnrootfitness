@@ -662,8 +662,7 @@ const MONTH_NAMES = [
 ];
 
 const TIME_SLOTS = [
-  "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
+  "03:00 PM", "04:00 PM", "05:00 PM",
   "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM"
 ];
 
@@ -853,37 +852,10 @@ function renderTimeSlots() {
     return;
   }
   
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
-  
-  // Format tomorrow in YYYY-MM-DD locally to compare with selectedDateString
-  const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
-  const isTomorrow = selectedDateString === tomorrowStr;
-  
   TIME_SLOTS.forEach(slot => {
     const slotEl = document.createElement("div");
     slotEl.className = "sched-time-slot";
     slotEl.textContent = slot;
-    
-    // If it's tomorrow (the next date), only allow slots starting around 3:00 PM (15:00 onwards)
-    if (isTomorrow) {
-      // Parse slot hour (e.g. "09:00 AM" -> hour: 9, min: 0)
-      const parts = slot.split(" ");
-      const timeParts = parts[0].split(":");
-      let hour = parseInt(timeParts[0]);
-      const isPm = parts[1] === "PM";
-      
-      if (isPm && hour !== 12) hour += 12;
-      if (!isPm && hour === 12) hour = 0;
-      
-      if (hour < 15) { // 15 represents 3:00 PM
-        return;
-      }
-    }
     
     if (slot === selectedTime) {
       slotEl.classList.add("active");

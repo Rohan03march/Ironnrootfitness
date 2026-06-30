@@ -94,11 +94,11 @@
     .user-dropdown { position: relative; }
     .user-avatar { font-size: 30px; color: #ff4d4d; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; display: block; line-height: 1; }
     .user-avatar:hover { color: #ff7070; transform: scale(1.1); }
-    .dropdown-menu { display: none; position: absolute; top: calc(100% + 14px); right: 0; background: #181818; min-width: 200px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 12px 40px rgba(0,0,0,0.6); z-index: 2000; overflow: hidden; animation: dropdownFade 0.2s ease; }
+    .dropdown-menu { display: none; position: absolute; top: calc(100% + 14px); right: 0; left: auto; background: #181818; width: 220px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 12px 40px rgba(0,0,0,0.6); z-index: 2000; overflow: hidden; animation: dropdownFade 0.2s ease; }
     @keyframes dropdownFade { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-    .dropdown-menu .user-name { padding: 14px 16px 10px; font-weight: 700; color: #ff4d4d; font-size: 15px; font-family: 'Nunito Sans', sans-serif; }
+    .dropdown-menu .user-name { padding: 14px 16px 10px; font-weight: 700; color: #ff4d4d; font-size: 15px; font-family: 'Nunito Sans', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .dropdown-menu hr { margin: 0; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
-    .dropdown-menu a { display: block; padding: 12px 16px; color: #ccc; text-decoration: none; font-size: 14px; transition: background 0.2s, color 0.2s; font-family: 'Nunito Sans', sans-serif; }
+    .dropdown-menu a { display: block; padding: 12px 16px; color: #ccc; text-decoration: none; font-size: 14px; transition: background 0.2s, color 0.2s; font-family: 'Nunito Sans', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .dropdown-menu a:hover { background: #222; color: #fff; }
     .mobile-toggle { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 4px 6px; line-height: 1; }
     @media (max-width: 900px) { .mainmenu { display: none; } .header-cta-btn { display: none !important; } .mobile-toggle { display: block; } .brand-logo { display: none; } .brand-name { font-size: 17px; letter-spacing: 1px; } .header-container { padding: 0 16px; } .header-actions { gap: 12px; } }
@@ -107,7 +107,7 @@
     .mainmenu.active ul li a { font-size: 16px; padding: 14px 0; display: block; border-bottom: 1px solid rgba(255,255,255,0.06); text-transform: uppercase; letter-spacing: 0.5px; color: #ccc; }
     .mainmenu.active ul li:last-child a { border-bottom: none; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-    @media (max-width: 480px) { .dropdown-menu { right: 0; left: auto; min-width: 180px; } }
+    @media (max-width: 480px) { .dropdown-menu { right: 0; left: auto; width: 200px; } }
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", () => {

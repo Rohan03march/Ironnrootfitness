@@ -231,7 +231,7 @@
 
     /* User Dropdown */
     .user-dropdown {
-      position: relative;
+      position: relative !important;
     }
 
     .user-avatar {
@@ -253,9 +253,10 @@
       display: none;
       position: absolute;
       top: calc(100% + 14px);
-      right: 0;
+      right: 0 !important;
+      left: auto !important;
       background: #181818;
-      min-width: 200px;
+      width: 220px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
@@ -275,6 +276,9 @@
       color: #ff4d4d;
       font-size: 15px;
       font-family: 'Nunito Sans', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .dropdown-menu hr {
@@ -291,6 +295,9 @@
       font-size: 14px;
       transition: background 0.2s, color 0.2s;
       font-family: 'Nunito Sans', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .dropdown-menu a:hover {
@@ -384,9 +391,9 @@
     /* Dropdown position fix on mobile */
     @media (max-width: 480px) {
       .dropdown-menu {
-        right: 0;
-        left: auto;
-        min-width: 180px;
+        right: 0 !important;
+        left: auto !important;
+        width: 200px;
       }
     }
   </style>
